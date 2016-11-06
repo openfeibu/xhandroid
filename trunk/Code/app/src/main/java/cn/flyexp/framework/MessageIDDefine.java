@@ -19,6 +19,8 @@ public class MessageIDDefine {
 
     public static int PIC_BROWSER_OPEN = generateMessageId();
 
+    public static int MAIN_OPEN_4_INIT = generateMessageId();
+
     public static int MAIN_OPEN = generateMessageId();
 
     public static int WEB_OPEN = generateMessageId();
@@ -44,8 +46,6 @@ public class MessageIDDefine {
     public static int TOPIC_SEARCH_OPEN = generateMessageId();
 
     public static int TOPIC_PUBLISH_OPEN = generateMessageId();
-
-    public static int TOPIC_DETAIL_OPEN = generateMessageId();
 
     public static int TA_OPEN = generateMessageId();
 
@@ -75,17 +75,25 @@ public class MessageIDDefine {
 
     public static int ASSN_JOIN_OPEN = generateMessageId();
 
+    public static int MYASSN_ACTIVITY_OPEN = generateMessageId();
+
+    public static int ASSN_EXAMINE_OPEN = generateMessageId();
+
+    public static int ASSN_EXAMINE_DETAIL_OPEN = generateMessageId();
+
     public static int ASSN_MANAGE_OPEN = generateMessageId();
 
     public static int ASSN_INTRODUCE_PUBLISH_OPEN = generateMessageId();
 
     public static int ASSN_NOTICE_PUBLISH_OPEN = generateMessageId();
 
-    public static int ASSN_INFO_PUBLISH_OPEN = generateMessageId();
-
     public static int ASSN_ACTIVITY_PUBLISH_OPEN = generateMessageId();
 
-    public static int ASSN_INFO_DETAIL_OPEN = generateMessageId();
+    public static int MY_ASSN_OPEN = generateMessageId();
+
+    public static int MYASSN_DETAIL_OPEN = generateMessageId();
+
+    public static int ASSN_DETAIL_OPEN = generateMessageId();
 
     public static int TASK_OPEN = generateMessageId();
 
@@ -96,6 +104,10 @@ public class MessageIDDefine {
     public static int MYTASK_OPEN = generateMessageId();
 
     public static int MYTOPIC_OPEN = generateMessageId();
+
+    public static int REPLY_OPEN = generateMessageId();
+
+    public static int REPLY_LIST_OPEN = generateMessageId();
 
     public static int MYORDER_DETAIL_OPEN = generateMessageId();
 
@@ -134,5 +146,7 @@ public class MessageIDDefine {
     public static int CHANGEPAYPWD_OPEN = generateMessageId();
 
     public static int VERIFIPAYPWD_OPEN = generateMessageId();
+
+    public static int MESSAGE_OPEN = generateMessageId();
 
 }

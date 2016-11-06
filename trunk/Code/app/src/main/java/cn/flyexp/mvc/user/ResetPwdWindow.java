@@ -16,6 +16,7 @@ import cn.flyexp.entity.RegisterVerifyCodeRequest;
 import cn.flyexp.entity.ResetPwdVerifyCodeRequest;
 import cn.flyexp.entity.ResetPwdRequest;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.CommonUtil;
 
 /**
@@ -89,7 +90,7 @@ public class ResetPwdWindow extends AbstractWindow implements View.OnClickListen
             case R.id.tv_vercode:
                 String phoneVerCode = et_phone.getText().toString().trim();
                 if (phoneVerCode == null || phoneVerCode.equals("")) {
-                    showToast("请输入手机号码");
+                    WindowHelper.showToast("请输入手机号码");
                     return;
                 }
                 ResetPwdVerifyCodeRequest verifyCodeRequest = new ResetPwdVerifyCodeRequest();
@@ -102,19 +103,19 @@ public class ResetPwdWindow extends AbstractWindow implements View.OnClickListen
                 String pwd = et_pwd.getText().toString().trim();
                 String vertifyCode = et_vertifycode.getText().toString().trim();
                 if (pwd.length() < 6 || pwd.length() > 16) {
-                    showToast("密码长度必须为6~12位");
+                    WindowHelper.showToast("密码长度必须为6~12位");
                     return;
                 }
                 Pattern pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
                 Matcher ma = pa.matcher(pwd);
                 if (!ma.matches()) {
-                    showToast("密码不支持特殊字符");
+                    WindowHelper.showToast("密码不支持特殊字符");
                     return;
                 }
                 pa = Pattern.compile("1\\d{10}");
                 ma = pa.matcher(phone);
                 if (!ma.matches()) {
-                    showToast("手机号码有误");
+                    WindowHelper.showToast("手机号码有误");
                     return;
                 }
                 ResetPwdRequest resetPwdRequest = new ResetPwdRequest();

@@ -40,14 +40,24 @@
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
+            <!--<TextView-->
+                <!--android:id="@+id/tv_setting"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginRight="16dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:text="@string/setting"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="16sp" />-->
             <TextView
-                android:id="@+id/tv_setting"
+                android:id="@+id/tv_tape"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/setting"
+                android:text="@string/tape"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 

@@ -12,6 +12,7 @@ import cn.flyexp.adapter.WalletDetailAdapter;
 import cn.flyexp.entity.IntegralRecordRequest;
 import cn.flyexp.entity.IntegralRecordResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.view.LoadMoreListener;
 import cn.flyexp.view.LoadMoreRecyclerView;
 import cn.flyexp.view.ProgressView;
@@ -61,7 +62,7 @@ public class IntegralRecordWindow extends AbstractWindow implements View.OnClick
 
     private IntegralRecordRequest getIntegralRecordRequest() {
         isResponse = false;
-        String token = getStringByPreference("token");
+        String token = WindowHelper.getStringByPreference("token");
         if (token.equals("")) {
             callBack.loginWindowEnter();
             return null;

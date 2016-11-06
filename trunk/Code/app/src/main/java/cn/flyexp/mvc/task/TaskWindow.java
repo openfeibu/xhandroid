@@ -14,6 +14,7 @@ import cn.flyexp.adapter.TaskAdapter;
 import cn.flyexp.entity.TaskRequest;
 import cn.flyexp.entity.OrderResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.OnItemClickListener;
 import cn.flyexp.view.LoadMoreListener;
 import cn.flyexp.view.LoadMoreRecyclerView;
@@ -47,8 +48,7 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
 
     private void initView() {
         setContentView(R.layout.window_task);
-        findViewById(R.id.iv_back).setOnClickListener(this);
-        findViewById(R.id.fab_publish).setOnClickListener(this);
+        findViewById(R.id.iv_publish).setOnClickListener(this);
 
         progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
         progressBar.show();
@@ -61,9 +61,16 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
         refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!isResponse) {
+                if (!isResponse || !canRequest()) {
+                    refreshlayout.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshlayout.setRefreshing(false);
+                        }
+                    }, 200);
                     return;
                 }
+                setRequestTimeNow();
                 page = 1;
                 isUpLoading = true;
                 rv_task.loadMoreComplete();
@@ -75,7 +82,9 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
         taskAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                callBack.detailEnter(data.get(position));
+                if(data.get(position).getStatus().equals("new")){
+                    callBack.detailEnter(data.get(position));
+                }
             }
         });
         rv_task = (LoadMoreRecyclerView) findViewById(R.id.rv_task);
@@ -162,16 +171,16 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
             case R.id.iv_back:
                 hideWindow(true);
                 break;
-            case R.id.fab_publish:
-                int isAuth = getIntByPreference("is_auth");
+            case R.id.iv_publish:
+                int isAuth = WindowHelper.getIntByPreference("is_auth");
                 if (isAuth == 0) {
-                    showToast(getContext().getString(R.string.none_certifition));
+                    WindowHelper.showToast(getContext().getString(R.string.none_certifition));
                     return;
                 } else if (isAuth == 2) {
-                    showToast(getContext().getString(R.string.certifing));
+                    WindowHelper.showToast(getContext().getString(R.string.certifing));
                     return;
                 }
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;

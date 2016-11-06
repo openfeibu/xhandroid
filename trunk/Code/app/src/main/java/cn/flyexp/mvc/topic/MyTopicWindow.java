@@ -1,30 +1,36 @@
 package cn.flyexp.mvc.topic;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.os.IBinder;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RadioButton;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.flyexp.R;
-import cn.flyexp.adapter.MyCommentAdapter;
 import cn.flyexp.adapter.MyTopicAdapter;
+import cn.flyexp.entity.CommentRequest;
 import cn.flyexp.entity.DeleteCommentRequest;
 import cn.flyexp.entity.DeleteTopicRequest;
-import cn.flyexp.entity.MyCommentRequest;
-import cn.flyexp.entity.MyCommentResponse;
 import cn.flyexp.entity.MyTopicRequest;
-import cn.flyexp.entity.MyTopicResponse;
+import cn.flyexp.entity.MyTopicResponseNew;
 import cn.flyexp.framework.AbstractWindow;
-import cn.flyexp.util.OnItemClickListener;
+import cn.flyexp.framework.WindowHelper;
+import cn.flyexp.view.CommonDialog;
 import cn.flyexp.view.LoadMoreRecyclerView;
 
 
@@ -33,180 +39,204 @@ import cn.flyexp.view.LoadMoreRecyclerView;
  */
 public class MyTopicWindow extends AbstractWindow implements View.OnClickListener {
 
+    private SwipeRefreshLayout refreshlayout;
     private TopicViewCallBack callBack;
-    private ViewPager vp_mytopic;
-    private View[] views;
-    private RadioButton btn_topic;
-    private RadioButton btn_comment;
     private int topicPage = 1;
-    private int commentPage = 1;
     private boolean isResponse = true;
     private ContentLoadingProgressBar topicProgressBar;
-    private ContentLoadingProgressBar commentProgressBar;
     private TextView topicState;
-    private TextView commentState;
     private LoadMoreRecyclerView topicRecyclerView;
-    private LoadMoreRecyclerView commentRecyclerView;
     private MyTopicAdapter topicAdapter;
-    private MyCommentAdapter myCommentAdapter;
-    private ArrayList<MyTopicResponse.MyTopicRequestData> myTopicData = new ArrayList<>();
-    private ArrayList<MyCommentResponse.MyCommentResponseData> myCommentData = new ArrayList<>();
     private int deleteTopicPosition;
-    private int deleteCommentPosition;
 
     public MyTopicWindow(TopicViewCallBack callBack) {
         super(callBack);
         this.callBack = callBack;
         initView();
         callBack.getMyTopic(getMyTopicRequest());
-        callBack.getMyComment(getMyCommentRequest());
     }
 
+    private LinearLayout inputContainer;
+    private EditText editTextInput;
+    private Button buttonSubmit;
+    private ImageView writeTopic;
+    private int currentPosition=0;
+    private CommonDialog dialog;
     private void initView() {
-        setContentView(R.layout.window_mytopic);
+        setContentView(R.layout.window_topic);
         findViewById(R.id.iv_back).setOnClickListener(this);
-        btn_topic = (RadioButton) findViewById(R.id.btn_topic);
-        btn_comment = (RadioButton) findViewById(R.id.btn_comment);
-        btn_topic.setOnClickListener(this);
-        btn_comment.setOnClickListener(this);
 
-
-        views = new View[2];
-        views[0] = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_recyclerview, null);
-        views[1] = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_recyclerview, null);
-
-        commentProgressBar = (ContentLoadingProgressBar) views[0].findViewById(R.id.progressBar);
-        topicProgressBar = (ContentLoadingProgressBar) views[1].findViewById(R.id.progressBar);
-        commentProgressBar.show();
+        topicProgressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
         topicProgressBar.show();
-        commentProgressBar.hide();
         topicProgressBar.hide();
 
-        topicRecyclerView = (LoadMoreRecyclerView) views[0].findViewById(R.id.recyclerView);
-        commentRecyclerView = (LoadMoreRecyclerView) views[1].findViewById(R.id.recyclerView);
-        topicRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        commentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        topicAdapter = new MyTopicAdapter(getContext(), myTopicData, callBack, new MyTopicAdapter.IDeletePosition() {
+        inputContainer = (LinearLayout) findViewById(R.id.input_container);
+        editTextInput = (EditText) findViewById(R.id.circle_edt);
+        buttonSubmit = (Button) findViewById(R.id.circle_btn);
+        buttonSubmit.setOnClickListener(this);
+        refreshlayout = (SwipeRefreshLayout) findViewById(R.id.refreshlayout);
+        refreshlayout.setColorSchemeResources(R.color.light_blue);
+        refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (!isResponse || !canRequest()) {
+                    refreshlayout.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshlayout.setRefreshing(false);
+                        }
+                    }, 200);
+                    return;
+                }
+                setRequestTimeNow();
+                callBack.getMyTopic(getMyTopicRequest());
+            }
+        });
+        findViewById(R.id.write_topic).setVisibility(View.GONE);
+        topicRecyclerView = (LoadMoreRecyclerView)findViewById(R.id.rv_topic);
+        TextView title = (TextView)findViewById(R.id.title_text);
+        title.setText(getContext().getText(R.string.my_topic));
+        final LinearLayoutManager lm=new LinearLayoutManager(getContext());
+        topicRecyclerView.setLayoutManager(lm);
+
+        topicRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView view, int scrollState) {
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (lm.findFirstCompletelyVisibleItemPosition() == 0) {
+                    refreshlayout.setEnabled(true);
+                }
+                else{
+                    refreshlayout.setEnabled(false);
+                }
+            }
+        });
+
+        topicAdapter = new MyTopicAdapter(getContext(), list, callBack, new MyTopicAdapter.IDeletePosition() {
             @Override
             public void delete(final int position) {
-                showAlertDialog("是否删除", "取消", "确定", new DialogInterface.OnClickListener() {
+                WindowHelper.showAlertDialog("是否删除", "取消", "确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DeleteTopicRequest deleteTopicRequest = new DeleteTopicRequest();
-                        deleteTopicRequest.setTopic_id(myTopicData.get(position).getTid());
+                        deleteTopicRequest.setTopic_id(list.get(position).getTid());
                         callBack.deleteTopic(deleteTopicRequest);
                         deleteTopicPosition = position;
                     }
                 });
             }
         });
-        myCommentAdapter = new MyCommentAdapter(getContext(), myCommentData, callBack, new MyCommentAdapter.IDeletePosition() {
-            @Override
-            public void delete(final int position) {
-                showAlertDialog("是否删除", "取消", "确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DeleteCommentRequest deleteCommentRequest = new DeleteCommentRequest();
-                        deleteCommentRequest.setTopic_id(myCommentData.get(position).getTid());
-                        deleteCommentRequest.setComment_id(myCommentData.get(position).getTcid());
-                        callBack.deleteComment(deleteCommentRequest);
-                        deleteCommentPosition = position;
-                    }
-                });
-            }
-        });
-        topicAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                callBack.detailEnter(myTopicData.get(position).getTid());
-            }
-        });
-        myCommentAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                callBack.detailEnter(myCommentData.get(position).getTid());
-            }
-        });
         topicRecyclerView.setAdapter(topicAdapter);
-        commentRecyclerView.setAdapter(myCommentAdapter);
         topicRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        commentRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
         topicRecyclerView.setVisibility(VISIBLE);
-        commentRecyclerView.setVisibility(VISIBLE);
-
-        vp_mytopic = (ViewPager) findViewById(R.id.vp_mytopic);
-        vp_mytopic.setAdapter(new PagerAdapter() {
+        topicAdapter.setOnCommentClickListener(new MyTopicAdapter.CommentOnClickListener() {
             @Override
-            public int getCount() {
-                return views.length;
-            }
+            public void onReview(TextView v, int position, String nickName, final int commentId, final int TopicId) {
+                final String token = WindowHelper.getStringByPreference("token");
+                if (token.equals("")) {
+                    callBack.loginWindowEnter();
+                    return;
+                }
+                String userName=WindowHelper.getStringByPreference("nickName");
+                if(!userName.equals(nickName)){
+                    if (currentPosition != position){//评论不同的东西，清掉评论数据
+                        editTextInput.setText("");
+                    }
+                    editTextInput.setHint("回复 "+nickName);
+                    currentPosition = position;
+                    inputContainer.setVisibility(View.VISIBLE);
+                    editTextInput.setFocusable(true);
+                    editTextInput.setFocusableInTouchMode(true);
+                    editTextInput.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getContext()
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                    int[] positions = new int[2];
+                    v.getLocationOnScreen(positions);
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) topicRecyclerView.getLayoutManager();
+                    if(position<0){
+                        layoutManager.scrollToPositionWithOffset(position+1,0);
+                    }
 
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                return view == object;
-            }
-
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                container.addView(views[position]);
-                return views[position];
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView(views[position]);
-            }
-
-        });
-        vp_mytopic.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    btn_topic.setChecked(true);
-                    btn_comment.setChecked(false);
-                } else {
-                    btn_topic.setChecked(false);
-                    btn_comment.setChecked(true);
+                    buttonSubmit.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String comment = editTextInput.getText().toString().trim();
+                            if (comment == null || comment.equals("")) {
+                                editTextInput.setHint("评论一下");
+                                return;
+                            }
+                            CommentRequest commentRequest = new CommentRequest();
+                            commentRequest.setToken(token);
+//                            int topicId=data.get(currentPosition).getTid();
+                            if (TopicId != 0) {
+                                commentRequest.setTopic_id(TopicId);
+                            }
+                            commentRequest.setTopic_comment(comment);
+                            commentRequest.setComment_id(commentId);
+//                            callBack.commentTopic(commentRequest);
+                            callBack.myCommentTopic(commentRequest);
+                            v.setEnabled(false);
+                        }
+                    });
+                }else{
+                    editTextInput.setHint("评论一下下");
+                    if (dialog == null) {
+                        dialog = new CommonDialog.Builder(getContext()).create();
+                        dialog.setContentListener(new CommonDialog.ContentClickListenter() {
+                            @Override
+                            public void onContentClick() {
+                                DeleteCommentRequest request = new DeleteCommentRequest();
+                                request.setToken(token);
+                                request.setComment_id(commentId);
+                                callBack.mydeleteComment(request);
+                                dialog.dismiss();
+                                dialog = null;
+                            }
+                        });
+                        dialog.setCanceledOnTouchOutside(true);
+                    }
+                    dialog.show();
                 }
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
         });
     }
 
+    public void deleteCommentResponse(){
+        callBack.getMyTopic(getMyTopicRequest());
+    }
+
+
+
     public void deleteTopic() {
-        myTopicData.remove(deleteTopicPosition);
+        list.remove(deleteTopicPosition);
         topicAdapter.notifyDataSetChanged();
-        showToast("删除成功");
+        WindowHelper.showToast("删除成功");
     }
 
-    public void deleteComment() {
-        myCommentData.remove(deleteCommentPosition);
-        myCommentAdapter.notifyDataSetChanged();
-        showToast("删除成功");
+    public void loadingFailure() {
+        refreshlayout.setRefreshing(false);
+        isResponse = true;
     }
 
-    public void responseTopicData(ArrayList<MyTopicResponse.MyTopicRequestData> myTopicRequestDatas) {
-        myTopicData.addAll(myTopicRequestDatas);
+
+    private ArrayList<MyTopicResponseNew.DataBean> list=new ArrayList<>();
+    public void responseTopicData(List<MyTopicResponseNew.DataBean> list){
+        if(list == null || list.size()==0){
+            return;
+        }
+        this.list.clear();
+        this.list.addAll(list);
         topicAdapter.notifyDataSetChanged();
-    }
-
-    public void responseCommentData(ArrayList<MyCommentResponse.MyCommentResponseData> myCommentResponseDatas) {
-        myCommentData.addAll(myCommentResponseDatas);
-        myCommentAdapter.notifyDataSetChanged();
+        refreshlayout.setRefreshing(false);
     }
 
     private MyTopicRequest getMyTopicRequest() {
-        String token = getStringByPreference("token");
+        String token = WindowHelper.getStringByPreference("token");
         if (token.equals("")) {
             callBack.loginWindowEnter();
             return null;
@@ -217,29 +247,94 @@ public class MyTopicWindow extends AbstractWindow implements View.OnClickListene
         return myTopicRequest;
     }
 
-    private MyCommentRequest getMyCommentRequest() {
-        String token = getStringByPreference("token");
-        if (token.equals("")) {
-            callBack.loginWindowEnter();
-            return null;
-        }
-        MyCommentRequest myCommentRequest = new MyCommentRequest();
-        myCommentRequest.setToken(token);
-        myCommentRequest.setPage(commentPage);
-        return myCommentRequest;
+    public void onCommentSubmitResponse(){
+        inputContainer.setVisibility(View.GONE);
+        buttonSubmit.setEnabled(true);
+        editTextInput.clearFocus();
+        editTextInput.setText("");
+        InputMethodManager im = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        im.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        callBack.getMyTopic(getMyTopicRequest());
     }
-
+    /**
+     * 获取InputMethodManager，隐藏软键盘
+     *
+     * @param token
+     */
+    private void hideKeyboard(IBinder token) {
+        if (token != null) {
+            editTextInput.clearFocus();
+            editTextInput.setHint("评论一下");
+//            editTextInput.setText("");用户输入的数据不要清掉，除非点击去评论其他时
+            inputContainer.setVisibility(View.GONE);
+            InputMethodManager im = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = ((Activity) getContext()).getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                hideKeyboard(v.getWindowToken());
+                return true;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+    /**
+     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
+     *
+     * @param v
+     * @param event
+     * @return
+     */
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = inputContainer.getWidth();
+            if (event.getRawX() > left && event.getRawX() < right
+                    && event.getRawY() > top && event.getRawY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+            } else {
+                return true;
+            }
+        }
+        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
+        return false;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
                 hideWindow(true);
                 break;
-            case R.id.btn_topic:
-                vp_mytopic.setCurrentItem(0);
-                break;
-            case R.id.btn_comment:
-                vp_mytopic.setCurrentItem(1);
+            case R.id.circle_btn:
+//                String tokens = WindowHelper.getStringByPreference("token");
+//                if (tokens.equals("")) {
+//                    callBack.loginWindowEnter();
+//                    return;
+//                }
+//                String comment = editTextInput.getText().toString().trim();
+//                if (comment == null || comment.equals("")) {
+//                    editTextInput.setHint("评论一下");
+//                    return;
+//                }
+//                hideKeyboard(v.getWindowToken());
+//                CommentRequest commentRequest = new CommentRequest();
+//                commentRequest.setToken(tokens);
+//                int topicId=myTopicData.get(currentPosition).getTid();
+//                if (topicId != 0) {
+//                    commentRequest.setTopic_id(topicId);
+//                }
+//                commentRequest.setTopic_comment(comment);
+//                commentRequest.setComment_id(0);
+//                callBack.myCommentTopic(commentRequest);
                 break;
         }
     }

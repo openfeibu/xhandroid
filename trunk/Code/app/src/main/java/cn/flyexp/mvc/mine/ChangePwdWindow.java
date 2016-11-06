@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import cn.flyexp.R;
 import cn.flyexp.entity.ChangePwdRequest;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.CommonUtil;
 
 /**
@@ -59,26 +60,26 @@ public class ChangePwdWindow extends AbstractWindow implements View.OnClickListe
                 String oldPwd = et_oldPwd.getText().toString().trim();
                 String newPwd = et_newPwd.getText().toString().trim();
                 if (oldPwd.length() < 6 || oldPwd.length() > 16 || newPwd.length() < 6 || newPwd.length() > 16) {
-                    showToast("密码长度必须为6~12位");
+                    WindowHelper.showToast("密码长度必须为6~12位");
                     return;
                 }
                 Pattern pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
                 Matcher ma = pa.matcher(oldPwd);
                 if (!ma.matches()) {
-                    showToast("旧密码不支持特殊字符");
+                    WindowHelper.showToast("旧密码不支持特殊字符");
                     return;
                 }
                 pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
                 ma = pa.matcher(newPwd);
                 if (!ma.matches()) {
-                    showToast("新密码不支持特殊字符");
+                    WindowHelper.showToast("新密码不支持特殊字符");
                     return;
                 }
                 if (oldPwd.equals(newPwd)) {
-                    showToast("新旧密码不能一致");
+                    WindowHelper.showToast("新旧密码不能一致");
                     return;
                 }
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;

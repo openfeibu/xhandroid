@@ -21,6 +21,7 @@ import cn.flyexp.FBApplication;
 import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.wxapi.Util;
 
 /**
@@ -66,15 +67,15 @@ public class InvitaionWindow extends AbstractWindow implements View.OnClickListe
     public void shareQQ() {
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
-        params.putString(QQShare.SHARE_TO_QQ_TITLE, "校汇+召唤你—一起玩赚校园");
-        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "先给自己定个小目标，比方说我先下载校汇+");
+        params.putString(QQShare.SHARE_TO_QQ_TITLE, "校汇召唤你—一起玩赚校园");
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "先给自己定个小目标，比方说我先下载校汇");
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://feibu.info/download/download.html");
         params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://xhplus.feibu.info/fb/images/logo.png");
-        params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "校汇+");
+        params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "校汇");
         MainActivity.mTencent.shareToQQ((Activity) getContext(), params, new IUiListener() {
             @Override
             public void onComplete(Object o) {
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if(token.equals("")){
                     callBack.loginWindowEnter();
                     return;
@@ -97,15 +98,15 @@ public class InvitaionWindow extends AbstractWindow implements View.OnClickListe
 
     private void shareWX(int scene) {
         if (!MainActivity.api.isWXAppInstalled()) {
-            showToast("您还未安装微信客户端");
+            WindowHelper.showToast("您还未安装微信客户端");
             return;
         }
 
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = "http://feibu.info/download/download.html";
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = "校汇+召唤你—一起玩赚校园";
-        msg.description = "先给自己定个小目标，比方说我先下载校汇+";
+        msg.title = "校汇召唤你—一起玩赚校园";
+        msg.description = "先给自己定个小目标，比方说我先下载校汇";
         Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_launchericon);
         msg.thumbData = Util.bmpToByteArray(thumb, true);
 

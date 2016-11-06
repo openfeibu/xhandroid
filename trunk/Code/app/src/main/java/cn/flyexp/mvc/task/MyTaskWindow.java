@@ -18,9 +18,11 @@ import java.util.ArrayList;
 import cn.flyexp.R;
 import cn.flyexp.adapter.MyOrderAdapter;
 import cn.flyexp.adapter.MyTaskAdapter;
+import cn.flyexp.adapter.TaskAdapter;
 import cn.flyexp.entity.MyTaskRequest;
 import cn.flyexp.entity.MyTaskResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.OnItemClickListener;
 import cn.flyexp.view.LoadMoreListener;
 import cn.flyexp.view.LoadMoreRecyclerView;
@@ -35,12 +37,10 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
     private TaskViewCallBack callBack;
     private ViewPager vp_mytask;
     private View[] views;
-    private RadioButton btn_task;
-    private RadioButton btn_order;
     private ArrayList<MyTaskResponse.MyTaskResponseData> taskData = new ArrayList<MyTaskResponse.MyTaskResponseData>();
     private ArrayList<MyTaskResponse.MyTaskResponseData> orderData = new ArrayList<MyTaskResponse.MyTaskResponseData>();
-    private MyTaskAdapter taskAdapter;
-    private MyOrderAdapter orderAdapter;
+    private TaskAdapter taskAdapter;
+    private TaskAdapter orderAdapter;
     private LoadMoreRecyclerView taskRecyclerView;
     private LoadMoreRecyclerView orderRecyclerView;
     private int taskPage = 1;
@@ -50,10 +50,7 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
     private ContentLoadingProgressBar taskProgressBar;
     private TextView orderState;
     private TextView taskState;
-    private TabLayout taskTab;
-    private TabLayout orderTab;
-    private ViewPager orderViewPager;
-    private ViewPager taskViewPager;
+    private  final String[] tabTitle = new String[]{"我的接单","我的发单"};
 
     public MyTaskWindow(TaskViewCallBack callBack) {
         super(callBack);
@@ -66,10 +63,6 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
     private void initView() {
         setContentView(R.layout.window_mytask);
         findViewById(R.id.iv_back).setOnClickListener(this);
-        btn_task = (RadioButton) findViewById(R.id.btn_task);
-        btn_order = (RadioButton) findViewById(R.id.btn_order);
-        btn_task.setOnClickListener(this);
-        btn_order.setOnClickListener(this);
 
         views = new View[2];
         views[0] = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_recyclerview, null);
@@ -89,8 +82,10 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
         orderRecyclerView = (LoadMoreRecyclerView) views[1].findViewById(R.id.recyclerView);
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        taskAdapter = new MyTaskAdapter(getContext(), taskData);
-        orderAdapter = new MyOrderAdapter(getContext(), orderData);
+        taskAdapter = new TaskAdapter(getContext());
+        taskAdapter.setMyTaskData(taskData);
+        orderAdapter = new TaskAdapter(getContext());
+        orderAdapter.setMyTaskData(orderData);
         taskAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -161,29 +156,15 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
             public void destroyItem(ViewGroup container, int position, Object object) {
                 container.removeView(views[position]);
             }
-        });
-        vp_mytask.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
 
             @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    btn_task.setChecked(true);
-                    btn_order.setChecked(false);
-                } else {
-                    btn_task.setChecked(false);
-                    btn_order.setChecked(true);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public CharSequence getPageTitle(int position) {
+                return tabTitle[position];
             }
         });
+        TabLayout tablayout = (TabLayout) findViewById(R.id.tablayout);
+        tablayout.setupWithViewPager(vp_mytask);
+        tablayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
     public void refreshMyTask() {
@@ -197,7 +178,7 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
     }
 
     public MyTaskRequest getMyTaskRequest() {
-        String token = getStringByPreference("token");
+        String token = WindowHelper.getStringByPreference("token");
         if (token.equals("")) {
             callBack.loginWindowEnter();
             return null;
@@ -209,7 +190,7 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
     }
 
     public MyTaskRequest getMyOrderRequest() {
-        String token = getStringByPreference("token");
+        String token = WindowHelper.getStringByPreference("token");
         if (token.equals("")) {
             callBack.loginWindowEnter();
             return null;
@@ -286,12 +267,6 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
         switch (v.getId()) {
             case R.id.iv_back:
                 hideWindow(true);
-                break;
-            case R.id.btn_task:
-                vp_mytask.setCurrentItem(0);
-                break;
-            case R.id.btn_order:
-                vp_mytask.setCurrentItem(1);
                 break;
         }
     }

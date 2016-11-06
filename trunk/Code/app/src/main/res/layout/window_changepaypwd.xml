@@ -8,22 +8,25 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/title_bar_height"
         android:background="@color/light_blue">
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:background="@drawable/btn_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="更换支付密码"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="13dp"
+            android:text="@string/change_pay_password"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -38,17 +41,16 @@
         android:textColor="@color/font_brown_light"
         android:textSize="14sp" />
 
-    <EditText
+    <cn.flyexp.view.PasswordView
         android:id="@+id/et_oldPwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:inputType="numberPassword"
-        android:maxLength="6"
-        android:singleLine="true"
-        android:textColor="@color/black" />
+        android:cursorVisible="false"
+        android:inputType="number"
+        android:maxLength="6" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,17 +61,16 @@
         android:textColor="@color/font_brown_light"
         android:textSize="14sp" />
 
-    <EditText
+    <cn.flyexp.view.PasswordView
         android:id="@+id/et_newPwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:inputType="numberPassword"
-        android:maxLength="6"
-        android:singleLine="true"
-        android:textColor="@color/black" />
+        android:cursorVisible="false"
+        android:inputType="number"
+        android:maxLength="6" />
 
     <Button
         android:id="@+id/btn_change"

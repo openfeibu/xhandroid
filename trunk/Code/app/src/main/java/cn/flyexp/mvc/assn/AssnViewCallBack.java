@@ -6,13 +6,21 @@ import java.util.List;
 import cn.flyexp.entity.AssnActivityPublishRequest;
 import cn.flyexp.entity.AssnActivityRequest;
 import cn.flyexp.entity.AssnActivityResponse;
-import cn.flyexp.entity.AssnInfoPublishRequest;
-import cn.flyexp.entity.AssnInfoRequest;
-import cn.flyexp.entity.AssnInfoResponse;
+import cn.flyexp.entity.AssnDetailRequest;
+import cn.flyexp.entity.AssnExamineListRequest;
+import cn.flyexp.entity.AssnExamineListResponse;
+import cn.flyexp.entity.AssnExamineRequest;
+import cn.flyexp.entity.AssnQuitRequest;
+import cn.flyexp.entity.AssnJoinRequest;
+import cn.flyexp.entity.AssnMemberRequest;
 import cn.flyexp.entity.AssnNoticePublishRequest;
 import cn.flyexp.entity.AssnProfilePublishRequest;
 import cn.flyexp.entity.AssnProfileRequest;
+import cn.flyexp.entity.AssnRequest;
+import cn.flyexp.entity.DeleteMemberRequest;
+import cn.flyexp.entity.MyAssnActivityRequest;
 import cn.flyexp.entity.PicBrowserBean;
+import cn.flyexp.entity.SetMemberLevelRequest;
 import cn.flyexp.framework.AbstractWindow;
 
 /**
@@ -20,38 +28,65 @@ import cn.flyexp.framework.AbstractWindow;
  */
 public interface AssnViewCallBack extends AbstractWindow.WindowCallBack {
 
-    public void picBrowserEnter(PicBrowserBean picBrowserBean);
+    void picBrowserEnter(PicBrowserBean picBrowserBean);
 
-    public void infoDetailEnter(AssnInfoResponse.AssnInfoResponseData assnInfoResponseData);
+    void activityDetailEnter(AssnActivityResponse.AssnActivityResponseData assnActivityResponseData);
 
-    public void activityDetailEnter(AssnActivityResponse.AssnActivityResponseData assnActivityResponseData);
+    void introduceEnter(int aid);
 
-    public void introduceEnter(int aid);
+    void introducePublishEnter();
 
-    public void introducePublishEnter();
+    void noticePublishEnter(int aid);
 
-    public void noticePublishEnter();
+    void activityPublishEnter(int aid);
 
-    public void infoPublishEnter();
+    void myAssnDetailEnter(int aid, int level);
 
-    public void activityPublishEnter();
+    void assnJoinEnter(int aid);
 
-    public void submitNotice(AssnNoticePublishRequest assnNoticePublishRequest);
+    void myAssnActivityEnter(int aid,int level);
 
-    public void submitInfo(AssnInfoPublishRequest assnInfoPublishRequest);
+    void assnExamineEnter(int aid);
 
-    public void submitActivity(AssnActivityPublishRequest assnActivityPublishRequest);
+    void assnExamineDetailEnter(AssnExamineListResponse.AssnExamineListResponseData data);
 
-    public void submitProfile(AssnProfilePublishRequest assnProfilePublishRequest);
+    void submitNotice(AssnNoticePublishRequest assnNoticePublishRequest);
 
-    public void getAssnActivity(AssnActivityRequest assnActivityRequest);
+    void submitActivity(AssnActivityPublishRequest assnActivityPublishRequest);
 
-    public void getAssnInfo(AssnInfoRequest assnInfoRequest);
+    void submitProfile(AssnProfilePublishRequest assnProfilePublishRequest);
 
-    public void getAssnIntroduce(AssnProfileRequest assnProfileRequest,int which);
+    void getAssnActivity(AssnActivityRequest assnActivityRequest);
 
-    public void uploadImageInfo(String token, List<File> files);
+    void getAssnIntroduce(AssnProfileRequest assnProfileRequest, int which);
 
-    public void uploadImageActi(String token, List<File> files);
+    void uploadImageActi(String token, List<File> files);
 
+    void getMyAssnList(String token);
+
+    void getMemberList(AssnMemberRequest assnMemberRequest);
+
+    void getMyAssnActivity(MyAssnActivityRequest myAssnActivityRequest);
+
+    void assnJoin(AssnJoinRequest requset);
+
+    void getAssociations(AssnRequest request);
+
+    void getAssnDetails(AssnDetailRequest request);
+
+    void examineMembarList(AssnExamineListRequest assnExamineRequest);
+
+    void assnQuit(AssnQuitRequest assnExitRequest);
+
+    void assnDetailEnter(int aid);
+
+    void getMyAssnDetails(AssnDetailRequest assnDetailRequest);
+
+    void setMemberLevel(SetMemberLevelRequest setMemberLevelRequest);
+
+    void deleteMember(DeleteMemberRequest deleteMemberRequest);
+
+    void assnExamine(AssnExamineRequest assnExamineRequest);
+
+    void assnEnter();
 }

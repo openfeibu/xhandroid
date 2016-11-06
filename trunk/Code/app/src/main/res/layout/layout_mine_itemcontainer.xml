@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/my_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/mime_list_item_bg">
+
+        <ImageView
+            android:id="@+id/wallet_icon"
+            style="@style/mine_item_container"
+            android:src="@drawable/icon_mine_wallet" />
+
+        <TextView
+            style="@style/mine_item_text_container"
+            android:layout_toRightOf="@id/wallet_icon"
+            android:text="我的钱包" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#ccc" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/my_points"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/mime_list_item_bg">
+
+        <ImageView
+            android:id="@+id/points_icon"
+            style="@style/mine_item_container"
+            android:src="@drawable/icon_mine_level" />
+
+        <TextView
+            style="@style/mine_item_text_container"
+            android:layout_toRightOf="@id/points_icon"
+            android:text="我的积分" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#ccc" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_corporation"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/mime_list_item_bg">
+
+        <ImageView
+            android:id="@+id/corporation_icon"
+            style="@style/mine_item_container"
+            android:src="@drawable/icon_association" />
+
+        <TextView
+            style="@style/mine_item_text_container"
+            android:layout_toRightOf="@id/corporation_icon"
+            android:text="我的社团" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/my_store"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/mime_list_item_bg">
+
+        <ImageView
+            android:id="@+id/store_icon"
+            style="@style/mine_item_container"
+            android:src="@drawable/icon_mine_storecollection" />
+
+        <TextView
+            style="@style/mine_item_text_container"
+            android:layout_toRightOf="@id/store_icon"
+            android:text="店铺收藏" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_enjoy"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/mime_list_item_bg">
+
+        <ImageView
+            android:id="@+id/enjoy_icon"
+            style="@style/mine_item_container"
+            android:src="@drawable/icon_mine_share" />
+
+        <TextView
+            style="@style/mine_item_text_container"
+            android:layout_toRightOf="@id/enjoy_icon"
+            android:text="分享" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#ccc" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_certification"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/mime_list_item_bg">
+
+        <ImageView
+            android:id="@+id/certifiLayout"
+            style="@style/mine_item_container"
+            android:src="@drawable/icon_association" />
+
+        <TextView
+            style="@style/mine_item_text_container"
+            android:layout_toRightOf="@id/certifiLayout"
+            android:text="实名认证" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#ccc" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_setting"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/mime_list_item_bg">
+
+        <ImageView
+            android:id="@+id/setting_icon"
+            style="@style/mine_item_container"
+            android:src="@drawable/icon_setting" />
+
+        <TextView
+            style="@style/mine_item_text_container"
+            android:layout_toRightOf="@id/setting_icon"
+            android:text="设置" />
+    </RelativeLayout>
+
+
+</LinearLayout>

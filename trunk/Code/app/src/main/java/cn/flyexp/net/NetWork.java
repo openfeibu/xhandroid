@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import cn.flyexp.FBApplication;
-import cn.flyexp.util.Constants;
+import cn.flyexp.constants.Config;
 import cn.flyexp.entity.EncodeData;
 import cn.flyexp.util.CommonUtil;
 import okhttp3.Interceptor;
@@ -36,6 +36,7 @@ public class NetWork {
     private NetWorkService service;
     private static NetWork instance;
     private Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+    private OkHttpClient client;
 
     public static NetWork getInstance() {
         if (instance == null) {
@@ -51,7 +52,7 @@ public class NetWork {
     private NetWork() {
         HttpLoggingInterceptor httpIntercepter = new HttpLoggingInterceptor();
         httpIntercepter.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder()
+        client = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .addInterceptor(httpIntercepter)
@@ -60,7 +61,7 @@ public class NetWork {
                 .addNetworkInterceptor(new ReceivedCookiesInterceptor())
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.SERVER_URL)
+                .baseUrl(Config.SERVER_URL)
                 .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(StringConverterFactory.create())
@@ -69,6 +70,9 @@ public class NetWork {
         service = retrofit.create(NetWorkService.class);
     }
 
+    public OkHttpClient getClient() {
+        return client;
+    }
 
     public NetWorkService getService() {
         return service;

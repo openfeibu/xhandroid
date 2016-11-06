@@ -20,6 +20,7 @@ import cn.flyexp.R;
 import cn.flyexp.entity.ChangeMyInfoRequest;
 import cn.flyexp.entity.MyInfoResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.util.BitmapUtil;
@@ -33,7 +34,6 @@ public class MyInfoWindow extends AbstractWindow implements View.OnClickListener
     private View myInfoLayout;
     private PopupWindow picPopupWindow;
     private boolean isChange = false;
-    private View certifiLayout;
     private int isAuth;
 
     public MyInfoWindow(MineViewCallBack callBack) {
@@ -65,9 +65,6 @@ public class MyInfoWindow extends AbstractWindow implements View.OnClickListener
         findViewById(R.id.iv_back).setOnClickListener(this);
         findViewById(R.id.layout_changePhone).setOnClickListener(this);
         findViewById(R.id.layout_changePwd).setOnClickListener(this);
-
-        certifiLayout = findViewById(R.id.layout_certification);
-        certifiLayout.setOnClickListener(this);
 
         myInfoLayout = findViewById(R.id.myInfoLayout);
 
@@ -119,15 +116,6 @@ public class MyInfoWindow extends AbstractWindow implements View.OnClickListener
         descriptionTextView.setText(responseData.getIntroduction());
         sexTextView.setText(responseData.getGender() == 1 ? "男" : "女");
         addressTextView.setText(responseData.getAddress());
-
-        isAuth = responseData.getIs_auth();
-
-        if (isAuth == 1) {
-            certifiLayout.setVisibility(View.GONE);
-        } else {
-            certifiLayout.setVisibility(View.VISIBLE);
-        }
-
     }
 
     @Override
@@ -146,7 +134,7 @@ public class MyInfoWindow extends AbstractWindow implements View.OnClickListener
         } else if (sexRadioGroup.getCheckedRadioButtonId() == R.id.girl) {
             gender = 2;
         }
-        String token = getStringByPreference("token");
+        String token = WindowHelper.getStringByPreference("token");
         if (token.equals("")) {
             callBack.loginWindowEnter();
             return;
@@ -251,7 +239,7 @@ public class MyInfoWindow extends AbstractWindow implements View.OnClickListener
                 if (isAuth == 0) {
                     callBack.certificationEnter();
                 } else if (isAuth == 2) {
-                    showToast("实名资料已在审核的路上，请等待...");
+                    WindowHelper.showToast("实名资料已在审核的路上，请等待...");
                 }
                 break;
             case R.id.layout_avatar:

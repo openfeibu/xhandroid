@@ -52,6 +52,10 @@ public class Environment {
         AbstractController.notifyManager.notify(message);
     }
 
+    public static boolean dispatchKeyEvent(KeyEvent event) {
+        return AbstractWindow.windowManager.dispatchKeyEvent(event);
+    }
+
     public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
     }
 }

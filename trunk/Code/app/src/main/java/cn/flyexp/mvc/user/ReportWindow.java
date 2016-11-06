@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import cn.flyexp.R;
 import cn.flyexp.entity.ReportRequest;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.LogUtil;
 
 /**
@@ -65,10 +66,10 @@ public class ReportWindow extends AbstractWindow implements View.OnClickListener
             case R.id.btn_report:
                 String content = et_content.getText().toString().trim();
                 if (content == null || content.equals("")) {
-                    showToast("内容不能为空");
+                    WindowHelper.showToast("内容不能为空");
                     return;
                 }
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;

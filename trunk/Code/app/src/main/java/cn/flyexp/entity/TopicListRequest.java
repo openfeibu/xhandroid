@@ -16,6 +16,17 @@ public class TopicListRequest implements Serializable {
     @SerializedName("token")
     private String token;
 
+    @SerializedName("last_time")
+    private String last_time;
+
+    public String getLast_time() {
+        return last_time;
+    }
+
+    public void setLast_time(String last_time) {
+        this.last_time = last_time;
+    }
+
     public String getToken() {
         return token;
     }

@@ -60,6 +60,85 @@ public class OrderResponse implements Serializable {
         private String created_at;
         @SerializedName("openid")
         private String openid;
+        @SerializedName("share_url")
+        private String share_url;
+        @SerializedName("time")
+        private TimeData time;
+
+        public TimeData getTime() {
+            return time;
+        }
+
+        public void setTime(TimeData time) {
+            this.time = time;
+        }
+
+        public class TimeData implements Serializable{
+
+            @SerializedName("new_time")
+            private String new_time;
+
+            @SerializedName("accepted_time")
+            private String accepted_time;
+
+            @SerializedName("finish_time")
+            private String finish_time;
+
+            @SerializedName("completed_time")
+            private String completed_time;
+
+            @SerializedName("cancelled_time")
+            private String cancelled_time;
+
+            public String getNew_time() {
+                return new_time;
+            }
+
+            public void setNew_time(String new_time) {
+                this.new_time = new_time;
+            }
+
+            public String getAccepted_time() {
+                return accepted_time;
+            }
+
+            public void setAccepted_time(String accepted_time) {
+                this.accepted_time = accepted_time;
+            }
+
+            public String getFinish_time() {
+                return finish_time;
+            }
+
+            public void setFinish_time(String finish_time) {
+                this.finish_time = finish_time;
+            }
+
+            public String getCompleted_time() {
+                return completed_time;
+            }
+
+            public void setCompleted_time(String completed_time) {
+                this.completed_time = completed_time;
+            }
+
+            public String getCancelled_time() {
+                return cancelled_time;
+            }
+
+            public void setCancelled_time(String cancelled_time) {
+                this.cancelled_time = cancelled_time;
+            }
+        }
+
+        public String getShare_url() {
+            return share_url;
+        }
+
+        public void setShare_url(String share_url) {
+            this.share_url = share_url;
+        }
+
 
         public String getStatus() {
             return status;

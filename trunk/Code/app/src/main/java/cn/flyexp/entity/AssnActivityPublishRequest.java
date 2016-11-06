@@ -31,6 +31,9 @@ public class AssnActivityPublishRequest implements Serializable {
     @SerializedName("img_url")
     private String img_url;
 
+    @SerializedName("aid")
+    private int aid;
+
     public String getToken() {
         return token;
     }
@@ -85,5 +88,13 @@ public class AssnActivityPublishRequest implements Serializable {
 
     public void setImg_url(String img_url) {
         this.img_url = img_url;
+    }
+
+    public int getAid() {
+        return aid;
+    }
+
+    public void setAid(int aid) {
+        this.aid = aid;
     }
 }

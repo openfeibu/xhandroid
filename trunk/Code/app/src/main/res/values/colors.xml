@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
 
-    <color name="light_gray">#eeeeee</color>
+    <color name="light_gray">#dddddd</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="dark_blue">#23b7fa</color>
@@ -21,6 +21,11 @@
     <color name="font_brown_light">#aaaaaa</color>
     <color name="light_green">#67B489</color>
     <color name="dark_green">#5BB282</color>
+
+    <color name="task_new">#ffbdbd</color>
+    <color name="task_comped">#92deff</color>
+    <color name="task_finish">#dddddd </color>
+
 
     <color name="red">#ff0000</color>
     <color name="google_blue">#4285F4</color>

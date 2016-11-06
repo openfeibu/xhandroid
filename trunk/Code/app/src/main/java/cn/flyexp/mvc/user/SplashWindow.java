@@ -1,10 +1,5 @@
 package cn.flyexp.mvc.user;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
@@ -13,19 +8,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.flyexp.R;
 import cn.flyexp.entity.ClientVerifyRequest;
 import cn.flyexp.entity.UpdateRequest;
-import cn.flyexp.entity.UpdateResponse;
 import cn.flyexp.framework.AbstractWindow;
-import cn.flyexp.permission.PermissionHandler;
-import cn.flyexp.permission.PermissionTools;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.CommonUtil;
-import cn.flyexp.util.Constants;
 import cn.flyexp.util.LogUtil;
 
 /**
@@ -45,7 +34,7 @@ public class SplashWindow extends AbstractWindow {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 0) {
-                    boolean isNoFirstRun = getBooleanByPreference("isNoFirstRun");
+                    boolean isNoFirstRun = WindowHelper.getBooleanByPreference("isNoFirstRun");
                     if (isNoFirstRun) {
                         callBack.mainEnter();
                     } else {
@@ -81,12 +70,6 @@ public class SplashWindow extends AbstractWindow {
         }
     }
 
-    public void logResponse() {
-        File dir = new File(CommonUtil.getFilePath(getContext()) + "/carsh/carsh.log");
-        if (dir.exists()) {
-            dir.delete();
-        }
-    }
 
     private void checkUpdate() {
         UpdateRequest updateRequest = new UpdateRequest();
@@ -94,26 +77,9 @@ public class SplashWindow extends AbstractWindow {
         callBack.update(updateRequest);
     }
 
-    public void responseData(final UpdateResponse.UpdateResponseData data) {
-        if (data.getCompulsion() == 1) {
-            showAlertDialog(data.getDetail(), "取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ((Activity) getContext()).finish();
-                }
-            }, "前往下载", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Uri uri = Uri.parse(data.getDownload());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    getContext().startActivity(intent);
-                }
-            });
-        }
-    }
 
     private void checkClient() {
-        String mid = getStringByPreference("mid");
+        String mid = WindowHelper.getStringByPreference("mid");
         String version = CommonUtil.getVersionCode(getContext()) + "";
         String platform = "and";
         String os = CommonUtil.getCurrentOS() + "";
@@ -133,4 +99,5 @@ public class SplashWindow extends AbstractWindow {
     private void initView() {
         setContentView(R.layout.window_splash);
     }
+
 }

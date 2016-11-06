@@ -49,6 +49,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         if (ex == null) {
             Thread.getDefaultUncaughtExceptionHandler().uncaughtException(thread, ex);
         } else {
+            ex.printStackTrace();
             sendCarshInfo(ex);
             Process.killProcess(Process.myPid());
             System.exit(0);
@@ -98,7 +99,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         LogRequest logRequest = new LogRequest();
         logRequest.setToken(token);
         logRequest.setLog(sb.toString());
-        String carshJson = GsonUtil.toJson(logRequest);
+        String carshJson = GsonUtil.toEncodeJson(logRequest);
         File dir = new File(CommonUtil.getFilePath(context) + "/carsh");
         if (!dir.exists()) {
             dir.mkdirs();

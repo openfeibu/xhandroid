@@ -119,6 +119,17 @@ public class MyInfoResponse implements Serializable {
         @SerializedName("is_paypassword")
         private int is_paypassword;
 
+        @SerializedName("created_at")
+        private String created_at;
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
         public int getIs_cheif() {
             return is_cheif;
         }

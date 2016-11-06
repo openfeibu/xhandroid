@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:xyl="http://schemas.android.com/apk/res/cn.flyexp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
@@ -52,47 +50,45 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/tv_delivery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/btn_task"
-                    android:gravity="center"
-                    android:text="@string/campus_task"
-                    android:textColor="@color/font_brown_dark"
-                    android:textSize="12sp" />
-
-
-                <TextView
                     android:id="@+id/tv_assn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@drawable/common_view_bg"
                     android:drawableTop="@drawable/btn_assn"
                     android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
                     android:text="校园社团"
                     android:textColor="@color/font_brown_dark"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tv_shop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/btn_store"
-                    android:gravity="center"
-                    android:text="小店铺"
-                    android:textColor="@color/font_brown_dark"
-                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_soup"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@drawable/common_view_bg"
                     android:drawableTop="@drawable/btn_soup"
                     android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
                     android:text="秘制鸡汤"
+                    android:textColor="@color/font_brown_dark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_fault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/common_view_bg"
+                    android:drawableTop="@mipmap/icon_fault"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="网络报障"
                     android:textColor="@color/font_brown_dark"
                     android:textSize="12sp" />
 
@@ -113,10 +109,44 @@
                     android:layout_marginRight="16dp"
                     android:src="@mipmap/icon_campusextra" />
 
-                <cn.flyexp.view.VerticalMarqueeView
+                <cn.flyexp.view.UPMarqueeView
                     android:id="@+id/marqueeView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="推荐任务"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@mipmap/icon_rec_task"
+                    android:textColor="@color/font_brown_dark"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/app_background" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_task"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
 
             </LinearLayout>
 
@@ -132,10 +162,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:text="社团活动"
-                    android:textColor="@color/light_red"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@mipmap/icon_rec_activities"
+                    android:textColor="@color/font_brown_dark"
                     android:textSize="16sp" />
 
                 <View
@@ -147,44 +180,6 @@
                     android:id="@+id/rv_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:overScrollMode="never"
-                    android:scrollbars="none" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/assnInfoLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="社团资讯"
-                    android:textColor="@color/light_blue"
-                    android:textSize="16sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/app_background" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
                     android:overScrollMode="never"
                     android:scrollbars="none" />
 

@@ -1,80 +1,67 @@
 package cn.flyexp.mvc.main;
 
-import android.content.pm.ActivityInfo;
 import android.os.Message;
 
-import cn.flyexp.MainActivity;
-import cn.flyexp.entity.NoResponse;
-import cn.flyexp.entity.ResponseCode;
-import cn.flyexp.entity.UserCountRequset;
 import cn.flyexp.framework.AbstractController;
 import cn.flyexp.framework.MessageIDDefine;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
-import cn.flyexp.util.GsonUtil;
-import cn.flyexp.util.LogUtil;
 
 /**
  * Created by txy on 2016/7/16 0016.
  */
-public class MainController extends AbstractController implements MainViewCallBack, MainModelCallBack, NotifyManager.Notify {
+public class MainController extends AbstractController implements MainViewCallBack, NotifyManager.Notify{
 
     private MainWindow mainWindow;
-    private MainModel mainModel;
 
     public MainController() {
         super();
-        mainModel = new MainModel(this);
+        registerNotify(NotifyIDDefine.NOTIFY_MESSAGE_REFRESH, this);
+        registerNotify(NotifyIDDefine.NOTIFY_MESSAGE_CONSUME, this);
+        registerNotify(NotifyIDDefine.NOTIFY_TOPIC_REFRESH, this);
+        registerNotify(NotifyIDDefine.NOTIFY_TOPIC_CONSUME, this);
+        registerNotify(NotifyIDDefine.NOTIFY_MYTASK_REFRESH, this);
     }
 
     @Override
     protected void handleMessage(Message mes) {
-        if (mes.what == MessageIDDefine.MAIN_OPEN) {
-            mainWindow = new MainWindow(this);
-            mainWindow.showWindow(false, false);
+        if (mes.what == MessageIDDefine.MAIN_OPEN_4_INIT) {
+            if (mainWindow == null){
+                mainWindow = new MainWindow(this);
+            }
+            mainWindow.clearWithMe();
+        } else if (mes.what == MessageIDDefine.MAIN_OPEN) {
+            if (mainWindow == null){
+                mainWindow = new MainWindow(this);
+            }
+            mainWindow.showWindow(false);
         }
     }
 
     @Override
     protected void registerMessages() {
+        registerMessage(MessageIDDefine.MAIN_OPEN_4_INIT, this);
         registerMessage(MessageIDDefine.MAIN_OPEN, this);
-        registerNotify(NotifyIDDefine.ON_ACTIVITY_RESUME, this);
-        registerNotify(NotifyIDDefine.ON_ACTIVITY_PAUSE, this);
-        registerNotify(NotifyIDDefine.ON_ACTIVITY_DESTROY, this);
     }
-
-    @Override
-    public void taskDetail(int taskId) {
-        sendMessage(MessageIDDefine.TASK_DETAIL_OPEN, taskId);
-    }
-
-    @Override
-    public void getNo() {
-        mainModel.campusNo();
-    }
-
     @Override
     public void onNotify(Message mes) {
-     if (mes.what == NotifyIDDefine.ON_ACTIVITY_DESTROY) {
-            UserCountRequset userCountRequset = new UserCountRequset(AbstractController.getData());
-            String json = GsonUtil.toJson(userCountRequset);
-            mainModel.userCount(userCountRequset);
+        if (mes.what == NotifyIDDefine.NOTIFY_MESSAGE_REFRESH || mes.what == NotifyIDDefine.NOTIFY_MYTASK_REFRESH) {
+            if (mainWindow != null) {
+                mainWindow.showTip(MainWindow.MINE_TIP);
+            }
+        } else if (mes.what == NotifyIDDefine.NOTIFY_MESSAGE_CONSUME) {
+            if (mainWindow != null) {
+                mainWindow.hideTip(MainWindow.MINE_TIP);
+            }
+        } else if (mes.what == NotifyIDDefine.NOTIFY_TOPIC_REFRESH) {
+            if (mainWindow != null) {
+                mainWindow.showTip(MainWindow.TOPIC_TIP);
+            }
+        } else if (mes.what == NotifyIDDefine.NOTIFY_TOPIC_CONSUME) {
+            if (mainWindow != null) {
+                mainWindow.hideTip(MainWindow.TOPIC_TIP);
+            }
         }
     }
 
-    @Override
-    public void campusNoResponse(NoResponse noResponse) {
-        if (noResponse == null) {
-            return;
-        }
-        int code = noResponse.getCode();
-        switch (code) {
-            case ResponseCode.RESPONSE_200:
-                mainWindow.responseData(noResponse.getData());
-                break;
-            case ResponseCode.RESPONSE_110:
-                mainWindow.showToast(noResponse.getDetail());
-                break;
-        }
-    }
 }

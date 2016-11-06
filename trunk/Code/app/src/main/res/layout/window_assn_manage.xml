@@ -7,21 +7,24 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/title_bar_height"
         android:background="@color/light_blue">
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:background="@drawable/btn_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="13dp"
             android:text="社团管理"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -83,35 +86,6 @@
         />
     </RelativeLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/layout_info"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/btn_white"
-        android:clickable="true"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="发布资讯"
-            android:textColor="@color/font_brown_dark"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_fillinfo" />
-
-        />
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_activity"

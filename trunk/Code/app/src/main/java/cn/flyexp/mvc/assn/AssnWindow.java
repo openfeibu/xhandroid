@@ -1,26 +1,33 @@
 package cn.flyexp.mvc.assn;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.flyexp.R;
 import cn.flyexp.adapter.AssnActivityAdapter;
-import cn.flyexp.adapter.AssnInfoAdapter;
+import cn.flyexp.adapter.AssnAdapter;
 import cn.flyexp.entity.AssnActivityRequest;
+import cn.flyexp.entity.AssnRequest;
+import cn.flyexp.entity.AssnResponse;
+import cn.flyexp.entity.MyAssnActivityRequest;
 import cn.flyexp.entity.AssnActivityResponse;
-import cn.flyexp.entity.AssnInfoRequest;
-import cn.flyexp.entity.AssnInfoResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.util.CommonUtil;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.OnItemClickListener;
 import cn.flyexp.view.LoadMoreListener;
 import cn.flyexp.view.LoadMoreRecyclerView;
@@ -32,88 +39,91 @@ import cn.flyexp.view.ProgressView;
 public class AssnWindow extends AbstractWindow implements View.OnClickListener {
 
     private AssnViewCallBack callBack;
-    private RadioButton btn_info;
-    private RadioButton btn_activity;
     private View[] views;
     private ViewPager vp_assn;
-    private ArrayList<AssnInfoResponse.AssnInfoResponseData> infoData = new ArrayList<>();
     private ArrayList<AssnActivityResponse.AssnActivityResponseData> activityData = new
             ArrayList<>();
-    private AssnInfoAdapter assnInfoAdapter;
+    private ArrayList<AssnResponse.DataBean.AssociationsBean> assnData = new
+            ArrayList<>();
     private AssnActivityAdapter assnActivityAdapter;
-    private LoadMoreRecyclerView infoRecyclerView;
     private LoadMoreRecyclerView activityRecyclerView;
-    private int infoPage = 1;
     private int activityPage = 1;
+    private int assnPage = 1;
     private boolean isResponse = true;
     private ContentLoadingProgressBar activityProgressBar;
-    private ContentLoadingProgressBar infoProgressBar;
     private TextView activityState;
-    private TextView infoState;
+    private final String[] tabTitle = new String[]{"校园社团", "社团活动"};
+    private LoadMoreRecyclerView rv_assnlist;
+
+    private TextView tv_assnMessage;
 
     public AssnWindow(AssnViewCallBack callBack) {
         super(callBack);
         this.callBack = callBack;
         initView();
-        callBack.getAssnInfo(getInfoRequest());
+        getAssociations();
+    }
+
+    private void getAssociations() {
+        if (!TextUtils.isEmpty(CommonUtil.getStringData(getContext(), "token"))) {
+            showProgress();
+            AssnRequest request = new AssnRequest();
+            request.setToken(CommonUtil.getStringData(getContext(), "token"));
+            request.setPgae(assnPage);
+            callBack.getAssociations(request);
+        } else {
+            callBack.loginWindowEnter();
+        }
+    }
+
+    public void requsetAssnActi() {
         callBack.getAssnActivity(getAssnActivityRequest());
     }
+
+    AssnAdapter assnAdapter;
+    LinearLayout assnMain;
+    ContentLoadingProgressBar progressBar;
 
     private void initView() {
         setContentView(R.layout.window_assn);
         findViewById(R.id.iv_back).setOnClickListener(this);
-        btn_info = (RadioButton) findViewById(R.id.btn_info);
-        btn_activity = (RadioButton) findViewById(R.id.btn_activity);
-        btn_info.setOnClickListener(this);
-        btn_activity.setOnClickListener(this);
 
         views = new View[2];
-        views[0] = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_recyclerview,
+        views[0] = LayoutInflater.from(getContext()).inflate(R.layout.layout_assnlist,
                 null);
         views[1] = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_recyclerview,
                 null);
-        infoProgressBar = (ContentLoadingProgressBar) views[0].findViewById(R.id.progressBar);
-        activityProgressBar = (ContentLoadingProgressBar) views[1].findViewById(R.id.progressBar);
-        infoProgressBar.show();
-        activityProgressBar.show();
-        infoState = (TextView) views[0].findViewById(R.id.tv_state);
-        activityState = (TextView) views[1].findViewById(R.id.tv_state);
-        infoRecyclerView = (LoadMoreRecyclerView) views[0].findViewById(R.id.recyclerView);
-        activityRecyclerView = (LoadMoreRecyclerView) views[1].findViewById(R.id.recyclerView);
-        infoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        activityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        assnInfoAdapter = new AssnInfoAdapter(getContext(), infoData, callBack);
-        assnActivityAdapter = new AssnActivityAdapter(getContext(), activityData, callBack);
-        assnInfoAdapter.setOnItemClickListener(new OnItemClickListener() {
+        assnAdapter = new AssnAdapter(getContext(), new ArrayList<AssnResponse.DataBean.AssociationsBean>());
+        assnAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                callBack.infoDetailEnter(infoData.get(position));
+                callBack.assnDetailEnter(assnData.get(position).getAid());
             }
         });
+        rv_assnlist = (LoadMoreRecyclerView) views[0].findViewById(R.id.rv_assnlist);
+        rv_assnlist.setLayoutManager(new LinearLayoutManager(getContext()));
+        rv_assnlist.setHasFixedSize(false);
+        rv_assnlist.setNestedScrollingEnabled(false);
+        rv_assnlist.setAdapter(assnAdapter);
+
+        tv_assnMessage = (TextView) views[0].findViewById(R.id.assnmessage);
+        assnMain = (LinearLayout) findViewById(R.id.assn_main);
+        progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
+
+        activityProgressBar = (ContentLoadingProgressBar) views[1].findViewById(R.id.progressBar);
+        activityState = (TextView) views[1].findViewById(R.id.tv_state);
+        activityRecyclerView = (LoadMoreRecyclerView) views[1].findViewById(R.id.recyclerView);
+        activityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        assnActivityAdapter = new AssnActivityAdapter(getContext(), activityData);
         assnActivityAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 callBack.activityDetailEnter(activityData.get(position));
             }
         });
-        infoRecyclerView.setAdapter(assnInfoAdapter);
         activityRecyclerView.setAdapter(assnActivityAdapter);
-        infoRecyclerView.setItemAnimator(new DefaultItemAnimator());
         activityRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        infoRecyclerView.setFootLoadingView(ProgressView.BallPulse);
-        infoRecyclerView.setFootEndView("没有更多资讯了~");
-        infoRecyclerView.setLoadMoreListener(new LoadMoreListener() {
-
-            @Override
-            public void onLoadMore() {
-                if (!isResponse) {
-                    return;
-                }
-                infoPage++;
-                callBack.getAssnInfo(getInfoRequest());
-            }
-        });
 
         activityRecyclerView.setFootLoadingView(ProgressView.BallPulse);
         activityRecyclerView.setFootEndView("没有更多活动了~");
@@ -151,70 +161,49 @@ public class AssnWindow extends AbstractWindow implements View.OnClickListener {
             public void destroyItem(ViewGroup container, int position, Object object) {
                 container.removeView(views[position]);
             }
-        });
-        vp_assn.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int
-                    positionOffsetPixels) {
-
-            }
 
             @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    btn_info.setChecked(true);
-                    btn_activity.setChecked(false);
-                } else {
-                    btn_info.setChecked(false);
-                    btn_activity.setChecked(true);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public CharSequence getPageTitle(int position) {
+                return tabTitle[position];
             }
         });
+        TabLayout tablayout = (TabLayout) findViewById(R.id.tablayout);
+        tablayout.setupWithViewPager(vp_assn);
+        tablayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
-    public void setActivity() {
-        vp_assn.setCurrentItem(1);
+    private void showProgress() {
+        progressBar.setVisibility(VISIBLE);
+        assnMain.setVisibility(GONE);
     }
 
-    public AssnInfoRequest getInfoRequest() {
-        AssnInfoRequest socialInfoRequest = new AssnInfoRequest();
-        socialInfoRequest.setNum(20);
-        socialInfoRequest.setPage(infoPage);
-        return socialInfoRequest;
+    private void hideProgress() {
+        progressBar.setVisibility(GONE);
+        assnMain.setVisibility(VISIBLE);
+    }
+
+    public void assnDataResponse(AssnResponse.DataBean data) {
+        hideProgress();
+        if (data == null) {
+            return;
+        }
+        tv_assnMessage.setText(data.getActivity_sum() + "人活跃|" + data.getAssociation_sum() + "个社团");
+        if (data.getAssociations() != null && data.getAssociations().size() > 0) {
+            assnDataResponse(data.getAssociations());
+        }
+    }
+
+    public void assnDataResponse(List<AssnResponse.DataBean.AssociationsBean> list) {
+        int flag = assnAdapter.getItemCount();
+        assnAdapter.getList().addAll(list);
+        assnData.addAll(list);
+        assnAdapter.notifyItemRangeInserted(flag, list.size());
     }
 
     public AssnActivityRequest getAssnActivityRequest() {
-        AssnActivityRequest socialActivityRequest = new AssnActivityRequest();
-        socialActivityRequest.setNum(20);
-        socialActivityRequest.setPage(activityPage);
-        return socialActivityRequest;
-    }
-
-    public void assnInfoResponse(ArrayList<AssnInfoResponse.AssnInfoResponseData>
-                                         assnInfoResponseDatas) {
-        infoProgressBar.hide();
-        infoState.setVisibility(View.GONE);
-        if (assnInfoResponseDatas.size() == 0) {
-            infoRecyclerView.loadMoreEnd();
-        } else {
-            infoRecyclerView.loadMoreComplete();
-        }
-
-        infoData.addAll(assnInfoResponseDatas);
-        if (infoData.size() == 0) {
-            infoState.setText("暂无资讯");
-            infoState.setVisibility(View.VISIBLE);
-            infoRecyclerView.setVisibility(View.GONE);
-        } else {
-            infoRecyclerView.setVisibility(View.VISIBLE);
-            assnInfoAdapter.notifyDataSetChanged();
-        }
-        isResponse = true;
+        AssnActivityRequest assnActivityRequest = new AssnActivityRequest();
+        assnActivityRequest.setPage(activityPage);
+        return assnActivityRequest;
     }
 
     public void assnActivityResponse(ArrayList<AssnActivityResponse.AssnActivityResponseData> assnActivityResponseDatas) {
@@ -236,15 +225,7 @@ public class AssnWindow extends AbstractWindow implements View.OnClickListener {
             assnActivityAdapter.notifyDataSetChanged();
         }
         isResponse = true;
-    }
 
-    public void infoLoadingFailure() {
-        infoProgressBar.hide();
-        infoState.setText("数据加载失败...");
-        infoState.setVisibility(View.VISIBLE);
-        infoRecyclerView.setVisibility(View.GONE);
-        infoRecyclerView.loadMoreComplete();
-        isResponse = true;
     }
 
     public void activityLoadingFailure() {
@@ -261,12 +242,6 @@ public class AssnWindow extends AbstractWindow implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.iv_back:
                 hideWindow(true);
-                break;
-            case R.id.btn_info:
-                vp_assn.setCurrentItem(0);
-                break;
-            case R.id.btn_activity:
-                vp_assn.setCurrentItem(1);
                 break;
         }
     }

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import cn.flyexp.R;
 import cn.flyexp.entity.AssnNoticePublishRequest;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 
 /**
  * Created by txy on 2016/7/27 0027.
@@ -18,6 +19,7 @@ public class AssnNoticePublishWindow extends AbstractWindow implements View.OnCl
     private AssnViewCallBack callBack;
     private EditText et_content;
     private Button btn_confirm;
+    private int aid;
 
     public AssnNoticePublishWindow(AssnViewCallBack callBack) {
         super(callBack);
@@ -56,14 +58,19 @@ public class AssnNoticePublishWindow extends AbstractWindow implements View.OnCl
         }
     }
 
+    public void setAid(int aid) {
+        this.aid = aid;
+    }
+
     private void noticePublish(String content) {
-        String token = getStringByPreference("token");
+        String token = WindowHelper.getStringByPreference("token");
         if (token.equals("")) {
             return;
         }
         AssnNoticePublishRequest assnNoticePublishRequest = new AssnNoticePublishRequest();
         assnNoticePublishRequest.setToken(token);
-        assnNoticePublishRequest.setContent(content);
+        assnNoticePublishRequest.setNotice(content);
+        assnNoticePublishRequest.setAssociation_id(aid);
         callBack.submitNotice(assnNoticePublishRequest);
     }
 

@@ -15,7 +15,10 @@ import android.widget.TextView;
 import java.util.regex.Pattern;
 
 import cn.flyexp.R;
-import cn.flyexp.util.Constants;
+import cn.flyexp.entity.WebBean;
+import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.framework.WindowHelper;
+import cn.flyexp.constants.Config;
 import cn.flyexp.entity.OrderCreateRequest;
 import cn.flyexp.framework.AbstractWindow;
 
@@ -55,12 +58,13 @@ public class TaskPublishWindow extends AbstractWindow implements View.OnClickLis
         taskLayout = findViewById(R.id.taskLayout);
 
         et_description = (EditText) findViewById(R.id.et_description);
+        et_description.setText(callBack.getUIData(WindowCallBack.UIDataKeysDef.TASK_CONTENT));
         et_fee = (EditText) findViewById(R.id.et_fee);
         et_destination = (EditText) findViewById(R.id.et_destination);
         et_phone = (EditText) findViewById(R.id.et_phone);
 
         View popPicLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_payway, null);
-        balance = getFloatByPreference("balance");
+        balance = WindowHelper.getFloatByPreference("balance");
         tv_balance = (TextView) popPicLayout.findViewById(R.id.tv_balance);
         tv_balance.setText("账户余额：￥" + balance);
         tv_balance.setOnClickListener(this);
@@ -80,11 +84,11 @@ public class TaskPublishWindow extends AbstractWindow implements View.OnClickLis
     }
 
     private void setDefault() {
-        String phone = getStringByPreference("mobile_no");
+        String phone = WindowHelper.getStringByPreference("mobile_no");
         if (!phone.equals("")) {
             et_phone.setText(phone);
         }
-        String address = getStringByPreference("address");
+        String address = WindowHelper.getStringByPreference("address");
         if (!address.equals("")) {
             et_destination.setText(address);
         }
@@ -104,14 +108,14 @@ public class TaskPublishWindow extends AbstractWindow implements View.OnClickLis
                 String feeStr = et_fee.getText().toString().trim();
                 String phone = et_phone.getText().toString().trim();
                 String description = et_description.getText().toString().trim();
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 float fee = Float.parseFloat(feeStr);
                 if (fee < 2) {
-                    showToast(getContext().getString(R.string.please_input_fee_error));
+                    WindowHelper.showToast(getContext().getString(R.string.please_input_fee_error));
                     return;
                 }
                 if (!Pattern.compile("1\\d{10}").matcher(phone).matches()) {
-                    showToast(getContext().getString(R.string.phone_format_error));
+                    WindowHelper.showToast(getContext().getString(R.string.phone_format_error));
                     return;
                 }
                 if (balance < fee) {
@@ -132,15 +136,19 @@ public class TaskPublishWindow extends AbstractWindow implements View.OnClickLis
                 hideWindow(false);
                 break;
             case R.id.tv_taskStatement:
-                callBack.webWindowEnter(new String[]{"taskStatement"}, 0);
+                WebBean taskWebBean = new WebBean();
+                taskWebBean.setRequest(true);
+                taskWebBean.setTitle("任务声明");
+                taskWebBean.setName("taskStatement");
+                callBack.webWindowEnter(taskWebBean);
                 break;
             case R.id.tv_balance:
                 orderCreateRequest.setPay_id(3);
-                int is_paypwd = getIntByPreference("is_paypwd");
+                int is_paypwd = WindowHelper.getIntByPreference("is_paypwd");
                 if (is_paypwd == 0) {
                     callBack.setPayPwdEnter();
                 } else if (is_paypwd == 1) {
-                    callBack.verifiPayPwdEnter(Constants.PAY_RESULT_TASK);
+                    callBack.verifiPayPwdEnter(NotifyIDDefine.PRESULT_PAY_TASK);
                 }
                 picPopupWindow.dismiss();
                 break;
@@ -166,6 +174,7 @@ public class TaskPublishWindow extends AbstractWindow implements View.OnClickLis
     @Override
     public void afterTextChanged(Editable s) {
         String desription = et_description.getText().toString().trim();
+        callBack.setUIData(WindowCallBack.UIDataKeysDef.TASK_CONTENT, desription);
         String fee = et_fee.getText().toString().trim();
         String destination = et_destination.getText().toString().trim();
         String phone = et_phone.getText().toString().trim();

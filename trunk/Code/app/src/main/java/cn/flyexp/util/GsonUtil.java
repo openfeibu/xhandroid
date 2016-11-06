@@ -1,12 +1,13 @@
 package cn.flyexp.util;
 
 import android.util.Log;
-import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Type;
+
+import cn.flyexp.entity.MyTopicResponse;
 
 /**
  * Created by txy on 2016/6/24 0024.
@@ -31,7 +32,7 @@ public class GsonUtil {
         return gsonUtil;
     }
 
-    private <T> T _fromJson(String data, Class dataClass) {
+    private <T> T _fromEncodeJson(String data, Class dataClass) {
         T object = null;
         try {
             LogUtil.error(getClass(), "decode classname:" + dataClass.getSimpleName() + " data:" + CommonUtil
@@ -39,6 +40,15 @@ public class GsonUtil {
             object = (T) gson.fromJson(CommonUtil.decode(data), dataClass);
         } catch (Exception e) {
             LogUtil.error(getClass(), "classname:" + dataClass.getSimpleName() + "parseError");
+        }
+        return (T) object;
+    }
+
+    private <T> T _fromJson(String data, Class dataClass) {
+        T object = null;
+        try {
+            object = (T) gson.fromJson(data, dataClass);
+        } catch (Exception e) {
         }
         return (T) object;
     }
@@ -55,7 +65,7 @@ public class GsonUtil {
         return object;
     }
 
-    private String _toJson(Object object, Class dataClass) {
+    private String _toEncodeJson(Object object, Class dataClass) {
         String data = null;
         try {
             data = gson.toJson(object, dataClass);
@@ -66,7 +76,7 @@ public class GsonUtil {
         return CommonUtil.encode(data);
     }
 
-    private String _toJson(Object object) {
+    private String _toEncodeJson(Object object) {
         String data = null;
         try {
             data = gson.toJson(object);
@@ -77,6 +87,19 @@ public class GsonUtil {
         return CommonUtil.encode(data);
     }
 
+    private String _toJson(Object object) {
+        String data = null;
+        try {
+            data = gson.toJson(object);
+        } catch (Exception e) {
+        }
+        return data;
+    }
+
+    public static <T> T fromEncodeJson(String data, Class dataClass) {
+        return getInstance()._fromEncodeJson(data, dataClass);
+    }
+
     public static <T> T fromJson(String data, Class dataClass) {
         return getInstance()._fromJson(data, dataClass);
     }
@@ -85,8 +108,12 @@ public class GsonUtil {
         return getInstance()._fromJsonList(data, type);
     }
 
-    public static String toJson(Object object, Class dataClass) {
-        return getInstance()._toJson(object, dataClass);
+    public static String toEncodeJson(Object object, Class dataClass) {
+        return getInstance()._toEncodeJson(object, dataClass);
+    }
+
+    public static String toEncodeJson(Object object) {
+        return getInstance()._toEncodeJson(object);
     }
 
     public static String toJson(Object object) {
