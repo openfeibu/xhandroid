@@ -20,6 +20,7 @@ public class MainController extends AbstractController implements MainViewCallBa
         registerNotify(NotifyIDDefine.NOTIFY_MESSAGE_CONSUME, this);
         registerNotify(NotifyIDDefine.NOTIFY_TOPIC_REFRESH, this);
         registerNotify(NotifyIDDefine.NOTIFY_TOPIC_CONSUME, this);
+        registerNotify(NotifyIDDefine.NOTIFY_MYTASK_REFRESH, this);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class MainController extends AbstractController implements MainViewCallBa
     }
     @Override
     public void onNotify(Message mes) {
-        if (mes.what == NotifyIDDefine.NOTIFY_MESSAGE_REFRESH) {
+        if (mes.what == NotifyIDDefine.NOTIFY_MESSAGE_REFRESH || mes.what == NotifyIDDefine.NOTIFY_MYTASK_REFRESH) {
             if (mainWindow != null) {
                 mainWindow.showTip(MainWindow.MINE_TIP);
             }
