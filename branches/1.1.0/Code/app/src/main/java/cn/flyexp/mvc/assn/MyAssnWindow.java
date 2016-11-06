@@ -24,6 +24,7 @@ public class MyAssnWindow extends AbstractWindow implements View.OnClickListener
     private AssnViewCallBack callBack;
     private ArrayList<MyAssnResponse.MyAssnResponseData> data = new ArrayList<>();
     private MyAssnAdapter myAssnAdapter;
+    private View hintLayout;
 
     public MyAssnWindow(AssnViewCallBack callBack) {
         super(callBack);
@@ -40,11 +41,14 @@ public class MyAssnWindow extends AbstractWindow implements View.OnClickListener
     private void initView() {
         setContentView(R.layout.window_myassn);
         findViewById(R.id.iv_back).setOnClickListener(this);
+        findViewById(R.id.btn_myassn).setOnClickListener(this);
+        hintLayout = findViewById(R.id.layout_hint);
+
         myAssnAdapter = new MyAssnAdapter(getContext(), data);
         myAssnAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                callBack.myAssnDetailEnter(data.get(position).getAid(),data.get(position).getLevel());
+                callBack.myAssnDetailEnter(data.get(position).getAid(), data.get(position).getLevel());
             }
         });
         RecyclerView rv_myassn = (RecyclerView) findViewById(R.id.rv_myassn);
@@ -53,9 +57,12 @@ public class MyAssnWindow extends AbstractWindow implements View.OnClickListener
     }
 
     public void reponseData(ArrayList<MyAssnResponse.MyAssnResponseData> reponseData) {
-        data.clear();
-        data.addAll(reponseData);
-        myAssnAdapter.notifyDataSetChanged();
+        if (data.size() == 0) {
+            hintLayout.setVisibility(VISIBLE);
+        } else {
+            data.addAll(reponseData);
+            myAssnAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -63,6 +70,10 @@ public class MyAssnWindow extends AbstractWindow implements View.OnClickListener
         switch (v.getId()) {
             case R.id.iv_back:
                 hideWindow(true);
+                break;
+            case R.id.btn_myassn:
+                hideWindow(true);
+                callBack.assnEnter();
                 break;
         }
     }

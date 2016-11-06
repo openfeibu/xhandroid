@@ -34,9 +34,13 @@ public class NotifyIDDefine {
 
     public static int NOTIFY_TOPIC_REFRESH = generateMessageId();
 
+    public static int NOTIFY_TOPIC_CONSUME = generateMessageId();
+
     public static int NOTIFY_MINE_REFRESH = generateMessageId();
 
     public static int NOTIFY_MESSAGE_REFRESH = generateMessageId();
+
+    public static int NOTIFY_MESSAGE_CONSUME = generateMessageId();
 
     public static int SHARE_SUCCESS = generateMessageId();
 

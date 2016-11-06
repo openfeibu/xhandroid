@@ -117,6 +117,9 @@ public class TopicController extends AbstractController implements TopicViewCall
     @Override
     public void replyListEnter() {
         sendMessage(MessageIDDefine.REPLY_LIST_OPEN);
+        Message mes = Message.obtain();
+        mes.what = NotifyIDDefine.NOTIFY_TOPIC_CONSUME;
+        notifyManager.notify(mes);
     }
 
 

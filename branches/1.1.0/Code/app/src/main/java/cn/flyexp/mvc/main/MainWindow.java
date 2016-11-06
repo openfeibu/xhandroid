@@ -48,11 +48,13 @@ public class MainWindow extends AbstractWindow implements View.OnClickListener {
         tv_topic = (TextView) findViewById(R.id.tv_topic);
         tv_shop = (TextView) findViewById(R.id.tv_shop);
         tv_mine = (TextView) findViewById(R.id.tv_mine);
-        tv_campus.setOnClickListener(this);
-        tv_task.setOnClickListener(this);
-        tv_topic.setOnClickListener(this);
-        tv_shop.setOnClickListener(this);
-        tv_mine.setOnClickListener(this);
+
+        findViewById(R.id.tv_campus_root).setOnClickListener(this);
+        findViewById(R.id.tv_task_root).setOnClickListener(this);
+        findViewById(R.id.tv_topic_root).setOnClickListener(this);
+        findViewById(R.id.tv_shop_root).setOnClickListener(this);
+        findViewById(R.id.tv_mine_root).setOnClickListener(this);
+
 
         tabText[0] = tv_campus;
         tabText[1] = tv_task;
@@ -138,23 +140,46 @@ public class MainWindow extends AbstractWindow implements View.OnClickListener {
         }
     }
 
+    public void onLayout(boolean changed, int l, int t, int r, int b){
+        super.onLayout(changed, 1, t, r, b);
+        findViewById(R.id.tv_campus_tip).setPadding(tv_campus.getWidth() >> 1, 0, 0, 0);
+        findViewById(R.id.tv_task_tip).setPadding(tv_task.getWidth() >> 1, 0, 0, 0);
+        findViewById(R.id.tv_topic_tip).setPadding(tv_topic.getWidth() >> 1, 0, 0, 0);
+        findViewById(R.id.tv_shop_tip).setPadding(tv_shop.getWidth() >> 1, 0, 0, 0);
+        findViewById(R.id.tv_mine_tip).setPadding(tv_mine.getWidth() >> 1, 0, 0, 0);
+    }
+
+    static final int CAMPUS_TIP = R.id.tv_campus_tip;
+    static final int TASK_TIP = R.id.tv_task_tip;
+    static final int TOPIC_TIP = R.id.tv_topic_tip;
+    static final int SHOP_TIP = R.id.tv_shop_tip;
+    static final int MINE_TIP = R.id.tv_mine_tip;
+
+    void showTip(int id) {
+        findViewById(id).setVisibility(VISIBLE);
+    }
+
+    void hideTip(int id){
+        findViewById(id).setVisibility(INVISIBLE);
+    }
+
     @Override
     public void onClick(View v) {
         String token = WindowHelper.getStringByPreference("token");
         switch (v.getId()) {
-            case R.id.tv_campus:
+            case R.id.tv_campus_root:
                 vp_main.setCurrentItem(0, false);
                 break;
-            case R.id.tv_task:
+            case R.id.tv_task_root:
                 vp_main.setCurrentItem(1, false);
                 break;
-            case R.id.tv_topic:
+            case R.id.tv_topic_root:
                 vp_main.setCurrentItem(2, false);
                 break;
-            case R.id.tv_shop:
+            case R.id.tv_shop_root:
                 vp_main.setCurrentItem(3, false);
                 break;
-            case R.id.tv_mine:
+            case R.id.tv_mine_root:
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                 } else {

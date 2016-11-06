@@ -93,9 +93,9 @@ public class WindowManager {
 
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (currentWindow != null) {
-            if (currentWindow.dispatchKeyEvent(event)) {
-                return true;
-            }
+           if (currentWindow.dispatchKeyEvent(event)) {
+               return true;
+           }
         }
         return false;
     }

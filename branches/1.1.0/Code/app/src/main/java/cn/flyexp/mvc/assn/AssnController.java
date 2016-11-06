@@ -632,6 +632,11 @@ public class AssnController extends AbstractController implements AssnViewCallBa
     }
 
     @Override
+    public void assnEnter() {
+        sendMessage(MessageIDDefine.ASSN_OPEN);
+    }
+
+    @Override
     public void getMemberList(AssnMemberRequest assnMemberRequest) {
         Call<EncodeData> call = service.getAssociationMember(GsonUtil.toEncodeJson(assnMemberRequest));
         call.enqueue(new Callback<EncodeData>() {

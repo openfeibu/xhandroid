@@ -87,4 +87,6 @@ public interface AssnViewCallBack extends AbstractWindow.WindowCallBack {
     void deleteMember(DeleteMemberRequest deleteMemberRequest);
 
     void assnExamine(AssnExamineRequest assnExamineRequest);
+
+    void assnEnter();
 }

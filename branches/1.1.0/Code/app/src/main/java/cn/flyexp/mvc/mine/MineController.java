@@ -253,6 +253,9 @@ public class MineController extends AbstractController implements MineViewCallBa
     @Override
     public void messageEnter() {
         sendMessage(MessageIDDefine.MESSAGE_OPEN);
+        Message mes = Message.obtain();
+        mes.what = NotifyIDDefine.NOTIFY_MESSAGE_CONSUME;
+        notifyManager.notify(mes);
     }
 
     @Override
