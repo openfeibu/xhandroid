@@ -57,7 +57,7 @@ public class MyAssnWindow extends AbstractWindow implements View.OnClickListener
     }
 
     public void reponseData(ArrayList<MyAssnResponse.MyAssnResponseData> reponseData) {
-        if (data.size() == 0) {
+        if (reponseData.size() == 0) {
             hintLayout.setVisibility(VISIBLE);
         } else {
             data.addAll(reponseData);
