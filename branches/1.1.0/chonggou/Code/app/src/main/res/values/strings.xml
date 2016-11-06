@@ -1,0 +1,297 @@
+<resources>
+    <string name="app_name">校汇</string>
+    <string name="action_settings">Settings</string>
+    <string name="map_input">移动地图选择地址</string>
+    <string name="map_input_finish">确定</string>
+    <string name="map_input_more">输入更详细地址</string>
+
+
+    <!--home-->
+    <string name="campus">校园</string>
+    <string name="topic">校汇圈</string>
+    <string name="message">纸条</string>
+    <string name="shop">小店铺</string>
+    <string name="task">任务</string>
+    <string name="mine">我的</string>
+
+
+    <!--order-->
+    <string name="send_task">发布任务</string>
+    <string name="order_detail">订单详情</string>
+    <string name="task_detail">任务详情</string>
+    <string name="task_info">任务信息</string>
+    <string name="not_robbed">未被接</string>
+    <string name="delivering">进行中</string>
+    <string name="received">已收到</string>
+    <string name="served">已送达</string>
+    <string name="accpet_task">接受任务</string>
+    <string name="finish_order">结单</string>
+    <string name="send">发布</string>
+    <string name="destination">到达地点</string>
+    <string name="arrival_time">到达时间</string>
+    <string name="send_time">发单时间</string>
+    <string name="phone">手机号码</string>
+    <string name="fee">小费</string>
+    <string name="courier">快送员</string>
+    <string name="owner">老板</string>
+    <string name="owner_phone">老板手机号码</string>
+    <string name="courier_phone">快送员手机号码</string>
+    <string name="orderid">订单号</string>
+    <string name="state">状态</string>
+    <string name="isfinish">物品送到目的地了吗？</string>
+    <string name="finish_comfirm">确定无误</string>
+    <string name="finish_cancel">按错了</string>
+    <string name="boss_message">老板留言</string>
+    <string name="mine_message">我的留言</string>
+    <string name="please_input_destination">请输入到达地点</string>
+    <string name="please_input_description">还没留言呢</string>
+    <string name="please_input_fee">还没给赏金呢</string>
+    <string name="please_input_fee_error">赏金必须大于等于2</string>
+    <string name="phone_format_error">手机号码有误</string>
+    <string name="please_input_phone">请输入手机号码</string>
+    <string name="please_input_arrival_time">请选择到达时间</string>
+    <string name="send_success">已投放茫茫人海中，打开我的订单可以查看</string>
+    <string name="not_back_in_time">选择时间不能小于现在时间</string>
+    <string name="claim_success">订单已落在你的口袋中，打开我的任务可以查看</string>
+    <string name="task_publish_hint">让人帮我。。</string>
+    <string name="business_publish_hint">我想卖掉。。</string>
+
+
+    <!--task-->
+    <string name="mytask">我的任务</string>
+
+
+    <!--other-->
+    <string name="comfirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="net_error">网络连接错误</string>
+    <string name="requset_failrue">请求无效</string>
+    <string name="please_again_login">登录异常，请重新登录~</string>
+    <string name="not_data">没有数据</string>
+    <string name="default_pull_refresh_text">下拉刷新</string>
+    <string name="default_pull_load_text">上拉加载更多</string>
+    <string name="refresh_text">正在刷新</string>
+    <string name="load_text">正在加载</string>
+    <string name="release_to_refresh">松手刷新</string>
+    <string name="release_to_load">松手加载更多</string>
+    <string name="edit">编辑</string>
+    <string name="none_certifition">您还未实名,请前往【我的资料】实名认证</string>
+    <string name="certifing">实名资料已在审核的路上，请等待...</string>
+
+    <string name="comming_soon">敬请期待</string>
+    <string name="loading_pic_failure">加载图片失败</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="save_pic">保存图片</string>
+    <string name="save_failure">保存失败</string>
+    <string name="save_success">保存成功</string>
+    <string name="again_exit_app">再点一次退出</string>
+    <string name="close">关闭</string>
+    <string name="detail">详情</string>
+    <string name="copy">复制</string>
+    <string name="please_wait">正在提交评论，请稍候</string>
+
+    <!-- 6.x权限相关 -->
+    <string name="permission_dlg_title">权限申请提醒</string>
+    <string name="permission_dlg_content">为了保证软件功能正常运行，需要您授予以下权限：\n</string>
+    <string name="permission_dlg_file">.存储信息</string>
+    <string name="permission_dlg_camera">.照相机</string>
+    <string name="permission_dlg_phone">.手机信息</string>
+    <string name="permission_dlg_negative">取消</string>
+    <string name="permission_dlg_exit">退出</string>
+    <string name="permission_dlg_request">申请</string>
+    <string name="permission_dlg_setting">设置权限</string>
+
+    <string name="permission_dlg_retry_title">权限申请不完全提醒</string>
+    <string name="permission_dlg_retry_content">尙有权限没有授予，运行时可能会直接退出</string>
+    <string name="permission_dlg_retry">重试</string>
+    <string name="permission_dlg_enter">强行进入</string>
+
+    <!-- h5pay -->
+
+    <string name="h5pay_ing">正在处理中</string>
+    <string name="h5pay_fail">订单支付失败</string>
+    <string name="h5pay_dup">重复请求</string>
+    <string name="h5pay_cancel">用户中途取消</string>
+    <string name="h5pay_network_error">网络连接出错</string>
+    <string name="h5pay_unknow">未知错误</string>
+
+    <!--userCenter-->
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="forgetpass">忘记密码</string>
+
+    <!--campus-->
+    <string name="campus_task">校园任务</string>
+    <string name="assn_activity">社团活动</string>
+    <string name="campus_assn">校园社团</string>
+    <string name="social_message">社团公告</string>
+    <string name="campus_business">校园淘</string>
+    <string name="campus_management">小当家</string>
+    <string name="search_business_hint">校园淘，淘我所爱</string>
+
+    <!--shop-->
+    <string name="shop_info">店铺信息</string>
+    <string name="shop_coll">收藏该店铺</string>
+    <string name="shop_coming_soon">店铺正在建设中</string>
+
+    <!--assn-->
+    <string name="social_activity_detail">活动信息</string>
+    <string name="social_introduce">社团简介</string>
+    <string name="social_introduce_publish">编辑简介</string>
+    <string name="social_notice_publish">发布公告</string>
+    <string name="social_info_publish">发布资讯</string>
+    <string name="assn_activity_publish">发布社团活动</string>
+    <string name="my_assn">我的社团</string>
+    <string name="assn">社团</string>
+    <string name="assn_join">加入社团</string>
+    <string name="assn_examine_data">资料审核</string>
+    <string name="assn_apply_join">申请加入</string>
+    <string name="assn_nopass">不通过</string>
+    <string name="assn_pass">通过</string>
+    <string name="assn_publish_activity">点我发布</string>
+    <string name="assn_examine">社团成员审核</string>
+    <string name="assn_about">关于社团</string>
+    <string name="assn_exit">退出社团</string>
+
+    <string name="topic_public_error">话题发布失败，请重试.</string>
+
+    <!--mine-->
+    <string name="my_order">我的淘单</string>
+    <string name="my_topic">我的校汇圈</string>
+    <string name="my_task">我的任务</string>
+    <string name="my_complaints">我的话题</string>
+    <string name="my_info">我的资料</string>
+    <string name="my_border">我的淘单</string>
+    <string name="ta_complaints">Ta的话题</string>
+    <string name="ta_shop">Ta的店铺</string>
+    <string name="cancellation">点我注销</string>
+    <string name="changecampus">跨校</string>
+    <string name="setting">设置</string>
+    <string name="tape">纸条</string>
+    <string name="faq">意见反馈</string>
+    <string name="about">关于校汇</string>
+    <string name="check_update">检查更新</string>
+    <string name="certification">实名认证</string>
+    <string name="change_password">更换密码</string>
+    <string name="feedback">意见反馈</string>
+    <string name="changecampus_error_hint">陆续开通，敬请期待！</string>
+
+    <string name="send_love">点赞</string>
+    <string name="cancel_love">取消</string>
+    <string name="send_comment">评论</string>
+
+
+    <!-- complaints-->
+    <string name="label_essay">随心写</string>
+    <string name="label_novelty">新鲜事</string>
+    <string name="label_tryst">一起约</string>
+    <string name="label_help">帮帮忙</string>
+    <string name="label_complaints">吐吐槽</string>
+    <string name="label_ask">问一下</string>
+    <string name="label_thelost">失物招领</string>
+    <string name="complaints_publish_hint">写下你心中所想。。</string>
+
+    <!--wallet-->
+    <string name="withdrawal">提现</string>
+    <string name="bind_alipay">绑定支付宝</string>
+    <string name="change_pay_account">更换支付账户</string>
+    <string name="change_pay_password">更换支付密码</string>
+
+
+    <item name="tag_nickname" type="id"></item>
+    <item name="tag_commentId" type="id"></item>
+    <item name="tag_Tid" type="id"></item>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+</resources>
+
+
