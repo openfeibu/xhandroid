@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="86dp"
+    android:layout_height="72dp"
     android:background="@drawable/btn_white"
     android:orientation="horizontal"
-    android:paddingTop="9dp">
+    android:paddingTop="5dp">
 
     <cn.flyexp.view.RoundImageView
         android:id="@+id/iv_avatar"
@@ -47,10 +47,11 @@
             android:id="@+id/tv_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:text="我是哆啦A梦"
             android:ellipsize="end"
             android:maxLength="30"
+            android:singleLine="true"
             android:textColor="@color/font_brown_light"
             android:textSize="12sp" />
 
@@ -58,7 +59,7 @@
             android:id="@+id/tv_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:text="1000人活跃·20个活动·#舞动青春#"
             android:textColor="@color/font_brown_light"
             android:textSize="12sp" />

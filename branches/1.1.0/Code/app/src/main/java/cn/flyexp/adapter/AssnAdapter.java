@@ -1,17 +1,23 @@
 package cn.flyexp.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.flyexp.R;
 import cn.flyexp.entity.AssnResponse;
+import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.OnItemClickListener;
 import cn.flyexp.view.RoundImageView;
@@ -50,6 +56,11 @@ public class AssnAdapter extends RecyclerView.Adapter<AssnAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         AssnResponse.DataBean.AssociationsBean data=list.get(position);
+        if (!TextUtils.isEmpty(data.getAvatar_url())) {
+            Picasso.with(context).load(data.getAvatar_url()).config(Bitmap.Config.RGB_565)
+                    .resize(CommonUtil.dip2px(context, 32), CommonUtil.dip2px(context, 32))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE).error(context.getResources().getDrawable(R.mipmap.icon_launchericon)).centerCrop().into(holder.mRoundImageView);
+        }
         holder.mAssnName.setText(""+data.getAname());
         holder.mAssnLeaderName.setText(" "+data.getLeader());
         if(data.getIntroduction()!=null){
