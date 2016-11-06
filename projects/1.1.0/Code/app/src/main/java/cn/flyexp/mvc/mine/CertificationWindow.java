@@ -102,11 +102,33 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
                 break;
             case R.id.btn_confirm:
                 final String name = tv_name.getText().toString().trim();
-                final String numberid = tv_name.getText().toString().trim();
-                if(TextUtils.isEmpty(name) || TextUtils.isEmpty(numberid) ){
+                final String numberid = tv_numberid.getText().toString().trim();
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(numberid) ){
                     WindowHelper.showToast("请输入完整信息");
                     return;
                 }
+
+                int len = name.length();
+                if (len < 2) {
+                    WindowHelper.showToast("请输入正确的姓名");
+                    return;
+                }
+
+                len = numberid.length();
+                if (len != 15 && len != 18) {
+                    WindowHelper.showToast("身份证长度不对");
+                    return;
+                }
+                for(int i = 0; i < len - 1; i ++){
+                    if(!Character.isDigit(numberid.charAt(i))){
+                        WindowHelper.showToast("请输入正确的身份证号码");
+                        return;
+                    }
+                }
+
+
+
+
                 if (frontPath.equals("")) {
                     WindowHelper.showToast("请上传自拍手持身份证有头像一面");
                     return;
