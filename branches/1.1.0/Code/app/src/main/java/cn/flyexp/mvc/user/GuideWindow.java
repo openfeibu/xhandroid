@@ -3,6 +3,7 @@ package cn.flyexp.mvc.user;
 import android.content.pm.ActivityInfo;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +12,7 @@ import java.util.zip.Inflater;
 import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -38,9 +40,7 @@ public class GuideWindow extends AbstractWindow {
         views[2].findViewById(R.id.btn_into).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                callBack.mainEnter();
-                putBooleanByPreference("isNoFirstRun", true);
-                System.gc();
+                mainEnter();
             }
         });
         indicator = (CircleIndicator) findViewById(R.id.indicator);
@@ -77,9 +77,9 @@ public class GuideWindow extends AbstractWindow {
 
             @Override
             public void onPageSelected(int position) {
-                if(position==2){
+                if (position == 2) {
                     indicator.setVisibility(GONE);
-                }else{
+                } else {
                     indicator.setVisibility(VISIBLE);
                 }
             }
@@ -89,5 +89,18 @@ public class GuideWindow extends AbstractWindow {
 
             }
         });
+    }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP ) {
+            mainEnter();
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void mainEnter() {
+        callBack.mainEnter();
+        WindowHelper.putBooleanByPreference("isNoFirstRun", true);
+        System.gc();
     }
 }

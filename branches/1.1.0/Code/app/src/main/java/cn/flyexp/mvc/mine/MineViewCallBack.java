@@ -4,25 +4,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.flyexp.entity.AssnJoinRequset;
-import cn.flyexp.entity.BindAlipayRequest;
-import cn.flyexp.entity.ChangeAliPayRequest;
-import cn.flyexp.entity.ChangePayAccountVCRequest;
-import cn.flyexp.entity.ChangePayPwdRequest;
+import cn.flyexp.entity.CertificationRequest;
 import cn.flyexp.entity.ChangePwdRequest;
 import cn.flyexp.entity.FeedbackRequest;
 import cn.flyexp.entity.IntegralRecordRequest;
 import cn.flyexp.entity.LogoutRequest;
 import cn.flyexp.entity.ChangeMyInfoRequest;
+import cn.flyexp.entity.MessageRequest;
 import cn.flyexp.entity.MyInfoResponse;
 import cn.flyexp.entity.MyInfoRequest;
-import cn.flyexp.entity.ResetPayPwdRequest;
-import cn.flyexp.entity.SetPayPwdRequest;
 import cn.flyexp.entity.TaInfoRequest;
 import cn.flyexp.entity.UpdateRequest;
-import cn.flyexp.entity.WalletDetailRequest;
 import cn.flyexp.entity.WebUrlRequest;
-import cn.flyexp.entity.WithdrawalRequest;
 import cn.flyexp.framework.AbstractWindow;
 
 /**
@@ -48,7 +41,7 @@ public interface MineViewCallBack extends AbstractWindow.WindowCallBack {
 
     void assnManageEnter();
 
-    void assnJoinEnter();
+    void myAssnEnter();
 
     void changePhoneEnter();
 
@@ -57,8 +50,6 @@ public interface MineViewCallBack extends AbstractWindow.WindowCallBack {
     void certificationEnter();
 
     void shopDetailEnter();
-
-    void walletDetailEnter();
 
     void cutAvatarPicEnter(String imgPath);
 
@@ -74,10 +65,6 @@ public interface MineViewCallBack extends AbstractWindow.WindowCallBack {
 
     void uploadImageAvatar(String token, List<File> avatar);
 
-    void uploadImageAssn(String token, List<File> assn);
-
-    void assnJoin(AssnJoinRequset assnJoinRequset);
-
     void feedback(FeedbackRequest feedbackRequest);
 
     void update(UpdateRequest updateRequest);
@@ -88,51 +75,13 @@ public interface MineViewCallBack extends AbstractWindow.WindowCallBack {
 
     void integralRecordRequest(IntegralRecordRequest integralRecordRequest);
 
-    void uploadImageCertifi(String token, ArrayList<File> files);
+    void uploadImageCertifi(CertificationRequest certificationRequest, ArrayList<File> files);
 
     void integralEnter(MyInfoResponse.MyInfoResponseData responseData);
 
     void getWebUrl(WebUrlRequest webUrlRequest);
 
-    void withdrawalEnter();
+    void messageEnter();
 
-    void withdrawalRequest(WithdrawalRequest withdrawalRequst);
-
-    void payAccountEnter();
-
-    void payBindEnter();
-
-    void changePayAccount();
-
-    void setPayPwdEnter();
-
-    void payPwdInfoEnter();
-
-    void changePayPwdEnter();
-
-    void resetPayPwdEnter();
-
-    void getWallet(String token);
-
-    void getWalletDetail(WalletDetailRequest walletDetailRequest);
-
-    void bindAlipay(BindAlipayRequest bindAlipayRequest);
-
-    void vercodeChangePayAccount(String token);
-
-    void changeAliPay(ChangeAliPayRequest changeAliPayRequest);
-
-    void getAlipayInfo(String token);
-
-    void setPayPwd(SetPayPwdRequest setPayPwdRequest);
-
-    void changePayPwd(ChangePayPwdRequest changePayPwdRequest);
-
-    void vercodeResetPayPwd(String tokenVercode);
-
-    void resetPayPwd(ResetPayPwdRequest resetPayPwdRequest);
-
-    void payPwdResult(String pwd, int requestCode);
-
-    void verifiPayPwdEnter(int payResultWithdrawal);
+     void getMessageList(MessageRequest messageRequest);
 }

@@ -20,6 +20,7 @@ import cn.flyexp.R;
 import cn.flyexp.entity.MyInfoResponse;
 import cn.flyexp.entity.WebUrlRequest;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.mvc.user.WebWindow;
 import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.LogUtil;
@@ -87,7 +88,7 @@ public class IntegralWindow extends AbstractWindow implements View.OnClickListen
                 e.printStackTrace();
             }
             if (action.equals("getToken")) {
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return "";
@@ -119,6 +120,9 @@ public class IntegralWindow extends AbstractWindow implements View.OnClickListen
     }
 
     public void initIntegral(MyInfoResponse.MyInfoResponseData responseData) {
+        if (responseData == null) {
+            return;
+        }
         tv_grade.setText(responseData.getLevel() + "");
         tv_todayIntegral.setText("今日完成" + responseData.getToday_integral() + "分");
         tv_curIntegral.setText("当前积分值：" + responseData.getIntegral());

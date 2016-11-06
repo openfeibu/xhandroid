@@ -5,15 +5,15 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by txy on 2016/7/25 0025.
+ * Created by tanxinye on 2016/10/2.
  */
-public class AssnActivityRequest implements Serializable{
+public class AssnActivityRequest implements Serializable {
 
     @SerializedName("page")
     private int page;
 
-    @SerializedName("num")
-    private int num;
+    @SerializedName("last_time")
+    private String last_time;
 
     public int getPage() {
         return page;
@@ -23,11 +23,11 @@ public class AssnActivityRequest implements Serializable{
         this.page = page;
     }
 
-    public int getNum() {
-        return num;
+    public String getLast_time() {
+        return last_time;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setLast_time(String last_time) {
+        this.last_time = last_time;
     }
 }

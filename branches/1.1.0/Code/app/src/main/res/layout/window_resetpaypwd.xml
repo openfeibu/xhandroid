@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/title_bar_height"
         android:background="@color/light_blue">
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:background="@drawable/btn_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="13dp"
             android:text="重设支付密码"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -38,17 +41,16 @@
         android:textColor="@color/font_brown_light"
         android:textSize="14sp" />
 
-    <EditText
+    <cn.flyexp.view.PasswordView
         android:id="@+id/et_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:inputType="numberPassword"
-        android:maxLength="6"
-        android:singleLine="true"
-        android:textColor="@color/black" />
+        android:cursorVisible="false"
+        android:inputType="number"
+        android:maxLength="6" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -99,8 +101,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="32dp"
         android:alpha="0.5"
-        android:enabled="false"
         android:background="@drawable/btn_blue_round"
+        android:enabled="false"
         android:text="重设密码"
         android:textColor="@drawable/font_white"
         android:textSize="20sp" />

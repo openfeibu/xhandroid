@@ -29,6 +29,7 @@
 -keep class com.tencent.mm.** {* ;}
 -keep class com.tencent.mm.sdk.** {*;}
 -keep class cn.flyexp.wxapi.WXEntryActivity {* ;}
+-keep class com.xiaomi.mipush.sdk.XMPushReceiver {*;}
 #如果有引用v4包可以添加下面这行
 -keep public class * extends android.support.v4.app.Fragment
 #忽略警告

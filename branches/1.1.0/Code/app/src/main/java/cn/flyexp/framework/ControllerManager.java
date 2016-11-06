@@ -5,13 +5,12 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.SparseArray;
 
-import cn.flyexp.mvc.shop.BusinessController;
 import cn.flyexp.mvc.main.MainController;
 import cn.flyexp.mvc.shop.ShopController;
 import cn.flyexp.mvc.assn.AssnController;
 import cn.flyexp.mvc.task.TaskController;
 import cn.flyexp.mvc.user.UserController;
-import cn.flyexp.util.LogUtil;
+import cn.flyexp.mvc.wallet.WalletController;
 
 /**
  * Created by zlk on 2016/3/27.
@@ -38,7 +37,7 @@ public class ControllerManager {
         new MainController();
         new UserController();
         new TaskController();
-        new BusinessController();
+        new WalletController();
         new AssnController();
         new ShopController();
     }

@@ -7,8 +7,10 @@ import android.widget.TextView;
 
 import cn.flyexp.R;
 import cn.flyexp.entity.LogoutRequest;
+import cn.flyexp.entity.WebBean;
 import cn.flyexp.framework.AbstractWindow;
-import cn.flyexp.framework.XGPush;
+import cn.flyexp.framework.WindowHelper;
+import cn.flyexp.push.XGPush;
 import cn.flyexp.util.DataCleanManager;
 
 /**
@@ -44,7 +46,7 @@ public class SettingWindow extends AbstractWindow implements View.OnClickListene
                 isNotifiy = isChecked;
             }
         });
-        boolean notifiy = getBooleanByPreference("notifiy");
+        boolean notifiy = WindowHelper.getBooleanByPreference("notifiy");
         switchNotifiy.setChecked(notifiy);
         isNotifiy = notifiy;
 
@@ -59,13 +61,6 @@ public class SettingWindow extends AbstractWindow implements View.OnClickListene
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        putBooleanByPreference("notifiy", isNotifiy);
-        if (isNotifiy) {
-            String openId = getStringByPreference("mine_openid");
-            XGPush.registerPush(openId);
-        } else {
-            XGPush.unregisterPush();
-        }
     }
 
     @Override
@@ -89,10 +84,14 @@ public class SettingWindow extends AbstractWindow implements View.OnClickListene
                 callBack.feedbeakEnter();
                 break;
             case R.id.layout_faq:
-                callBack.webWindowEnter(new String[]{"faq"}, 0);
+                WebBean taskWebBean = new WebBean();
+                taskWebBean.setRequest(true);
+                taskWebBean.setTitle("常见问题");
+                taskWebBean.setName("faq");
+                callBack.webWindowEnter(taskWebBean);
                 break;
             case R.id.btn_logout:
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 LogoutRequest logoutRequest = new LogoutRequest(token);
                 callBack.logout(logoutRequest);
                 break;

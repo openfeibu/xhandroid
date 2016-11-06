@@ -11,7 +11,9 @@ import android.widget.TextView;
 import cn.flyexp.R;
 import cn.flyexp.entity.UpdateRequest;
 import cn.flyexp.entity.UpdateResponse;
+import cn.flyexp.entity.WebBean;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.LogUtil;
 
 /**
@@ -61,7 +63,7 @@ public class AboutWindow extends AbstractWindow implements View.OnClickListener 
     public void responseData(final UpdateResponse.UpdateResponseData data) {
         int updateCode = data.getCode();
         if (updateCode > curVersionCode) {
-            showAlertDialog(data.getDetail(), "取消", "前往下载", new DialogInterface.OnClickListener() {
+            WindowHelper. showAlertDialog(data.getDetail(), "取消", "前往下载", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Uri uri = Uri.parse(data.getDownload());
@@ -70,7 +72,7 @@ public class AboutWindow extends AbstractWindow implements View.OnClickListener 
                 }
             });
         } else {
-            showToast("已经最新版本，敬请期待~");
+            WindowHelper.showToast("已经最新版本，敬请期待~");
         }
     }
 
@@ -87,13 +89,25 @@ public class AboutWindow extends AbstractWindow implements View.OnClickListener 
                 v.setEnabled(false);
                 break;
             case R.id.layout_agreement:
-                callBack.webWindowEnter(new String[]{"userAgreement"}, 0);
+                WebBean agreeWebBean = new WebBean();
+                agreeWebBean.setRequest(true);
+                agreeWebBean.setTitle("用户服务协议");
+                agreeWebBean.setName("userAgreement");
+                callBack.webWindowEnter(agreeWebBean);
                 break;
             case R.id.layout_taskStatement:
-                callBack.webWindowEnter(new String[]{"taskStatement"}, 0);
+                WebBean taskWebBean = new WebBean();
+                taskWebBean.setRequest(true);
+                taskWebBean.setTitle("任务声明");
+                taskWebBean.setName("taskStatement");
+                callBack.webWindowEnter(taskWebBean);
                 break;
             case R.id.layout_integral:
-                callBack.webWindowEnter(new String[]{"integral"}, 0);
+                WebBean integralWebBean = new WebBean();
+                integralWebBean.setRequest(true);
+                integralWebBean.setTitle("积分说明");
+                integralWebBean.setName("integral");
+                callBack.webWindowEnter(integralWebBean);
                 break;
         }
     }

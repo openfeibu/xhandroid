@@ -2,21 +2,40 @@ package cn.flyexp.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cn.flyexp.R;
-import cn.flyexp.entity.DeleteTopicRequest;
 import cn.flyexp.entity.MyTopicResponse;
+import cn.flyexp.entity.MyTopicResponseNew;
+import cn.flyexp.entity.PicBrowserBean;
 import cn.flyexp.mvc.topic.TopicViewCallBack;
 import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.DateUtil;
@@ -29,7 +48,6 @@ import cn.flyexp.view.RoundImageView;
 public class MyTopicAdapter extends RecyclerView.Adapter<MyTopicAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private ArrayList<MyTopicResponse.MyTopicRequestData> data = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
     private TopicViewCallBack callBack;
     private Context context;
@@ -40,7 +58,9 @@ public class MyTopicAdapter extends RecyclerView.Adapter<MyTopicAdapter.ViewHold
         public void delete(int position);
     }
 
-    public MyTopicAdapter(Context context, ArrayList<MyTopicResponse.MyTopicRequestData> data, TopicViewCallBack callBack, IDeletePosition iDeletePosition) {
+    private ArrayList<MyTopicResponseNew.DataBean> data = new ArrayList<>();
+
+    public MyTopicAdapter(Context context, ArrayList<MyTopicResponseNew.DataBean> data, TopicViewCallBack callBack, IDeletePosition iDeletePosition) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = data;
@@ -50,7 +70,7 @@ public class MyTopicAdapter extends RecyclerView.Adapter<MyTopicAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.item_topic, parent,
+        ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.item_mytopic_new, parent,
                 false));
         return holder;
     }
@@ -59,45 +79,119 @@ public class MyTopicAdapter extends RecyclerView.Adapter<MyTopicAdapter.ViewHold
         this.onItemClickListener = onItemClickListener;
     }
 
+    MyTopicPicAdapter adapter;
+
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.iv_avatar.setVisibility(View.GONE);
-        holder.tv_name.setVisibility(View.GONE);
-        final MyTopicResponse.MyTopicRequestData responseData = data.get(position);
-        holder.iv_bin.setVisibility(View.VISIBLE);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        holder.userName.setText(data.get(position).getNickname());
+        if (TextUtils.isEmpty(data.get(position).getAvatar_url())) {
+            holder.userIcon.setImageResource(R.mipmap.icon_defaultavatar_small);
+        } else {
+            Picasso.with(context).load(data.get(position).getAvatar_url()).config(Bitmap.Config.RGB_565)
+                    .resize(CommonUtil.dip2px(context, 32), CommonUtil.dip2px(context, 32))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE).error(context.getResources().getDrawable(R.mipmap.icon_defaultavatar_small)).centerCrop().into(holder.userIcon);
+        }
+        holder.lastTime.setText(""+data.get(position).getCreated_at());
+        String content = "#" + data.get(position).getType() + "#";
+        SpannableStringBuilder style = new SpannableStringBuilder(content + data.get(position).getContent());
+        style.setSpan(new ForegroundColorSpan(Color.parseColor("#5AC8FA")), 0, content.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.content.setText(style);
+        holder.userLove.setText("赞" + data.get(position).getFavourites_count());
+        holder.commentContainer.removeAllViews();
+        if(data.get(position).getComment()!=null&&data.get(position).getComment().size()>0){
+            final List<MyTopicResponseNew.DataBean.CommentBean > list=data.get(position).getComment();
+            for(int i=0;i<list.size();i++){
+                TextView tv=new TextView(context);
+                tv.setTag(R.id.tag_nickname,list.get(i).getNickname());
+                tv.setTag(R.id.tag_commentId,list.get(i).getTcid());
+                tv.setTag(R.id.tag_Tid,data.get(position).getTid());
+                String reViewUser=list.get(i).getBe_review_username();
+                TextSpan span=new TextSpan();
+                if(TextUtils.isEmpty(reViewUser)){
+                    SpannableStringBuilder builder=new SpannableStringBuilder(list.get(i).getNickname()+":"+list.get(i).getContent());
+                    builder.setSpan(span,0,list.get(i).getNickname().length()+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    tv.setText(builder);
+                }else{
+                    String value=list.get(i).getNickname()+" 回复 "+reViewUser+":";
+                    SpannableStringBuilder builder=new SpannableStringBuilder(value+list.get(i).getContent());
+                    builder.setSpan(span,0,value.length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    tv.setText(builder);
+                }
+                holder.commentContainer.addView(tv);
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView tv= (TextView) v;
+                        String nickName= (String) tv.getTag(R.id.tag_nickname);
+                        int commentId= (int) tv.getTag(R.id.tag_commentId);
+                        int topId= (int) tv.getTag(R.id.tag_Tid);
+                        listener.onReview(tv,holder.getPosition(),nickName,commentId,topId);
+                    }
+                });
+            }
+        }
         holder.iv_bin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iDeletePosition.delete(position);
+                if(iDeletePosition!=null){
+                    iDeletePosition.delete(holder.getPosition());
+                }
             }
         });
-        holder.tv_time.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData
-                .getCreated_at())));
-        holder.tv_content.setText(responseData.getContent());
-        if (responseData.getImg() == null || responseData.getImg().equals("")) {
-            holder.iv_cover.setVisibility(View.GONE);
+
+
+        final ArrayList<String> imgUrlList = new ArrayList<String>();
+        ArrayList<String> thumbUrlList = new ArrayList<String>();
+        adapter = new MyTopicPicAdapter(context, thumbUrlList);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                PicBrowserBean picBrowserBean = new PicBrowserBean();
+                picBrowserBean.setImgUrl(imgUrlList);
+                picBrowserBean.setCurSelectedIndex(position);
+                picBrowserBean.setType(1);
+                callBack.picBrowserEnter(picBrowserBean);
+            }
+        });
+        holder.imgs.setAdapter(adapter);
+        holder.imgs.setItemAnimator(new DefaultItemAnimator());
+
+        if (data.get(position).getImg() == null || data.get(position).getImg().equals("")) {
+            holder.imgs.setVisibility(View.GONE);
         } else {
-            String[] urls = CommonUtil.splitImageUrl(responseData.getImg());
-            holder.iv_cover.setVisibility(View.VISIBLE);
-            Picasso.with(context).load(urls[0]).config(Bitmap.Config.RGB_565)
-                    .resize(CommonUtil.dip2px(context, 100), CommonUtil.dip2px(context, 100))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE).centerCrop().into(holder.iv_cover);
-        }
-        holder.tv_content.setText(responseData.getContent());
-        holder.tv_look.setText("浏览" + responseData.getView_num());
-        holder.tv_comment.setText("评论" + responseData.getComment_num());
-        holder.tv_good.setText("点赞" + responseData.getFavourites_count());
-        holder.iv_labeltype.setImageResource(typeImage(responseData.getType()));
-        if (onItemClickListener != null) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClickListener.onItemClick(v, position);
-                }
-            });
+            String[] thumbUrls = CommonUtil.splitImageUrl(data.get(position).getImg());
+            String[] urls = CommonUtil.splitImageUrl(data.get(position).getImg());
+            holder.imgs.setVisibility(View.VISIBLE);
+            imgUrlList.addAll(Arrays.asList(urls));
+            thumbUrlList.addAll(Arrays.asList(thumbUrls));
+            adapter.notifyDataSetChanged();
         }
     }
 
+    private CommentOnClickListener listener;
+    public void setOnCommentClickListener(CommentOnClickListener listener){
+        this.listener=listener;
+    }
+
+    //设置评论点击的回调
+    public interface CommentOnClickListener{
+        void onReview(TextView v,int position,String nickName,int commentId,int TopicId);
+    }
+
+
+    class TextSpan extends ClickableSpan{
+
+        @Override
+        public void onClick(View widget) {
+            TextView tv= (TextView) widget;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(Color.parseColor("#5AC8FA"));
+            ds.setUnderlineText(false);
+        }
+    }
 
     private int typeImage(String type) {
         int imgId = -1;
@@ -125,28 +219,25 @@ public class MyTopicAdapter extends RecyclerView.Adapter<MyTopicAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView iv_bin;
-        private RoundImageView iv_avatar;
-        private TextView tv_name;
-        private TextView tv_time;
-        private TextView tv_content;
-        private RoundImageView iv_cover;
-        private ImageView iv_labeltype;
-        private TextView tv_look;
-        private TextView tv_comment;
-        private TextView tv_good;
+        private LinearLayout commentContainer;
+        private ImageView userIcon;
+        private TextView userName;
+        private TextView lastTime;
+        private TextView content;
+        private RecyclerView imgs;
+        private TextView userLove;
 
         public ViewHolder(View view) {
             super(view);
             iv_bin = (ImageView) view.findViewById(R.id.iv_bin);
-            iv_avatar = (RoundImageView) view.findViewById(R.id.iv_avatar);
-            tv_name = (TextView) view.findViewById(R.id.tv_name);
-            tv_time = (TextView) view.findViewById(R.id.tv_time);
-            tv_content = (TextView) view.findViewById(R.id.tv_content);
-            iv_cover = (RoundImageView) view.findViewById(R.id.iv_cover);
-            iv_labeltype = (ImageView) view.findViewById(R.id.iv_labeltype);
-            tv_look = (TextView) view.findViewById(R.id.tv_look);
-            tv_comment = (TextView) view.findViewById(R.id.tv_comment);
-            tv_good = (TextView) view.findViewById(R.id.tv_good);
+            commentContainer = (LinearLayout) view.findViewById(R.id.commmentContainer);
+            userIcon = (ImageView) view.findViewById(R.id.circle_usernameicon);
+            userName = (TextView) view.findViewById(R.id.circle_username);
+            lastTime = (TextView) view.findViewById(R.id.circle_time);
+            content = (TextView) view.findViewById(R.id.circle_content);
+            imgs = (RecyclerView) view.findViewById(R.id.rv_pic);
+            userLove = (TextView) view.findViewById(R.id.circle_love);
+            imgs.setLayoutManager(new GridLayoutManager(context, 3));
         }
     }
 }

@@ -12,6 +12,7 @@ import okhttp3.RequestBody;
  * Created by admin on 2016/7/23.
  */
 public class UploadFileHelper {
+
     public static MultipartBody uploadMultipartFile(List<File> list) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         for (File file : list) {
@@ -38,6 +39,5 @@ public class UploadFileHelper {
         }
         return parts;
     }
-
 
 }

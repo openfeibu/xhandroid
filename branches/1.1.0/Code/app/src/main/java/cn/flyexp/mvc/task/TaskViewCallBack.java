@@ -43,8 +43,6 @@ public interface TaskViewCallBack extends AbstractWindow.WindowCallBack {
 
     void cancelTask(CancelTaskRequest cancelTaskRequest);
 
-    void aliPay(AlipayRequest alipayRequest);
-
     void setPayPwdEnter();
 
     void verifiPayPwdEnter(int payResultTask);

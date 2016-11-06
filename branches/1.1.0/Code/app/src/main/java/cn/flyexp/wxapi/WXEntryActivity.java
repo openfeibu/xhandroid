@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.tencent.mm.sdk.modelbase.BaseReq;
@@ -48,6 +49,17 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         if (resp.errCode == BaseResp.ErrCode.ERR_OK) {
             Toast.makeText(this, "分享成功", Toast.LENGTH_LONG).show();
         }
+        this.getWindow().getDecorView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 200);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {//完全接管事件
+        return true;
     }
 
 }

@@ -6,18 +6,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by txy on 2016/7/25 0025.
+ * Created by tanxinye on 2016/10/2.
  */
 public class AssnActivityResponse implements Serializable {
 
     @SerializedName("code")
     private int code;
 
-    @SerializedName("data")
-    private ArrayList<AssnActivityResponseData> data;
-
     @SerializedName("detail")
     private String detail;
+
+    @SerializedName("data")
+    private ArrayList<AssnActivityResponseData> data;
 
     public int getCode() {
         return code;

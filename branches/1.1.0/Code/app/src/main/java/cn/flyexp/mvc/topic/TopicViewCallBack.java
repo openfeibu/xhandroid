@@ -8,7 +8,9 @@ import cn.flyexp.entity.DeleteCommentRequest;
 import cn.flyexp.entity.DeleteTopicRequest;
 import cn.flyexp.entity.MyCommentRequest;
 import cn.flyexp.entity.MyTopicRequest;
+import cn.flyexp.entity.MyTopicResponseNew;
 import cn.flyexp.entity.PicBrowserBean;
+import cn.flyexp.entity.ReplyListResponse;
 import cn.flyexp.entity.ThumbUpRequest;
 import cn.flyexp.entity.TopicCommentRequest;
 import cn.flyexp.entity.TopicPublishRequest;
@@ -24,41 +26,41 @@ import cn.flyexp.framework.AbstractWindow;
  */
 public interface TopicViewCallBack extends AbstractWindow.WindowCallBack {
 
-    public void publishEnter();
+    void publishEnter();
 
-    public void picBrowserEnter(PicBrowserBean picBrowserBean);
+    void picBrowserEnter(PicBrowserBean picBrowserBean);
 
-    public void detailEnter(TopicResponseData responseData);
+    void replyEnter(ReplyListResponse.ReplyListResponseData replyListResponseData);
 
-    public void searchEnter();
+    void replyListEnter();
 
-    public void detailEnter(int topId);
-
-    public void uploadImageTopic(String token, List<File> files);
+    void uploadImageTopic(String token, List<File> files);
 
     /**
      * 请求数据
      */
 
-    public void getTopicList(TopicListRequest topicListRequest);
+    void getTopicList(TopicListRequest topicListRequest);
 
-    public void getTopic(TopicRequest topicRequest);
+    void getTopic(TopicRequest topicRequest);
 
-    public void submitTopic(TopicPublishRequest topicPublishRequest);
+    void submitTopic(TopicPublishRequest topicPublishRequest);
 
-    public void getComment(TopicCommentRequest topicCommentRequest);
+    void commentTopic(CommentRequest commentRequest);
 
-    public void commentTopic(CommentRequest commentRequest);
+    void thumbUp(ThumbUpRequest thumbUpRequest);
 
-    public void searchTopic(TopicSearchRequest topicSearchRequest);
+    void getMyTopic(MyTopicRequest myTopicRequest);
 
-    public void thumbUp(ThumbUpRequest thumbUpRequest);
+    void deleteComment(DeleteCommentRequest deleteCommentRequest);
 
-    public void getMyComment(MyCommentRequest myCommentRequest);
+    void deleteTopic(DeleteTopicRequest deleteTopicRequest);
 
-    public void getMyTopic(MyTopicRequest myTopicRequest);
+    void myCommentTopic(CommentRequest commentRequest);
 
-    public void deleteComment(DeleteCommentRequest deleteCommentRequest);
+    void mydeleteComment(DeleteCommentRequest deleteCommentRequest);
 
-    public void deleteTopic(DeleteTopicRequest deleteTopicRequest);
+    void replyListRequest(String token);
+
+    void replyRequest(CommentRequest commentRequest);
 }

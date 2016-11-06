@@ -13,11 +13,19 @@ public class AssnNoticePublishRequest implements Serializable{
     @SerializedName("token")
     private String token;
 
-    @SerializedName("title")
-    private String title;
+    @SerializedName("notice")
+    private String notice;
 
-    @SerializedName("content")
-    private String content;
+    @SerializedName("association_id")
+    private int association_id;
+
+    public int getAssociation_id() {
+        return association_id;
+    }
+
+    public void setAssociation_id(int association_id) {
+        this.association_id = association_id;
+    }
 
     public String getToken() {
         return token;
@@ -27,20 +35,11 @@ public class AssnNoticePublishRequest implements Serializable{
         this.token = token;
     }
 
-    public String getTitle() {
-        return title;
+    public String getNotice() {
+        return notice;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setNotice(String notice) {
+        this.notice = notice;
     }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
 }

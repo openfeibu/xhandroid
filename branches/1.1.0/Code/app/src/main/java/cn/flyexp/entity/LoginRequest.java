@@ -19,6 +19,16 @@ public class LoginRequest {
     private String device_token;
     @SerializedName("platform")
     private String platform;
+    @SerializedName("push_server")
+    private String push_server;
+
+    public String getPush_server() {
+        return push_server;
+    }
+
+    public void setPush_server(String push_server) {
+        this.push_server = push_server;
+    }
 
     public String getVerify_code() {
         return verify_code;

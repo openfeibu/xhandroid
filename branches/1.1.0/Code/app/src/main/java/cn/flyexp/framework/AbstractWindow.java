@@ -1,24 +1,17 @@
 package cn.flyexp.framework;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.os.Message;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import cn.flyexp.R;
+import cn.flyexp.entity.WebBean;
 import cn.flyexp.util.LogUtil;
+import cn.flyexp.view.LoadingDialog;
 
 
 /**
@@ -28,23 +21,42 @@ public class AbstractWindow extends FrameLayout {
     static WindowManager windowManager = null;
     static Activity activity = null;
     private ProgressDialog progressDialog;
+    final static int REQUEST_PERIOD = 60 * 1000;//1min内不能多次请求
+    private long lastRequestTime = -1;
 
     public interface WindowCallBack {
-        public void onWindowShow(AbstractWindow window);
 
-        public void onWindowHide(AbstractWindow window);
+        void onWindowShow(AbstractWindow window);
+
+        void onWindowHide(AbstractWindow window);
 
         //用户统计
-        public void userCount(String key);
+        void userCount(String key);
 
         //跳转登录页面
-        public void loginWindowEnter();
+        void loginWindowEnter();
 
         //跳转他人页面
-        public void taWindowEnter(String taId);
+        void taWindowEnter(String taId);
 
         //跳转网页窗口
-        public void webWindowEnter(String[] webname, int type);
+        void webWindowEnter(WebBean bean);
+
+        void setUIData(int key, String data);
+
+        String getUIData(int key);
+
+        static class UIDataKeysDef {
+            static int base = 0x7527;
+            public static int LOGIN_PHONE_NUM = base ++;
+            public static int TOPIC_CONTENT = base ++;
+            public static int TASK_CONTENT = base ++;
+            public static int REPLY_CONTENT = base ++;
+            public static int JOINASSN_NAME = base ++;
+            public static int JOINASSN_PHONE = base ++;
+            public static int JOINASSN_PRO = base ++;
+            public static int JOINASSN_CAUSE = base ++;
+        }
 
     }
 
@@ -55,8 +67,19 @@ public class AbstractWindow extends FrameLayout {
         this.windowCallBack = callBack;
     }
 
-    public void showWindow(boolean isStack, boolean ani) {
-        windowManager.pushWindow(this, isStack, ani);
+    /**
+     * 默认带动画
+     */
+    public void showWindow() {
+        showWindow(true);
+    }
+
+    public void clearWithMe() {
+        windowManager.clearWithARootWindow(this);
+    }
+
+    public void showWindow(boolean ani) {
+        windowManager.pushWindow(this, ani);
         this.setEnabled(true);
         this.setClickable(true);
         this.setFocusable(true);
@@ -66,13 +89,24 @@ public class AbstractWindow extends FrameLayout {
         }
     }
 
-    public static boolean onKeyDownEvent(int keyCode, KeyEvent event) {
-        if (keyCode == event.KEYCODE_BACK) {
-            windowManager.popWindow(true);
-            return true;
-        }
-        return false;
+    protected void setRequestTimeNow() {
+        this.lastRequestTime = System.currentTimeMillis();
     }
+
+    protected boolean canRequest() {
+        return System.currentTimeMillis() - this.lastRequestTime - REQUEST_PERIOD > 0;
+    }
+
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_UP) {
+//            int keyCode = event.getKeyCode();
+//            if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                return windowManager.popWindow(true);
+//            }
+//        }
+//        return super.dispatchKeyEvent(event);
+//    }
 
     @Override
     protected void onDetachedFromWindow() {
@@ -96,48 +130,16 @@ public class AbstractWindow extends FrameLayout {
         windowManager.clearWindow();
     }
 
+    public void exitApp() {
+        windowManager.exitApp();
+    }
+
     public View getView(int layoutId) {
         return inflate(getContext(), layoutId, this);
     }
 
     public void setContentView(int layoutId) {
         inflate(getContext(), layoutId, this);
-    }
-
-    public String getStringByPreference(String key) {
-        return PreferenceManager.getDefaultSharedPreferences(getContext()).getString(key, "");
-    }
-
-    public void putStringByPreference(String key, String value) {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(key, value).commit();
-    }
-
-    public boolean getBooleanByPreference(String key) {
-        return PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(key, false);
-    }
-
-    public void putBooleanByPreference(String key, boolean value) {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(key, value).commit();
-    }
-
-    public int getIntByPreference(String key) {
-        return PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(key, -1);
-    }
-
-    public void putIntByPreference(String key, int value) {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putInt(key, value).commit();
-    }
-
-    public float getFloatByPreference(String key) {
-        return PreferenceManager.getDefaultSharedPreferences(getContext()).getFloat(key, -1f);
-    }
-
-    public void putFloatByPreference(String key, float value) {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putFloat(key, value).commit();
-    }
-
-    public void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     public void showProgressDialog(String msg) {
@@ -155,31 +157,6 @@ public class AbstractWindow extends FrameLayout {
             progressDialog.dismiss();
         }
     }
-
-    public void showAlertDialog(String msg, String positiListenerMsg, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setMessage(msg).setPositiveButton(positiListenerMsg, listener).create();
-        alertDialog.setCancelable(true);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-    }
-
-    public void showAlertDialog(String msg, String negatiListenerMsg, String positiListenerMsg, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setMessage(msg).setPositiveButton(positiListenerMsg, listener).setNegativeButton(negatiListenerMsg, null).create();
-        alertDialog.setCancelable(true);
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
-    }
-
-    public void showAlertDialog(String msg, String negatiListenerMsg, DialogInterface.OnClickListener negatilistener, String positiListenerMsg, DialogInterface.OnClickListener positilistener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setMessage(msg).setPositiveButton(positiListenerMsg, positilistener).setNegativeButton(negatiListenerMsg, negatilistener).create();
-        alertDialog.setCancelable(true);
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
-    }
-
 
     protected <T> T findViewById(View view, int id) {
         return (T) (view.findViewById(id));

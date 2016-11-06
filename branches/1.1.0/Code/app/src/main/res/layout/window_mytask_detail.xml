@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/taskLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -8,24 +9,38 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/title_bar_height"
         android:background="@color/light_blue">
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:background="@drawable/btn_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="13dp"
             android:text="@string/task_info"
             android:textColor="@color/white"
             android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@mipmap/icon_task_share"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -50,6 +65,7 @@
                     android:id="@+id/tv_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="发单人："
                     android:textColor="@color/font_brown_dark"
                     android:textSize="14sp" />
 
@@ -100,31 +116,24 @@
 
         </LinearLayout>
 
-        <com.baoyachi.stepview.HorizontalStepView
-            android:id="@+id/step_view"
+        <cn.flyexp.view.StepView
+            android:id="@+id/stepView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-          />
+            android:gravity="center" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardLayout"
+        <TextView
+            android:id="@+id/tv_description"
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/app_background"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="8dp">
-
-            <TextView
-                android:id="@+id/tv_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="7"
-                android:text="今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。"
-                android:textColor="@color/font_brown_light"
-                android:textSize="14sp" />
-        </android.support.v7.widget.CardView>
+            android:background="@drawable/round_gray_bg"
+            android:maxLines="7"
+            android:padding="8dp"
+            android:text="今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。"
+            android:textColor="@color/font_brown_light"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_report"

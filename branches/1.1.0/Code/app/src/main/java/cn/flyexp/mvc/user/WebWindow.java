@@ -2,15 +2,16 @@ package cn.flyexp.mvc.user;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +21,17 @@ import com.alipay.sdk.util.H5PayResultModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import cn.flyexp.R;
+import cn.flyexp.entity.PicBrowserBean;
+import cn.flyexp.entity.WebBean;
 import cn.flyexp.entity.WebUrlRequest;
 import cn.flyexp.framework.AbstractWindow;
-import cn.flyexp.framework.MessageIDDefine;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
+import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.LogUtil;
 
 /**
@@ -38,6 +44,10 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
     private WebSettings webSettings;
     private TextView tv_title;
     private JavaScriptInterface anInterface;
+    private int times;
+    private boolean goBack;
+    private TextView tv_close;
+    private ProgressBar pb_web;
 
     public WebWindow(UserViewCallBack callBack) {
         super(callBack);
@@ -50,6 +60,9 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
         setContentView(R.layout.window_web);
         findViewById(R.id.iv_back).setOnClickListener(this);
 
+        pb_web = (ProgressBar) findViewById(R.id.pb_web);
+        tv_close = (TextView) findViewById(R.id.tv_close);
+        tv_close.setOnClickListener(this);
         tv_title = (TextView) findViewById(R.id.tv_title);
 
         webView = (WebView) findViewById(R.id.webView);
@@ -60,6 +73,23 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setDomStorageEnabled(true);
+        webSettings.setAppCacheMaxSize(1024 * 1024 * 8);
+        String appCachePath = getContext().getCacheDir().getAbsolutePath();
+        webSettings.setAppCachePath(appCachePath);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAppCacheEnabled(true);
+    }
+
+    public void initData(WebBean bean) {
+        boolean isRequest = bean.isRequest();
+        tv_title.setText(bean.getTitle());
+        if (isRequest) {
+            WebUrlRequest webUrlRequest = new WebUrlRequest();
+            webUrlRequest.setUrl_name(bean.getName());
+            callBack.getWebUrl(webUrlRequest);
+        } else {
+            loadUrl(bean.getUrl());
+        }
     }
 
     public class JavaScriptInterface {
@@ -76,7 +106,7 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
                 e.printStackTrace();
             }
             if (action.equals("getToken")) {
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return "";
@@ -93,45 +123,30 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
 
             return "";
         }
-    }
 
-    public void getWebUrl(String[] pa) {
-        String name = pa[0];
-        if (name.equals("store")) {
-            tv_title.setText("小店铺");
-        } else if (name.equals("storeManage")) {
-            tv_title.setText("店铺管理");
-        } else if (name.equals("storeCollection")) {
-            tv_title.setText("店铺收藏");
-        } else if (name.equals("userAgreement")) {
-            tv_title.setText("用户服务协议");
-        } else if (name.equals("taskStatement")) {
-            tv_title.setText("任务声明");
-        } else if (name.equals("faq")) {
-            tv_title.setText("常见问题");
-        } else if (name.equals("storeApply")) {
-            tv_title.setText("开店");
-        } else if (name.equals("integral")) {
-            tv_title.setText("积分说明");
-        } else if (name.equals("walletStatement")) {
-            tv_title.setText("钱包声明");
-        }
-        WebUrlRequest webUrlRequest = new WebUrlRequest();
-        webUrlRequest.setUrl_name(name);
-        callBack.getWebUrl(webUrlRequest);
-    }
-
-    public void loadUrl(String[] pa) {
-        if (pa == null) {
-            return;
-        }
-        String url = pa[0];
-        if (pa.length > 1) {
-            String title = pa[1];
-            if (title != null && !title.equals("")) {
-                tv_title.setText(title);
+        @JavascriptInterface
+        public void onClickImage(String json) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int currpos = jsonObject.getInt("currpos");
+                String imageUrl = jsonObject.getString("imageurl");
+                String[] splitImageUrl = CommonUtil.splitImageUrl(imageUrl);
+                ArrayList<String> imgList = new ArrayList<String>();
+                for(String url :splitImageUrl){
+                    imgList.add(url);
+                }
+                PicBrowserBean picBrowserBean = new PicBrowserBean();
+                picBrowserBean.setImgUrl(imgList);
+                picBrowserBean.setCurSelectedIndex(currpos);
+                picBrowserBean.setType(1);
+                callBack.picBrowserEnter(picBrowserBean);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    public void loadUrl(String url) {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -187,6 +202,7 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
                                 }
                             }.start();
                         }
+
                         public void onFail(int[] ids) {
                         }
 
@@ -202,6 +218,26 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
                 }
                 return true;
             }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (webView.canGoBack()) {
+                    goBack = true;
+                    tv_close.setVisibility(VISIBLE);
+                } else {
+                    goBack = false;
+                    tv_close.setVisibility(GONE);
+                }
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                webView.setVisibility(GONE);
+            }
+
+
         });
 
         webView.loadUrl(url);
@@ -211,8 +247,32 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                if (goBack) {
+                    webView.goBack();
+                } else {
+                    hideWindow(true);
+                }
+                break;
+            case R.id.tv_close:
                 hideWindow(true);
                 break;
         }
     }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            int keyCode = event.getKeyCode();
+            if (keyCode == event.KEYCODE_BACK) {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                    return true;
+                } else {
+                    return super.dispatchKeyEvent(event);
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
 }

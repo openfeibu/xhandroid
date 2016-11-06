@@ -78,12 +78,12 @@ public class PicPublishAdapter extends RecyclerView.Adapter<PicPublishAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private RoundImageView iv_img;
+        private ImageView iv_img;
         private ImageView iv_delete;
 
         public ViewHolder(View view) {
             super(view);
-            iv_img = (RoundImageView) view.findViewById(R.id.iv_img);
+            iv_img = (ImageView) view.findViewById(R.id.iv_img);
             iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
         }
     }

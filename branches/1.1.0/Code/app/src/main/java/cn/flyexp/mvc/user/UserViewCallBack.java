@@ -3,6 +3,7 @@ package cn.flyexp.mvc.user;
 import cn.flyexp.entity.ClientVerifyRequest;
 import cn.flyexp.entity.LogRequest;
 import cn.flyexp.entity.LoginRequest;
+import cn.flyexp.entity.PicBrowserBean;
 import cn.flyexp.entity.RegisterRequest;
 import cn.flyexp.entity.RegisterVerifyCodeRequest;
 import cn.flyexp.entity.ReportRequest;
@@ -48,4 +49,6 @@ public interface UserViewCallBack extends AbstractWindow.WindowCallBack {
     void update(UpdateRequest updateRequest);
 
     void logRequest(String logStr);
+
+    void picBrowserEnter(PicBrowserBean picBrowserBean);
 }

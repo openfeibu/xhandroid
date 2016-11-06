@@ -7,11 +7,15 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 
 import java.util.HashMap;
 
 import cn.flyexp.R;
+import cn.flyexp.entity.WebBean;
+import cn.flyexp.net.NetWork;
+import cn.flyexp.net.NetWorkService;
 import cn.flyexp.util.LogUtil;
 
 /**
@@ -23,6 +27,20 @@ public abstract class AbstractController implements AbstractWindow.WindowCallBac
     public static NotifyManager notifyManager = new NotifyManager();
     static Activity activity = null;
     private static boolean isOnce = true;
+    protected NetWorkService service;
+    private static SparseArray<String> UI_DATAS = new SparseArray<>(10);
+
+    public void setUIData(int key, String data) {
+        UI_DATAS.put(key, data);
+    }
+
+    public String getUIData(int key) {
+        String data = UI_DATAS.get(key);
+        if (data == null) {
+           data = "";
+        }
+        return data;
+    }
 
     private static HashMap<String, Integer> data;
 
@@ -39,6 +57,7 @@ public abstract class AbstractController implements AbstractWindow.WindowCallBac
     public AbstractController() {
         registerMessages();
         handler = new Handler(Looper.getMainLooper());
+        service = NetWork.getInstance().getService();
     }
 
     protected Handler getUIHandler() {
@@ -91,6 +110,21 @@ public abstract class AbstractController implements AbstractWindow.WindowCallBac
         notifyManager.notify(message);
     }
 
+    public void sendNotify(int notifyId,int arg1) {
+        Message message = Message.obtain();
+        message.what = notifyId;
+        message.arg1 = arg1;
+        notifyManager.notify(message);
+    }
+
+    public void sendNotify(int notifyId,int arg1,int arg2) {
+        Message message = Message.obtain();
+        message.what = notifyId;
+        message.arg1 = arg1;
+        message.arg2 = arg2;
+        notifyManager.notify(message);
+    }
+
     protected abstract void handleMessage(Message message);
 
     public void onWindowShow(AbstractWindow window) {
@@ -106,12 +140,12 @@ public abstract class AbstractController implements AbstractWindow.WindowCallBac
         sendMessage(MessageIDDefine.TA_OPEN,taId);
     }
 
+
     @Override
-    public void webWindowEnter(String[] webname, int type) {
+    public void webWindowEnter(WebBean bean) {
         Message message = Message.obtain();
         message.what = MessageIDDefine.WEB_OPEN;
-        message.obj = webname;
-        message.arg1 = type;
+        message.obj = bean;
         sendMessage(message);
     }
 
@@ -162,7 +196,7 @@ public abstract class AbstractController implements AbstractWindow.WindowCallBac
     }
 
     public void logout(AbstractWindow window) {
-        window.putStringByPreference("token", "");
+        WindowHelper.putStringByPreference("token", "");
         gotoLoginWindow();
     }
 

@@ -14,7 +14,9 @@ import java.util.Calendar;
 import cn.flyexp.R;
 import cn.flyexp.entity.RegisterRequest;
 import cn.flyexp.entity.RegisterVerifyCodeRequest;
+import cn.flyexp.entity.WebBean;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.LogUtil;
 
 /**
@@ -130,12 +132,12 @@ public class RegisterInfoWindow extends AbstractWindow implements View.OnClickLi
                 try {
                     inYear = Integer.parseInt(yearStr);
                 } catch (NumberFormatException e) {
-                    showToast("入学年份输入非法");
+                    WindowHelper.showToast("入学年份输入非法");
                     return;
                 }
                 int year = Calendar.getInstance().get(Calendar.YEAR);
                 if (inYear < 2000 || inYear > year) {
-                    showToast("入学年份输入不符");
+                    WindowHelper.showToast("入学年份输入不符");
                     return;
                 }
                 registerRequest.setNickname(nickName);
@@ -147,7 +149,11 @@ public class RegisterInfoWindow extends AbstractWindow implements View.OnClickLi
                 v.setEnabled(false);
                 break;
             case R.id.tv_agreement:
-                callBack.webWindowEnter(new String[]{"userAgreement"}, 0);
+                WebBean agreeWebBean = new WebBean();
+                agreeWebBean.setRequest(true);
+                agreeWebBean.setTitle("用户服务协议");
+                agreeWebBean.setName("userAgreement");
+                callBack.webWindowEnter(agreeWebBean);
                 break;
         }
     }

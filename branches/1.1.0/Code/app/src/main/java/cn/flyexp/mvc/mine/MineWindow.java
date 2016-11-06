@@ -1,8 +1,6 @@
 package cn.flyexp.mvc.mine;
 
 import android.graphics.Bitmap;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,11 +17,11 @@ import cn.flyexp.entity.MineBean;
 import cn.flyexp.entity.MyInfoRequest;
 import cn.flyexp.entity.MyInfoResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.LogUtil;
-import cn.flyexp.util.OnItemClickListener;
-import cn.flyexp.view.GridSpacingItemDecoration;
 import cn.flyexp.view.RoundImageView;
+//import cn.flyexp.view.RoundImageView;
 
 
 /**
@@ -37,176 +35,242 @@ public class MineWindow extends AbstractWindow implements View.OnClickListener {
     private TextView tv_nickname;
     private TextView tv_college;
     private TextView tv_introduction;
-    private RoundImageView iv_avatar;
+    //    private RoundImageView iv_avatar;
     private TextView tv_year;
     private MyInfoResponse.MyInfoResponseData responseData;
     private ArrayList<MineBean> mineBeanArrayList = new ArrayList<>();
     private ImageView iv_gender;
     private MineAdapter mineAdapter;
+    private ImageView iv_mytask;
+    private ImageView iv_message;
+    private boolean isMesRemind;
+    private boolean isTaskRemind;
+    private int isAuth;
+    private View certifiLayout;
 
     public MineWindow(MineViewCallBack callBack) {
         super(callBack);
         this.callBack = callBack;
         initView();
-        callBack.getMyInfo(getMyInfoRequest());
     }
 
-    private RecyclerView rv_mine;
-
-    private void initView() {
-        setContentView(R.layout.window_mine);
-        findViewById(R.id.tv_changecampus).setOnClickListener(this);
-        findViewById(R.id.tv_setting).setOnClickListener(this);
-        iv_bg = (ImageView) findViewById(R.id.iv_bg);
-        iv_avatar = (RoundImageView) findViewById(R.id.iv_avatar);
-        tv_nickname = (TextView) findViewById(R.id.tv_nickname);
-        tv_college = (TextView) findViewById(R.id.tv_college);
-        tv_introduction = (TextView) findViewById(R.id.tv_introduction);
-        tv_year = (TextView) findViewById(R.id.tv_year);
-        iv_gender = (ImageView) findViewById(R.id.iv_gender);
-        rv_mine = (RecyclerView) findViewById(R.id.rv_mine);
-        rv_mine.setAdapter(mineAdapter = new MineAdapter(getContext(), mineBeanArrayList));
-        mineAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String name = mineBeanArrayList.get(position).getName();
-                LogUtil.error(getClass(), "name" + name);
-                if (name.equals("我的资料")) {
-                    callBack.myInfoEnter(responseData);
-                } else if (name.equals("我的校汇圈")) {
-                    callBack.myTopicEnter();
-                } else if (name.equals("社团管理")) {
-                    callBack.assnManageEnter();
-                } else if (name.equals("我的钱包")) {
-                    callBack.walletEnter();
-                } else if (name.equals("我的任务")) {
-                    callBack.myTaskEnter();
-                } else if (name.equals("我的积分")) {
-                    callBack.integralEnter(responseData);
-                } else if (name.equals("店铺收藏")) {
-                    showToast("敬请期待~");
-//                    callBack.webWindowEnter("storeCollection", 0);
-                } else if (name.equals("我要开店")) {
-                    showToast("敬请期待~");
-//                    if (responseData.getIs_auth() == 0) {
-//                        showToast("您还未实名");
-//                        return;
-//                    } else if (responseData.getIs_auth() == 2) {
-//                        showToast("实名资料已在审核的路上，请等待...");
-//                        return;
-//                    }
-//                    if (responseData.getIs_merchant() == 0) {
-//                        callBack.webWindowEnter("storeApply", 0);
-//                    } else if (responseData.getIs_cheif() == 2) {
-//                        showToast("开店资料已在审核的路上，请等待...");
-//                    }
-                } else if (name.equals("每日分享")) {
-                    callBack.shareEnter();
-                } else if (name.equals("社团入驻")) {
-                    if (responseData.getIs_auth() == 0) {
-                        showToast(getContext().getString(R.string.none_certifition));
-                        return;
-                    } else if (responseData.getIs_auth() == 2) {
-                        showToast(getContext().getString(R.string.certifing));
-                        return;
-                    }
-                    if (responseData.getIs_cheif() == 0) {
-                        callBack.assnJoinEnter();
-                    } else if (responseData.getIs_cheif() == 2) {
-                        showToast("入驻资料已在审核的路上，请等待...");
-                    }
-                } else if (name.equals("店铺管理")) {
-                    showToast("敬请期待~");
-//                    callBack.webWindowEnter("storeManage", 0);
-                }
-            }
-
-        });
-        rv_mine.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        rv_mine.setAdapter(mineAdapter);
-        rv_mine.addItemDecoration(new GridSpacingItemDecoration(3, CommonUtil.dip2px(getContext(), 1), true));
-        rv_mine.setItemAnimator(new DefaultItemAnimator());
-        rv_mine.setHasFixedSize(false);
-        rv_mine.setNestedScrollingEnabled(false);
-    }
-
-    public void refreshData() {
-        callBack.getMyInfo(getMyInfoRequest());
-    }
-
-    public MyInfoRequest getMyInfoRequest() {
-        String token = getStringByPreference("token");
+    public void request() {
+        String token = WindowHelper.getStringByPreference("token");
         if (token.equals("")) {
-            return null;
+            return;
         }
         MyInfoRequest myInfoRequest = new MyInfoRequest();
         myInfoRequest.setToken(token);
-        return myInfoRequest;
+        callBack.getMyInfo(myInfoRequest);
     }
 
-    public void myProileResponse(MyInfoResponse.MyInfoResponseData responseData) {
+    private RecyclerView rv_mine;
+    private RoundImageView round;
+    private TextView userName;
+    private TextView address;
+
+    private void initView() {
+        setContentView(R.layout.layout_mine_mainpage);
+        findViewById(R.id.mine_mymessage).setOnClickListener(this);
+        findViewById(R.id.sel_school).setOnClickListener(this);
+        findViewById(R.id.tape).setOnClickListener(this);
+        findViewById(R.id.mime_topic_center).setOnClickListener(this);
+        findViewById(R.id.mime_my_task).setOnClickListener(this);
+        findViewById(R.id.mine_my_order).setOnClickListener(this);
+        findViewById(R.id.my_wallet).setOnClickListener(this);
+        findViewById(R.id.my_points).setOnClickListener(this);
+        findViewById(R.id.my_corporation).setOnClickListener(this);
+        findViewById(R.id.my_store).setOnClickListener(this);
+        findViewById(R.id.my_enjoy).setOnClickListener(this);
+        findViewById(R.id.my_setting).setOnClickListener(this);
+
+        round = (RoundImageView) findViewById(R.id.round);
+        userName = (TextView) findViewById(R.id.user_name);
+        address = (TextView) findViewById(R.id.address);
+
+        iv_mytask = (ImageView) findViewById(R.id.iv_mytask);
+        iv_message = (ImageView) findViewById(R.id.iv_message);
+
+        certifiLayout = findViewById(R.id.layout_certification);
+        certifiLayout.setOnClickListener(this);
+
+//        setContentView(R.layout.window_mine);
+//        findViewById(R.id.tv_changecampus).setOnClickListener(this);
+////        findViewById(R.id.tv_setting).setOnClickListener(this);
+//        findViewById(R.id.tv_tape).setOnClickListener(this);
+//        iv_bg = (ImageView) findViewById(R.id.iv_bg);
+//        iv_avatar = (RoundImageView) findViewById(R.id.iv_avatar);
+//        tv_nickname = (TextView) findViewById(R.id.tv_nickname);
+//        tv_college = (TextView) findViewById(R.id.tv_college);
+//        tv_introduction = (TextView) findViewById(R.id.tv_introduction);
+//        tv_year = (TextView) findViewById(R.id.tv_year);
+//        iv_gender = (ImageView) findViewById(R.id.iv_gender);
+//        rv_mine = (RecyclerView) findViewById(R.id.rv_mine);
+//        rv_mine.setAdapter(mineAdapter = new MineAdapter(getContext(), mineBeanArrayList));
+//        mineAdapter.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                String name = mineBeanArrayList.get(position).getName();
+//                LogUtil.error(getClass(), "name" + name);
+//                if (name.equals("我的资料")) {
+//                    callBack.myInfoEnter(responseData);
+//                } else if (name.equals("我的校汇圈")) {
+//                    callBack.myTopicEnter();
+//                } else if (name.equals("社团管理")) {
+//                    callBack.assnManageEnter();
+//                } else if (name.equals("我的钱包")) {
+//                    callBack.walletEnter();
+//                } else if (name.equals("我的任务")) {
+//                    callBack.myTaskEnter();
+//                } else if (name.equals("我的积分")) {
+//                    callBack.integralEnter(responseData);
+//                } else if (name.equals("店铺收藏")) {
+//                    showToast("敬请期待~");
+////                    callBack.webWindowEnter("storeCollection", 0);
+//                } else if (name.equals("我要开店")) {
+//                    showToast("敬请期待~");
+////                    if (responseData.getIs_auth() == 0) {
+////                        showToast("您还未实名");
+////                        return;
+////                    } else if (responseData.getIs_auth() == 2) {
+////                        showToast("实名资料已在审核的路上，请等待...");
+////                        return;
+////                    }
+////                    if (responseData.getIs_merchant() == 0) {
+////                        callBack.webWindowEnter("storeApply", 0);
+////                    } else if (responseData.getIs_cheif() == 2) {
+////                        showToast("开店资料已在审核的路上，请等待...");
+////                    }
+//                } else if (name.equals("每日分享")) {
+//                    callBack.shareEnter();
+//                } else if (name.equals("社团入驻")) {
+//                    if (responseData.getIs_auth() == 0) {
+//                        showToast(getContext().getString(R.string.none_certifition));
+//                        return;
+//                    } else if (responseData.getIs_auth() == 2) {
+//                        showToast(getContext().getString(R.string.certifing));
+//                        return;
+//                    }
+//                    if (responseData.getIs_cheif() == 0) {
+//                        callBack.assnJoinEnter();
+//                    } else if (responseData.getIs_cheif() == 2) {
+//                        showToast("入驻资料已在审核的路上，请等待...");
+//                    }
+//                } else if (name.equals("店铺管理")) {
+//                    showToast("敬请期待~");
+////                    callBack.webWindowEnter("storeManage", 0);
+//                }
+//            }
+//
+//        });
+//        rv_mine.setLayoutManager(new GridLayoutManager(getContext(), 3));
+//        rv_mine.setAdapter(mineAdapter);
+//        rv_mine.addItemDecoration(new GridSpacingItemDecoration(3, CommonUtil.dip2px(getContext(), 1), true));
+//        rv_mine.setItemAnimator(new DefaultItemAnimator());
+//        rv_mine.setHasFixedSize(false);
+//        rv_mine.setNestedScrollingEnabled(false);
+    }
+
+
+    public void responseData(MyInfoResponse.MyInfoResponseData responseData) {
+        if (responseData == null) {
+            return;
+        }
         this.responseData = responseData;
         if (!responseData.getAvatar_url().equals("")) {
             Picasso.with(getContext()).load(responseData.getAvatar_url()).config(Bitmap.Config.RGB_565)
-                    .resize(CommonUtil.dip2px(getContext(), 100), CommonUtil.dip2px(getContext(), 100))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE).error(getResources().getDrawable(R.mipmap.icon_defaultavatar_big)).centerCrop().into(iv_avatar);
-            Picasso.with(getContext()).load(responseData.getAvatar_url()).config(Bitmap.Config.RGB_565)
-                    .resize(CommonUtil.getScreenWidth(getContext()), CommonUtil.dip2px(getContext(), 250))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE).error(getResources().getDrawable(R.mipmap.icon_defaultavatar_big)).centerCrop().into(iv_bg);
+                    .resize(CommonUtil.dip2px(getContext(), 50), CommonUtil.dip2px(getContext(), 50))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE).error(getResources().getDrawable(R.mipmap.icon_defaultavatar_big)).centerCrop().into(round);
         } else {
-            iv_avatar.setImageResource(R.mipmap.icon_defaultavatar_big);
+            round.setImageResource(R.mipmap.icon_defaultavatar_big);
         }
-        tv_nickname.setText(responseData.getNickname());
-        tv_college.setText(responseData.getCollege());
-        tv_introduction.setText(responseData.getIntroduction());
-        tv_year.setText(responseData.getEnrollment_year() + "级");
+        userName.setText(responseData.getNickname());
+        address.setText(responseData.getCollege());
+        isAuth = responseData.getIs_auth();
 
-        if (responseData.getGender() == 1) {
-            iv_gender.setImageResource(R.mipmap.icon_mysex_man);
-        } else if (responseData.getGender() == 2) {
-            iv_gender.setImageResource(R.mipmap.icon_mysex_woman);
+        if (isAuth == 1) {
+            certifiLayout.setVisibility(View.GONE);
+        } else {
+            certifiLayout.setVisibility(View.VISIBLE);
         }
-        mineBeanArrayList.clear();
-        mineBeanArrayList.add(new MineBean("我的资料", R.mipmap.icon_mine_myinfo));
-        mineBeanArrayList.add(new MineBean("我的校汇圈", R.mipmap.icon_mine_mytopic));
-        if (responseData.getIs_cheif() == 0|| responseData.getIs_cheif() == 2) {
-            mineBeanArrayList.add(new MineBean("社团入驻", R.mipmap.icon_mine_communitymanagement));
-        } else if (responseData.getIs_cheif() == 1) {
-            mineBeanArrayList.add(new MineBean("社团管理", R.mipmap.icon_mine_communitymanagement));
-        }
-        mineBeanArrayList.add(new MineBean("我的钱包", R.mipmap.icon_mine_wallet));
-        mineBeanArrayList.add(new MineBean("我的任务", R.mipmap.icon_mine_mytask));
-        mineBeanArrayList.add(new MineBean("我的积分", R.mipmap.icon_mine_level));
 
-        mineBeanArrayList.add(new MineBean("店铺收藏", R.mipmap.icon_mine_storecollection));
-        if (responseData.getIs_merchant() == 0 || responseData.getIs_merchant() == 2) {
-            mineBeanArrayList.add(new MineBean("我要开店", R.mipmap.icon_mine_openstore));
-        } else if (responseData.getIs_merchant() == 1) {
-            mineBeanArrayList.add(new MineBean("店铺管理", R.mipmap.icon_mine_myinfo));
-        }
-        mineBeanArrayList.add(new MineBean("每日分享", R.mipmap.icon_mine_share));
-        mineAdapter.notifyDataSetChanged();
+        WindowHelper.putIntByPreference("association_id", responseData.getAssociation_id());
+        WindowHelper.putStringByPreference("mobile_no", responseData.getMobile_no());
+        WindowHelper.putStringByPreference("address", responseData.getAddress());
+        WindowHelper.putIntByPreference("is_auth", responseData.getIs_auth());
+        WindowHelper.putIntByPreference("is_paypwd", responseData.getIs_paypassword());
+        WindowHelper.putIntByPreference("is_alipay", responseData.getIs_alipay());
+        WindowHelper.putFloatByPreference("balance", responseData.getWallet());
+//
+//        //森彬添加
+        WindowHelper.putStringByPreference("nickName", responseData.getNickname());
+    }
 
+    public void remindMyTask() {
+        isTaskRemind = true;
+        iv_mytask.setImageDrawable(getResources().getDrawable(R.mipmap.icon_mine_campustask_remind));
+    }
 
-        putIntByPreference("association_id", responseData.getAssociation_id());
-        putStringByPreference("mobile_no", responseData.getMobile_no());
-        putStringByPreference("address", responseData.getAddress());
-        putIntByPreference("is_auth", responseData.getIs_auth());
-        putIntByPreference("is_paypwd", responseData.getIs_paypassword());
-        putIntByPreference("is_alipay", responseData.getIs_alipay());
-        putFloatByPreference("balance", responseData.getWallet());
+    public void remindMessage() {
+        isMesRemind = true;
+        iv_message.setImageDrawable(getResources().getDrawable(R.drawable.icon_message_sel));
+        iv_message.invalidate();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_setting:
+            case R.id.tape:
+                if (isMesRemind) {
+                    isMesRemind = false;
+                    iv_message.setImageDrawable(getResources().getDrawable(R.drawable.icon_message_nor));
+                }
+                callBack.messageEnter();
+                break;
+            case R.id.mine_mymessage:
+                callBack.myInfoEnter(responseData);
+                break;
+            case R.id.sel_school:
+                break;
+            case R.id.mime_topic_center:
+                callBack.myTopicEnter();
+                break;
+            case R.id.mime_my_task:
+                callBack.myTaskEnter();
+                if (isTaskRemind) {
+                    isTaskRemind = false;
+                    iv_mytask.setImageDrawable(getResources().getDrawable(R.drawable.icon_mine_campustask));
+                }
+                break;
+            case R.id.mine_my_order:
+                WindowHelper.showToast("敬请期待~");
+                break;
+            case R.id.my_wallet:
+                callBack.walletEnter();
+                break;
+            case R.id.my_points:
+                callBack.integralEnter(responseData);
+                break;
+            case R.id.my_corporation:
+                callBack.myAssnEnter();
+                break;
+            case R.id.my_store:
+                WindowHelper.showToast("敬请期待~");
+//                callBack.webWindowEnter("storeManage",0);
+                break;
+            case R.id.my_setting:
                 callBack.settingEnter();
                 break;
-            case R.id.tv_changecampus:
-                showToast(getResources().getString(R.string.changecampus_error_hint));
+            case R.id.my_enjoy:
+                callBack.shareEnter();
+                break;
+            case R.id.layout_certification:
+                if (isAuth == 0) {
+                    callBack.certificationEnter();
+                } else if (isAuth == 2) {
+                    WindowHelper.showToast("实名资料已在审核的路上，请等待...");
+                }
                 break;
         }
     }
-
 }

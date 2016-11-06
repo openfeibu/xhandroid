@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import cn.flyexp.R;
 import cn.flyexp.entity.RegisterRequest;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.CommonUtil;
 
 /**
@@ -29,7 +30,7 @@ public class RegisterWindow extends AbstractWindow implements View.OnClickListen
         super(callBack);
         this.callBack = callBack;
         initView();
-        mid = getStringByPreference("mid");
+        mid = WindowHelper.getStringByPreference("mid");
     }
 
     private void initView() {
@@ -44,7 +45,7 @@ public class RegisterWindow extends AbstractWindow implements View.OnClickListen
 
         et_phone.addTextChangedListener(this);
         et_pwd.addTextChangedListener(this);
-        String lineNumber = getStringByPreference("line_number");
+        String lineNumber = WindowHelper.getStringByPreference("line_number");
         if (!lineNumber.equals("")) {
             et_phone.setText(lineNumber);
         }
@@ -60,20 +61,20 @@ public class RegisterWindow extends AbstractWindow implements View.OnClickListen
                 String phone = et_phone.getText().toString().trim();
                 String pwd = et_pwd.getText().toString().trim();
                 if (pwd.length() < 6 || pwd.length() > 16) {
-                    showToast("密码长度必须为6~12位");
+                    WindowHelper.showToast("密码长度必须为6~12位");
                     return;
                 }
                 Pattern pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
                 Matcher ma = pa.matcher(pwd);
                 if (!ma.matches()) {
-                    showToast("密码不支持特殊字符");
+                    WindowHelper.showToast("密码不支持特殊字符");
                     return;
                 }
 
                 pa = Pattern.compile("1\\d{10}");
                 ma = pa.matcher(phone);
                 if (!ma.matches()) {
-                    showToast("手机号码有误");
+                    WindowHelper.showToast("手机号码有误");
                     return;
                 }
                 RegisterRequest registerRequest = new RegisterRequest();

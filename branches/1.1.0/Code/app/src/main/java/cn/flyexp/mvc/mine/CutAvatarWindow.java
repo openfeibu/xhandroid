@@ -12,6 +12,7 @@ import java.util.List;
 
 import cn.flyexp.R;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.util.BitmapUtil;
 import cn.flyexp.view.ClipImageLayout;
 
@@ -49,7 +50,7 @@ public class CutAvatarWindow extends AbstractWindow implements View.OnClickListe
                 hideWindow(true);
                 break;
             case R.id.tv_comfirm:
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;

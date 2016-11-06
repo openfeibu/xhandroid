@@ -30,9 +30,12 @@ import cn.flyexp.entity.PicBrowserBean;
 import cn.flyexp.entity.TopicPublishRequest;
 import cn.flyexp.entity.UploadImageResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.util.BitmapUtil;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.OnItemClickListener;
 
 /**
@@ -70,6 +73,7 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
         tv_label = (TextView) findViewById(R.id.tv_label);
         tv_label.setOnClickListener(this);
         et_content = (EditText) findViewById(R.id.et_content);
+        et_content.setText(callBack.getUIData(WindowCallBack.UIDataKeysDef.TOPIC_CONTENT));
         et_content.addTextChangedListener(this);
 
         windowLayout = findViewById(R.id.ll_topic_publish);
@@ -95,6 +99,7 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
         popLayout.findViewById(R.id.tv_label_help).setOnClickListener(this);
         popLayout.findViewById(R.id.tv_label_complaints).setOnClickListener(this);
         popLayout.findViewById(R.id.tv_label_ask).setOnClickListener(this);
+        popLayout.findViewById(R.id.tv_label_thelost).setOnClickListener(this);
 
         popLayout.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         popupHeight = popLayout.getMeasuredHeight();
@@ -127,6 +132,12 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
         rv_pic.setItemAnimator(new DefaultItemAnimator());
     }
 
+
+    public void deletePhoto(int index) {
+        LogUtil.error(getClass(), index + "index");
+        data.remove(index);
+        picAdapter.notifyDataSetChanged();
+    }
 
     public void response() {
         dismissProgressDialog();
@@ -165,6 +176,10 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
                 popupWindow.dismiss();
                 tv_label.setText(getResources().getString(R.string.label_complaints));
                 break;
+            case R.id.tv_label_thelost:
+                popupWindow.dismiss();
+                tv_label.setText(getResources().getString(R.string.label_thelost));
+                break;
             case R.id.tv_label_ask:
                 popupWindow.dismiss();
                 tv_label.setText(getResources().getString(R.string.label_ask));
@@ -176,7 +191,7 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
                     showPopupWindow();
                     return;
                 }
-                final String token = getStringByPreference("token");
+                final String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     return;
                 }
@@ -189,7 +204,7 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
                 if (data.size() == 0) {
                     callBack.submitTopic(topicPublishRequest);
                 } else {
-                    new Thread(){
+                    new Thread() {
                         @Override
                         public void run() {
                             ArrayList<File> files = new ArrayList<>();
@@ -282,10 +297,7 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
         } else {
             int[] location = new int[2];
             tv_label.getLocationOnScreen(location);
-            popupWindow.showAtLocation(tv_label, Gravity.NO_GRAVITY, (location[0] + tv_label
-                            .getWidth()
-                            / 2) - popupWidth / 2,
-                    location[1] - popupHeight - 10);
+            popupWindow.showAsDropDown(tv_label);
         }
     }
 
@@ -293,6 +305,12 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
         topicPublishRequest.setImg(uploadImageResponse.getUrl());
         topicPublishRequest.setThumb(uploadImageResponse.getThumb_url());
         callBack.submitTopic(topicPublishRequest);
+    }
+
+    public void uploadImageResponseFail() {
+        dismissProgressDialog();
+        WindowHelper.showToast(getContext().getResources().getString(R.string.topic_public_error));
+        tv_send.setEnabled(true);
     }
 
     @Override
@@ -308,6 +326,7 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
     @Override
     public void afterTextChanged(Editable s) {
         String content = et_content.getText().toString().trim();
+        callBack.setUIData(WindowCallBack.UIDataKeysDef.TOPIC_CONTENT, content);
         if (content.equals("")) {
             tv_send.setAlpha(0.5f);
             tv_send.setEnabled(false);
@@ -316,5 +335,4 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
             tv_send.setEnabled(true);
         }
     }
-
 }

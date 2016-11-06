@@ -6,6 +6,7 @@ import android.widget.EditText;
 import cn.flyexp.R;
 import cn.flyexp.entity.FeedbackRequest;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 
 /**
  * Created by txy on 2016/7/21 0021.
@@ -46,14 +47,14 @@ public class FeedbackWindow extends AbstractWindow implements View.OnClickListen
                 String content = et_content.getText().toString().trim();
                 String contact = et_contact.getText().toString().trim();
                 if (content == null || content.equals("")) {
-                    showToast("意见不能为空");
+                    WindowHelper.showToast("意见不能为空");
                     return;
                 }
                 if (contact == null || contact.equals("")) {
-                    showToast("留下你的联系方式");
+                    WindowHelper.showToast("留下你的联系方式");
                     return;
                 }
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;

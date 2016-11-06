@@ -3,11 +3,13 @@ package cn.flyexp.mvc.mine;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
@@ -18,7 +20,9 @@ import java.util.List;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.flyexp.R;
+import cn.flyexp.entity.CertificationRequest;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.util.BitmapUtil;
@@ -38,6 +42,8 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
     private String inverPath;
     private String token;
     private Button btn_confirm;
+    private EditText tv_name;
+    private EditText tv_numberid;
 
     public CertificationWindow(MineViewCallBack callBack) {
         super(callBack);
@@ -48,16 +54,18 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
     private void initView() {
         setContentView(R.layout.window_certification);
         findViewById(R.id.iv_back).setOnClickListener(this);
-        findViewById(R.id.iv_add).setOnClickListener(this);
-        findViewById(R.id.iv_add2).setOnClickListener(this);
+        findViewById(R.id.iv_neg).setOnClickListener(this);
+        findViewById(R.id.iv_pos).setOnClickListener(this);
 
         btn_confirm = (Button) findViewById(R.id.btn_confirm);
         btn_confirm.setOnClickListener(this);
 
-        iv_front = (ImageView) findViewById(R.id.iv_front);
-        iv_inver = (ImageView) findViewById(R.id.iv_inver);
+        iv_front = (ImageView) findViewById(R.id.iv_neg);
+        iv_inver = (ImageView) findViewById(R.id.iv_pos);
 
         certifiLayout = findViewById(R.id.certifiLayout);
+        tv_name = (EditText) findViewById(R.id.tv_name);
+        tv_numberid = (EditText) findViewById(R.id.tv_numberid);
 
         View popPicLayout = LayoutInflater.from(getContext()).inflate(R.layout
                 .pop_pic_method, null);
@@ -84,24 +92,30 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
             case R.id.iv_back:
                 hideWindow(true);
                 break;
-            case R.id.iv_add:
+            case R.id.iv_neg:
                 isFront = true;
                 picPopupWindow.showAtLocation(certifiLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
-            case R.id.iv_add2:
+            case R.id.iv_pos:
                 isFront = false;
                 picPopupWindow.showAtLocation(certifiLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.btn_confirm:
+                final String name = tv_name.getText().toString().trim();
+                final String numberid = tv_name.getText().toString().trim();
+                if(TextUtils.isEmpty(name) || TextUtils.isEmpty(numberid) ){
+                    WindowHelper.showToast("请输入完整信息");
+                    return;
+                }
                 if (frontPath.equals("")) {
-                    showToast("请上传身份证正面");
+                    WindowHelper.showToast("请上传身份证正面");
                     return;
                 }
                 if (inverPath.equals("")) {
-                    showToast("请上传身份证反面");
+                    WindowHelper.showToast("请上传身份证反面");
                     return;
                 }
-                token = getStringByPreference("token");
+                token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;
@@ -111,10 +125,14 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
                 new Thread(){
                     @Override
                     public void run() {
+                        CertificationRequest certificationRequest = new CertificationRequest();
+                        certificationRequest.setToken(token);
+                        certificationRequest.setId_number(numberid);
+                        certificationRequest.setName(name);
                         final ArrayList<File> files = new ArrayList<>();
                         files.add(BitmapUtil.compressBmpToFile(frontPath));
                         files.add(BitmapUtil.compressBmpToFile(inverPath));
-                        callBack.uploadImageCertifi(token, files);
+                        callBack.uploadImageCertifi(certificationRequest, files);
                     }
                 }.start();
                 break;

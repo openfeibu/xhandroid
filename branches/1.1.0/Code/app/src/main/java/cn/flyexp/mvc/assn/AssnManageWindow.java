@@ -9,6 +9,7 @@ import cn.flyexp.R;
 import cn.flyexp.entity.AssnProfileRequest;
 import cn.flyexp.entity.AssnProfileResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.view.RoundImageView;
 
 /**
@@ -31,7 +32,6 @@ public class AssnManageWindow extends AbstractWindow implements View.OnClickList
         setContentView(R.layout.window_assn_manage);
         findViewById(R.id.iv_back).setOnClickListener(this);
         findViewById(R.id.layout_introduction).setOnClickListener(this);
-        findViewById(R.id.layout_info).setOnClickListener(this);
         findViewById(R.id.layout_activity).setOnClickListener(this);
         findViewById(R.id.layout_notifiy).setOnClickListener(this);
 
@@ -40,7 +40,7 @@ public class AssnManageWindow extends AbstractWindow implements View.OnClickList
     }
 
     public void assnInfoRequest() {
-        int aid = getIntByPreference("association_id");
+        int aid = WindowHelper.getIntByPreference("association_id");
         AssnProfileRequest assnProfileRequest = new AssnProfileRequest();
         assnProfileRequest.setAssociation_id(aid);
         callBack.getAssnIntroduce(assnProfileRequest, 2);
@@ -63,14 +63,9 @@ public class AssnManageWindow extends AbstractWindow implements View.OnClickList
             case R.id.layout_introduction:
                 callBack.introducePublishEnter();
                 break;
-            case R.id.layout_info:
-                callBack.infoPublishEnter();
-                break;
             case R.id.layout_activity:
-                callBack.activityPublishEnter();
                 break;
             case R.id.layout_notifiy:
-                callBack.noticePublishEnter();
                 break;
         }
     }

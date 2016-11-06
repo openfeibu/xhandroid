@@ -1,6 +1,7 @@
 package cn.flyexp.mvc.assn;
 
 import android.app.AlertDialog;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,12 +15,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -29,9 +36,12 @@ import cn.flyexp.adapter.PicPublishAdapter;
 import cn.flyexp.entity.AssnActivityPublishRequest;
 import cn.flyexp.entity.PicBrowserBean;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.util.BitmapUtil;
+import cn.flyexp.util.CommonUtil;
+import cn.flyexp.util.DateUtil;
 import cn.flyexp.util.OnItemClickListener;
 
 /**
@@ -40,8 +50,6 @@ import cn.flyexp.util.OnItemClickListener;
 public class AssnActivityPublishWindow extends AbstractWindow implements View.OnClickListener, TextWatcher {
 
     private AssnViewCallBack callBack;
-    private RecyclerView rv_pic;
-    private PicPublishAdapter picAdapter;
     private ArrayList<PhotoInfo> data = new ArrayList<PhotoInfo>();
     private EditText et_title;
     private EditText et_content;
@@ -52,6 +60,8 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
     private EditText et_place;
     private AssnActivityPublishRequest assnActivityPublishRequest;
     private Button btn_confirm;
+    private ImageView iv_img;
+    private int aid;
 
     public AssnActivityPublishWindow(AssnViewCallBack callBack) {
         super(callBack);
@@ -65,10 +75,10 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
         findViewById(R.id.iv_add).setOnClickListener(this);
 
         btn_confirm = (Button) findViewById(R.id.btn_confirm);
-        btn_confirm.setOnClickListener(this);
-
         tv_startTime = (TextView) findViewById(R.id.tv_startTime);
         tv_endTime = (TextView) findViewById(R.id.tv_endTime);
+        iv_img = (ImageView) findViewById(R.id.iv_img);
+        btn_confirm.setOnClickListener(this);
         tv_startTime.setOnClickListener(this);
         tv_endTime.setOnClickListener(this);
 
@@ -92,31 +102,15 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
         et_title.addTextChangedListener(this);
         et_content.addTextChangedListener(this);
         et_place.addTextChangedListener(this);
-
-        picAdapter = new PicPublishAdapter(getContext(), data);
-        picAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                ArrayList<String> imgUrl = new ArrayList<String>();
-                for (PhotoInfo photoInfo : data) {
-                    imgUrl.add(photoInfo.getPhotoPath());
-                }
-                PicBrowserBean picBrowserBean = new PicBrowserBean();
-                picBrowserBean.setImgUrl(imgUrl);
-                picBrowserBean.setCurSelectedIndex(position);
-                picBrowserBean.setType(0);
-                callBack.picBrowserEnter(picBrowserBean);
-            }
-        });
-        rv_pic = (RecyclerView) findViewById(R.id.rv_pic);
-        rv_pic.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        rv_pic.setAdapter(picAdapter);
-        rv_pic.setItemAnimator(new DefaultItemAnimator());
     }
 
     public void response() {
         dismissProgressDialog();
         btn_confirm.setEnabled(true);
+    }
+
+    public void setAid(int aid) {
+        this.aid = aid;
     }
 
     @Override
@@ -138,14 +132,14 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
                 String startTime = tv_startTime.getText().toString().trim();
                 String endTime = tv_endTime.getText().toString().trim();
                 if (startTime.equals("选择活动开始时间")) {
-                    showToast("选择活动开始时间");
+                    WindowHelper.showToast("选择活动开始时间");
                     return;
                 }
                 if (endTime.equals("选择活动结束时间")) {
-                    showToast("选择活动结束时间");
+                    WindowHelper.showToast("选择活动结束时间");
                     return;
                 }
-                final String token = getStringByPreference("token");
+                final String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     return;
                 }
@@ -156,12 +150,13 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
                 assnActivityPublishRequest.setPlace(place);
                 assnActivityPublishRequest.setStart_time(startTime);
                 assnActivityPublishRequest.setEnd_time(endTime);
+                assnActivityPublishRequest.setAid(aid);
                 btn_confirm.setEnabled(false);
                 showProgressDialog("发布中...");
                 if (data.size() == 0) {
                     callBack.submitActivity(assnActivityPublishRequest);
                 } else {
-                    new Thread(){
+                    new Thread() {
                         @Override
                         public void run() {
                             ArrayList<File> files = new ArrayList<>();
@@ -174,21 +169,18 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
                 }
                 break;
             case R.id.iv_add:
-                if (data.size() >= 6) {
-                    showToast("最多选择六张图片");
-                    return;
-                }
                 picPopupWindow.showAtLocation(activityLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.btn_album:
                 picPopupWindow.dismiss();
                 PermissionTools.requestPermission(getContext(), new PermissionHandler.PermissionCallback() {
                     public void onSuccess() {
-                        GalleryFinal.openGalleryMuti(100, 6 - data.size(), new GalleryFinal.OnHanlderResultCallback() {
+                        GalleryFinal.openGalleryMuti(100, 1, new GalleryFinal.OnHanlderResultCallback() {
                             @Override
                             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+                                data.clear();
                                 data.addAll(resultList);
-                                picAdapter.notifyDataSetChanged();
+                                Picasso.with(getContext()).load(new File(resultList.get(0).getPhotoPath())).config(Bitmap.Config.RGB_565).resize(CommonUtil.dip2px(getContext(), 50), CommonUtil.dip2px(getContext(), 50)).memoryPolicy(MemoryPolicy.NO_CACHE).into(iv_img);
                             }
 
                             @Override
@@ -216,7 +208,7 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
                             @Override
                             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                                 data.addAll(resultList);
-                                picAdapter.notifyDataSetChanged();
+                                Picasso.with(getContext()).load(new File(resultList.get(0).getPhotoPath())).config(Bitmap.Config.RGB_565).resize(CommonUtil.dip2px(getContext(), 50), CommonUtil.dip2px(getContext(), 50)).memoryPolicy(MemoryPolicy.NO_CACHE).into(iv_img);
                             }
 
                             @Override
@@ -239,6 +231,17 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
             case R.id.btn_cancel:
                 picPopupWindow.dismiss();
                 break;
+            case R.id.iv_img:
+                ArrayList<String> imgUrl = new ArrayList<String>();
+                for (PhotoInfo photoInfo : data) {
+                    imgUrl.add(photoInfo.getPhotoPath());
+                }
+                PicBrowserBean picBrowserBean = new PicBrowserBean();
+                picBrowserBean.setImgUrl(imgUrl);
+                picBrowserBean.setCurSelectedIndex(0);
+                picBrowserBean.setType(0);
+                callBack.picBrowserEnter(picBrowserBean);
+                break;
         }
     }
 
@@ -260,8 +263,9 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
                 int month = dp_assnact.getMonth() + 1;
                 int day = dp_assnact.getDayOfMonth();
                 int hour = tp_assnact.getCurrentHour();
-                int minute = tp_assnact.getCurrentMinute();
-                String dataStr = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+                Calendar c = Calendar.getInstance();
+                c.set(year, month, day, hour, 0);
+                String dataStr = DateUtil.long2Date(c.getTimeInMillis(), "yyyy-MM-dd HH:mm");
                 if (isStartTime) {
                     tv_startTime.setText(dataStr);
                 } else {

@@ -1,247 +1,109 @@
 package cn.flyexp.mvc.task;
 
-import cn.flyexp.entity.AlipayRequest;
-import cn.flyexp.entity.AlipayResponse;
-import cn.flyexp.entity.CancelTaskRequest;
-import cn.flyexp.entity.CommonResponse;
-import cn.flyexp.entity.EncodeData;
-import cn.flyexp.entity.FinishOrderRequest;
-import cn.flyexp.entity.FinishWorkRequest;
-import cn.flyexp.entity.MyTaskRequest;
+import android.content.ContentValues;
+import android.database.Cursor;
+
+import java.util.ArrayList;
+
+import cn.flyexp.entity.MyOrderResponse;
 import cn.flyexp.entity.MyTaskResponse;
-import cn.flyexp.entity.TaskClaimRequest;
-import cn.flyexp.entity.OrderCreateRequest;
-import cn.flyexp.entity.TaskPublishResponse;
-import cn.flyexp.entity.TaskRequest;
 import cn.flyexp.entity.OrderResponse;
-import cn.flyexp.net.NetWork;
-import cn.flyexp.net.NetWorkService;
+import cn.flyexp.util.DatabaseHelper;
 import cn.flyexp.util.GsonUtil;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
- * Created by txy on 2016/6/5.
+ * Created by tanxinye on 2016/10/3.
  */
 public class TaskModel {
 
-    private TaskModelCallBack callBack;
-    private NetWorkService service;
-
-    public TaskModel(TaskModelCallBack callBack) {
-        this.callBack = callBack;
-        service = NetWork.getInstance().getService();
+    public void insertTask(ArrayList<OrderResponse.OrderResponseData> data) {
+        DatabaseHelper.deleteAllData(DatabaseHelper.TABLE_TASK);
+        ContentValues contentValues = null;
+        for (OrderResponse.OrderResponseData responseData : data) {
+            contentValues = new ContentValues();
+            contentValues.put(DatabaseHelper.KEY_ID, responseData.getOid());
+            contentValues.put(DatabaseHelper.KEY_DATA, GsonUtil.toJson(responseData));
+            contentValues.put(DatabaseHelper.KEY_DATE, responseData.getCreated_at());
+            DatabaseHelper.insertData(DatabaseHelper.TABLE_TASK,contentValues);
+        }
     }
 
-    public void getOrderList(TaskRequest taskRequest) {
-        if (taskRequest == null) {
-            return;
+    public ArrayList<OrderResponse.OrderResponseData> getLocalTask() {
+        Cursor cursor = DatabaseHelper.queryAllData(DatabaseHelper.TABLE_TASK);
+        if (cursor == null) {
+            return null;
         }
-        String data = GsonUtil.toJson(taskRequest, TaskRequest.class);
-        Call<EncodeData> call = service.getOrderList(data);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    OrderResponse orderResponse = GsonUtil.fromJson(response.body().getData(), OrderResponse.class);
-                    callBack.orderListResponse(orderResponse);
-                } else {
-                    callBack.orderListResponse(null);
-                }
-            }
+        ArrayList<OrderResponse.OrderResponseData> responseData = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String data = cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_DATA));
+            OrderResponse.OrderResponseData orderResponseData = GsonUtil.fromJson(data, OrderResponse.OrderResponseData.class);
+            responseData.add(orderResponseData);
+        }
+        return responseData;
+    }
 
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.orderListResponse(null);
-            }
-        });
+    public String getTaskLastTime() {
+        return DatabaseHelper.getLastTime(DatabaseHelper.TABLE_TASK);
+    }
+
+    public void insertMyTask(ArrayList<MyTaskResponse.MyTaskResponseData> data) {
+        DatabaseHelper.deleteAllData(DatabaseHelper.TABLE_MYTASK);
+        ContentValues contentValues = null;
+        for (MyTaskResponse.MyTaskResponseData responseData : data) {
+            contentValues = new ContentValues();
+            contentValues.put(DatabaseHelper.KEY_ID, responseData.getOid());
+            contentValues.put(DatabaseHelper.KEY_DATA, GsonUtil.toJson(responseData));
+            contentValues.put(DatabaseHelper.KEY_DATE, responseData.getCreated_at());
+            DatabaseHelper.insertData(DatabaseHelper.TABLE_MYTASK,contentValues);
+        }
+    }
+
+    public ArrayList<MyTaskResponse.MyTaskResponseData> getLocalMyTask() {
+        Cursor cursor = DatabaseHelper.queryAllData(DatabaseHelper.TABLE_MYTASK);
+        if (cursor == null) {
+            return null;
+        }
+        ArrayList<MyTaskResponse.MyTaskResponseData> responseData = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String data = cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_DATA));
+            MyTaskResponse.MyTaskResponseData orderResponseData = GsonUtil.fromJson(data, MyTaskResponse.MyTaskResponseData.class);
+            responseData.add(orderResponseData);
+        }
+        return responseData;
+    }
+
+    public String getMyTaskLastTime() {
+        return DatabaseHelper.getLastTime(DatabaseHelper.TABLE_MYTASK);
     }
 
 
-    public void createOrder(OrderCreateRequest orderCreateRequest) {
-        if (orderCreateRequest == null) {
-            return;
+    public void insertMyOrder(ArrayList<MyOrderResponse.MyOrderResponseData> data) {
+        DatabaseHelper.deleteAllData(DatabaseHelper.TABLE_MYORDER);
+        ContentValues contentValues = null;
+        for (MyOrderResponse.MyOrderResponseData responseData : data) {
+            contentValues = new ContentValues();
+            contentValues.put(DatabaseHelper.KEY_ID, responseData.getOid());
+            contentValues.put(DatabaseHelper.KEY_DATA, GsonUtil.toJson(responseData));
+            contentValues.put(DatabaseHelper.KEY_DATE, responseData.getCreated_at());
+            DatabaseHelper.insertData(DatabaseHelper.TABLE_MYORDER,contentValues);
         }
-        Call<EncodeData> call = service.createOrder(orderCreateRequest);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    TaskPublishResponse taskPublishResponse = GsonUtil.fromJson(response.body().getData(), TaskPublishResponse.class);
-                    callBack.taskPublishResponse(taskPublishResponse);
-                } else {
-                    callBack.taskPublishResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.taskPublishResponse(null);
-            }
-        });
     }
 
-    public void claimOrder(TaskClaimRequest taskClaimRequest) {
-        if (taskClaimRequest == null) {
-            return;
+    public ArrayList<MyOrderResponse.MyOrderResponseData> getLocalMyOrder() {
+        Cursor cursor = DatabaseHelper.queryAllData(DatabaseHelper.TABLE_MYORDER);
+        if (cursor == null) {
+            return null;
         }
-        Call<EncodeData> call = service.claimOrder(taskClaimRequest);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    CommonResponse commonResponse = GsonUtil.fromJson(response.body().getData(), CommonResponse.class);
-                    callBack.orderClaimResponse(commonResponse);
-                } else {
-                    callBack.orderClaimResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.orderClaimResponse(null);
-            }
-        });
+        ArrayList<MyOrderResponse.MyOrderResponseData > responseData = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String data = cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_DATA));
+            MyOrderResponse.MyOrderResponseData myOrderResponseData = GsonUtil.fromJson(data, MyOrderResponse.MyOrderResponseData.class);
+            responseData.add(myOrderResponseData);
+        }
+        return responseData;
     }
 
-    public void finishOrder(FinishOrderRequest finishOrderRequest) {
-        if (finishOrderRequest == null) {
-            return;
-        }
-        Call<EncodeData> call = service.confirmFinishWork(finishOrderRequest);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    CommonResponse commonResponse = GsonUtil.fromJson(response.body().getData(), CommonResponse.class);
-                    callBack.finishOrderResponse(commonResponse);
-                } else {
-                    callBack.finishOrderResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.finishOrderResponse(null);
-            }
-        });
-    }
-
-    public void myOrder(MyTaskRequest myTaskRequest) {
-        if (myTaskRequest == null) {
-            return;
-        }
-        String data = GsonUtil.toJson(myTaskRequest, MyTaskRequest.class);
-        Call<EncodeData> call = service.myOrder(data);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    MyTaskResponse myTaskResponse = GsonUtil.fromJson(response.body().getData(), MyTaskResponse.class);
-                    callBack.myOrderResponse(myTaskResponse);
-                } else {
-                    callBack.myOrderResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.myOrderResponse(null);
-            }
-        });
-    }
-
-    public void myTask(MyTaskRequest myTaskRequest) {
-        if (myTaskRequest == null) {
-            return;
-        }
-        String data = GsonUtil.toJson(myTaskRequest, MyTaskRequest.class);
-        Call<EncodeData> call = service.myTask(data);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    MyTaskResponse myTaskResponse = GsonUtil.fromJson(response.body().getData(), MyTaskResponse.class);
-                    callBack.myTaskResponse(myTaskResponse);
-                } else {
-                    callBack.myTaskResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.myTaskResponse(null);
-            }
-        });
-    }
-
-    public void finishWork(FinishWorkRequest finishWorkRequest) {
-        if (finishWorkRequest == null) {
-            return;
-        }
-        Call<EncodeData> call = service.finishWork(finishWorkRequest);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    CommonResponse commonResponse = GsonUtil.fromJson(response.body().getData(), CommonResponse.class);
-                    callBack.finishWorkResponse(commonResponse);
-                } else {
-                    callBack.finishWorkResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.finishWorkResponse(null);
-            }
-        });
-    }
-
-    public void cancelTask(CancelTaskRequest cancelTaskRequest) {
-        if (cancelTaskRequest == null) {
-            return;
-        }
-        Call<EncodeData> call = service.cancelTask(cancelTaskRequest);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    CommonResponse commonResponse = GsonUtil.fromJson(response.body().getData(), CommonResponse.class);
-                    callBack.cancelTaskResponse(commonResponse);
-                } else {
-                    callBack.cancelTaskResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.cancelTaskResponse(null);
-            }
-        });
-    }
-
-    public void aliPay(AlipayRequest alipayRequest) {
-        if (alipayRequest == null) {
-            return;
-        }
-        Call<EncodeData> call = service.aliPay(alipayRequest);
-        call.enqueue(new Callback<EncodeData>() {
-            @Override
-            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
-                if (response.body() != null && response.isSuccess()) {
-                    AlipayResponse alipayResponse = GsonUtil.fromJson(response.body().getData(), AlipayResponse.class);
-                    callBack.alipayResponse(alipayResponse);
-                } else {
-                    callBack.alipayResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EncodeData> call, Throwable t) {
-                callBack.alipayResponse(null);
-            }
-        });
+    public String getMyOrderLastTime() {
+        return DatabaseHelper.getLastTime(DatabaseHelper.TABLE_MYORDER);
     }
 }

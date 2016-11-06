@@ -1,27 +1,27 @@
 package cn.flyexp.mvc.task;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.baoyachi.stepview.HorizontalStepView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.flyexp.R;
-import cn.flyexp.entity.FinishOrderRequest;
 import cn.flyexp.entity.FinishWorkRequest;
 import cn.flyexp.entity.MyTaskResponse;
 import cn.flyexp.framework.AbstractWindow;
-import cn.flyexp.util.Constants;
+import cn.flyexp.framework.WindowHelper;
+import cn.flyexp.util.CommonUtil;
+import cn.flyexp.util.DateUtil;
+import cn.flyexp.view.StepView;
 
 
 /**
@@ -30,15 +30,18 @@ import cn.flyexp.util.Constants;
 public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickListener {
 
     private TaskViewCallBack callBack;
+    private String openId;
+    private int orderId;
+    private String phone;
     private TextView tv_nickname;
     private TextView tv_money;
     private TextView tv_destination;
     private TextView tv_description;
-    private String openId;
+    private ImageView iv_share;
+    private StepView stepView;
+    private PopupWindow picPopupWindow;
+    private View taskLayout;
     private Button btn_finish;
-    private int orderId;
-    private String phone;
-    private HorizontalStepView stepview;
 
     public MyTaskDetailWindow(TaskViewCallBack callBack) {
         super(callBack);
@@ -52,6 +55,23 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
         findViewById(R.id.tv_report).setOnClickListener(this);
         findViewById(R.id.tv_contact).setOnClickListener(this);
 
+        stepView = (StepView) findViewById(R.id.stepView);
+        iv_share = (ImageView) findViewById(R.id.iv_share);
+
+        taskLayout = findViewById(R.id.taskLayout);
+
+        View popShareLayout = LayoutInflater.from(getContext()).inflate(R.layout
+                .pop_share, null);
+        popShareLayout.findViewById(R.id.tv_qq).setOnClickListener(this);
+        popShareLayout.findViewById(R.id.tv_wxf).setOnClickListener(this);
+        popShareLayout.findViewById(R.id.tv_wxq).setOnClickListener(this);
+        picPopupWindow = new PopupWindow(popShareLayout, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        picPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        picPopupWindow.setFocusable(true);
+        picPopupWindow.setOutsideTouchable(true);
+        picPopupWindow.setAnimationStyle(R.style.popwin_anim_style);
+
         btn_finish = (Button) findViewById(R.id.btn_finish);
 
         tv_nickname = (TextView) findViewById(R.id.tv_nickname);
@@ -59,23 +79,6 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
         tv_money = (TextView) findViewById(R.id.tv_money);
         tv_destination = (TextView) findViewById(R.id.tv_destination);
         tv_description = (TextView) findViewById(R.id.tv_description);
-
-        stepview = (HorizontalStepView) findViewById(R.id.step_view);
-        List<String> list = new ArrayList<>();
-        list.add("发单");
-        list.add("接单");
-        list.add("完成");
-        list.add("结算");
-        stepview//设置完成的步数
-                .setStepViewTexts(list)//总步骤
-                .setTextSize(16)//set textSize
-                .setStepsViewIndicatorCompletedLineColor(ContextCompat.getColor(getContext(), R.color.light_green))//设置StepsViewIndicator完成线的颜色
-                .setStepsViewIndicatorUnCompletedLineColor(ContextCompat.getColor(getContext(), R.color.font_brown_light))//设置StepsViewIndicator未完成线的颜色
-                .setStepViewComplectedTextColor(ContextCompat.getColor(getContext(), R.color.light_green))//设置StepsView text完成线的颜色
-                .setStepViewUnComplectedTextColor(ContextCompat.getColor(getContext(), R.color.font_brown_light))//设置StepsView text未完成线的颜色
-                .setStepsViewIndicatorCompleteIcon(ContextCompat.getDrawable(getContext(), R.mipmap.icon_selected_green))//设置StepsViewIndicator CompleteIcon
-                .setStepsViewIndicatorAttentionIcon(ContextCompat.getDrawable(getContext(), R.mipmap.icon_prompt_gray))//设置StepsViewIndicator DefaultIcon
-                .setStepsViewIndicatorDefaultIcon(ContextCompat.getDrawable(getContext(), R.mipmap.icon_prompt_gray));//设置StepsViewIndicator DefaultIcon
     }
 
     public void initMyTaskDetail(MyTaskResponse.MyTaskResponseData responseData) {
@@ -89,17 +92,37 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
         tv_money.setText(responseData.getFee() + "");
         tv_description.setText(responseData.getDescription());
         tv_nickname.setText("发单人：" + responseData.getNickname());
-        if (responseData.getStatus().equals("accepted")) {
+        tv_nickname.setTextColor(getResources().getColor(R.color.font_brown_dark));
+        String status = responseData.getStatus();
+        MyTaskResponse.MyTaskResponseData.TimeData timeData = responseData.getTime();
+        if (!TextUtils.isEmpty(timeData.getCancelled_time())) {
+            stepView.cancel(timeData.getCancelled_time());
+        } else {
+            String[] dates = new String[4];
+            int len = 0;
+            if (!TextUtils.isEmpty(timeData.getNew_time())) {
+                dates[0] = DateUtil.long2Date(DateUtil.date2Long(timeData.getNew_time()), "MM-dd HH:mm");
+                len++;
+                if (!TextUtils.isEmpty(timeData.getAccepted_time())) {
+                    dates[1] = DateUtil.long2Date(DateUtil.date2Long(timeData.getAccepted_time()), "MM-dd HH:mm");
+                    len++;
+                    if (!TextUtils.isEmpty(timeData.getFinish_time())) {
+                        dates[2] = DateUtil.long2Date(DateUtil.date2Long(timeData.getFinish_time()), "MM-dd HH:mm");
+                        len++;
+                        if (!TextUtils.isEmpty(timeData.getCompleted_time())) {
+                            dates[3] = DateUtil.long2Date(DateUtil.date2Long(timeData.getCompleted_time()), "MM-dd HH:mm");
+                            len++;
+                        }
+                    }
+                }
+            }
+            stepView.setDate(dates, len);
+        }
+        stepView.show();
+        if (status.equals("accepted")) {
             btn_finish.setVisibility(VISIBLE);
             btn_finish.setText("完成任务");
             btn_finish.setOnClickListener(this);
-            stepview.setStepsViewIndicatorComplectingPosition(2);
-        } else if (responseData.getStatus().equals("finish")) {
-            btn_finish.setVisibility(GONE);
-            stepview.setStepsViewIndicatorComplectingPosition(3);
-        } else if (responseData.getStatus().equals("completed")) {
-            btn_finish.setVisibility(GONE);
-            stepview.setStepsViewIndicatorComplectingPosition(4);
         } else {
             btn_finish.setVisibility(GONE);
         }
@@ -117,11 +140,14 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
             case R.id.iv_back:
                 hideWindow(true);
                 break;
+            case R.id.sender_name:
+                callBack.taWindowEnter(openId);
+                break;
             case R.id.tv_report:
                 callBack.reportEnter(orderId);
                 break;
             case R.id.btn_finish:
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;
@@ -143,7 +169,7 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
                 try {
                     getContext().startActivity(intent);
                 } catch (Exception e) {
-                    showToast("无法使用电话");
+                    WindowHelper.showToast("无法调用电话界面");
                 }
                 break;
         }

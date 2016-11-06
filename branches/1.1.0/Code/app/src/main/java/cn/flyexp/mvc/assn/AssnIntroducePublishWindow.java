@@ -8,6 +8,7 @@ import cn.flyexp.entity.AssnProfilePublishRequest;
 import cn.flyexp.entity.AssnProfileRequest;
 import cn.flyexp.entity.AssnProfileResponse;
 import cn.flyexp.framework.AbstractWindow;
+import cn.flyexp.framework.WindowHelper;
 
 /**
  * Created by txy on 2016/7/27 0027.
@@ -33,7 +34,7 @@ public class AssnIntroducePublishWindow extends AbstractWindow implements View.O
     }
 
     public AssnProfileRequest getProfileRequest() {
-        int association_id = getIntByPreference("association_id");
+        int association_id = WindowHelper.getIntByPreference("association_id");
         if (association_id == -1) {
             return null;
         }
@@ -61,10 +62,10 @@ public class AssnIntroducePublishWindow extends AbstractWindow implements View.O
             case R.id.btn_confirm:
                 String content = et_content.getText().toString().trim();
                 if (content == null || content.equals("")) {
-                    showToast("内容不能为空");
+                    WindowHelper.showToast("内容不能为空");
                     return;
                 }
-                String token = getStringByPreference("token");
+                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     return;
                 }
