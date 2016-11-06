@@ -52,6 +52,11 @@ public class SetPayPwdWindow extends AbstractWindow implements View.OnClickListe
 
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return false;
+    }
+
     public void response() {
         dismissProgressDialog();
         btn_set.setEnabled(true);

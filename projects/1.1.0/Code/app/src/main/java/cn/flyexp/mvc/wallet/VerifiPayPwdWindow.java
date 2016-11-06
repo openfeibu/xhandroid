@@ -42,6 +42,11 @@ public class VerifiPayPwdWindow extends AbstractWindow implements View.OnClickLi
         et_pwd.addTextChangedListener(this);
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return false;
+    }
+
     public void setRequestCode(int requestCode) {
         this.requestCode = requestCode;
     }

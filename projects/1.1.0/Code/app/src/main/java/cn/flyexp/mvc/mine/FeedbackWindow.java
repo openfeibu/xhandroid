@@ -32,6 +32,10 @@ public class FeedbackWindow extends AbstractWindow implements View.OnClickListen
         et_contact = (EditText) findViewById(R.id.et_contact);
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return false;
+    }
 
     public void response() {
         findViewById(R.id.btn_confirm).setEnabled(true);

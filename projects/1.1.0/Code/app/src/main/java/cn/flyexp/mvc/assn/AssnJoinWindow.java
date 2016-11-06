@@ -53,6 +53,11 @@ public class AssnJoinWindow extends AbstractWindow implements View.OnClickListen
     }
 
     @Override
+    protected boolean canHandleKeyBackUp() {
+        return false;
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:

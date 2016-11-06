@@ -85,6 +85,11 @@ public class LoginWindow extends AbstractWindow implements View.OnClickListener,
         }
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return false;
+    }
+
     public void vertifyLogin() {
         if (isVertify) {
             et_vertifycode.setText("");

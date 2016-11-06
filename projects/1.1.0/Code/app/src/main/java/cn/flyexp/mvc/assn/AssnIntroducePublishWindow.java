@@ -33,6 +33,11 @@ public class AssnIntroducePublishWindow extends AbstractWindow implements View.O
         et_content = (EditText) findViewById(R.id.et_content);
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return false;
+    }
+
     public AssnProfileRequest getProfileRequest() {
         int association_id = WindowHelper.getIntByPreference("association_id");
         if (association_id == -1) {

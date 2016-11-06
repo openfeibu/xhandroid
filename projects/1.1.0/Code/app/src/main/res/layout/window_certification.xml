@@ -108,7 +108,10 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/round_gray_bg"
                 android:hint="姓名"
+                android:imeOptions="actionNext"
                 android:padding="8dp"
+                android:singleLine="true"
+                android:inputType="text"
                 android:textSize="14sp" />
 
             <EditText
@@ -120,6 +123,9 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/round_gray_bg"
                 android:hint="身份证号码"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:inputType="text"
                 android:padding="8dp"
                 android:textSize="14sp" />
 

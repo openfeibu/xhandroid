@@ -56,6 +56,11 @@ public class ResetPwdWindow extends AbstractWindow implements View.OnClickListen
 
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return false;
+    }
+
     private void countDown() {
         new CountDownTimer(60000, 1000) {
 
