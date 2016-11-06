@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:text="1.自拍手持身份证反面\n2.身份证正反面的清晰照片各一张\n3.点击上方照片框即可添加照片"
+                android:text="1.自拍手持身份证有头像一面\n2.身份证有国微一面的清晰照片各一张\n3.点击上方照片框即可添加照片"
                 android:textSize="12sp" />
 
             <EditText

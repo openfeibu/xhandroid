@@ -108,11 +108,11 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
                     return;
                 }
                 if (frontPath.equals("")) {
-                    WindowHelper.showToast("请上传身份证正面");
+                    WindowHelper.showToast("请上传自拍手持身份证有头像一面");
                     return;
                 }
                 if (inverPath.equals("")) {
-                    WindowHelper.showToast("请上传身份证反面");
+                    WindowHelper.showToast("身份证有国微一面");
                     return;
                 }
                 token = WindowHelper.getStringByPreference("token");

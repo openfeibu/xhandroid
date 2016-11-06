@@ -5,7 +5,7 @@ package cn.flyexp.constants;
  */
 public class Config {
 
-    public static final String SERVER_URL = "http://xh.feibu.info/";
+    public static final String SERVER_URL = "http://xhplus.feibu.info/";
 //    public static final String SERVER_URL = "http://192.168.0.95/FBB/xh/public/index.php/";
 //    public static final String SERVER_URL = "http://xhplus.feibu.info/";
 //    public static final String SERVER_URL = "http://192.168.0.9:8084/";
