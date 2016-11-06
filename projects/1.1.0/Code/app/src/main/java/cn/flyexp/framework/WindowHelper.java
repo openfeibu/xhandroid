@@ -22,11 +22,11 @@ public class WindowHelper{
         return AbstractWindow.activity;
     }
 
-    public static void showToast(String msg) {
+    public static void showToast(CharSequence msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showLongToast(String msg) {
+    public static void showLongToast(CharSequence msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
     }
 
