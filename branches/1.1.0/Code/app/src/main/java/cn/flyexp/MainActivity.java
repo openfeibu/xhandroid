@@ -110,18 +110,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (super.dispatchKeyEvent(event)){
-            return true;
+        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN ||  event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP){
+            return super.dispatchKeyEvent(event);
         }
         if (event.getAction() == KeyEvent.ACTION_UP) {
-//            if (isSoftShowing) {
-//                hideInput();
-//                return true;
-//            }
-            Environment.dispatchKeyEvent(event);
-            return true;
+            if (isSoftShowing) {
+                hideInput();
+                return true;
+            }
         }
-        return super.dispatchKeyEvent(event);
+        Environment.dispatchKeyEvent(event);
+        return true;
     }
 
     @Override

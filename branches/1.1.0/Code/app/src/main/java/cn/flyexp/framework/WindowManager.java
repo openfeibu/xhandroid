@@ -92,13 +92,12 @@ public class WindowManager {
     }
 
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            int keyCode = event.getKeyCode();
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                popWindow(true);
+        if (currentWindow != null) {
+            if (currentWindow.dispatchKeyEvent(event)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public void clearWindow() {
