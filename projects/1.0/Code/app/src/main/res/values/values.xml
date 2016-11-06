@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="radio_button_selected_color">@color/white</color>
+    <color name="radio_button_unselected_color">@android:color/transparent</color>
+    <style name="radioButton_style">
+        <item name="android:textColor">@drawable/segmented_btn_text_color</item>
+        <item name="android:minHeight">33dp</item>
+        <item name="android:minWidth">70dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+    </style>
+</resources>
