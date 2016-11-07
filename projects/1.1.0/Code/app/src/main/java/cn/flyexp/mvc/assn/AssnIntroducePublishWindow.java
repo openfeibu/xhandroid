@@ -35,7 +35,7 @@ public class AssnIntroducePublishWindow extends AbstractWindow implements View.O
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_content.isFocused());
     }
 
     public AssnProfileRequest getProfileRequest() {

@@ -54,7 +54,7 @@ public class SetPayPwdWindow extends AbstractWindow implements View.OnClickListe
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_newPwd2.isFocused() || et_newPwd.isFocused());
     }
 
     public void response() {

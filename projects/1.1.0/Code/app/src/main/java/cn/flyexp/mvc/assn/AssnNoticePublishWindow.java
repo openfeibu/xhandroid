@@ -45,7 +45,7 @@ public class AssnNoticePublishWindow extends AbstractWindow implements View.OnCl
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_content.isFocused());
     }
 
     @Override

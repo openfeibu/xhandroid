@@ -34,7 +34,7 @@ public class FeedbackWindow extends AbstractWindow implements View.OnClickListen
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_contact.isFocused() || et_content.isFocused());
     }
 
     public void response() {

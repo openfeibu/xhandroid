@@ -48,7 +48,7 @@ public class PayBindWindow extends AbstractWindow implements View.OnClickListene
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_account.isFocused() || et_name.isFocused());
     }
 
     @Override

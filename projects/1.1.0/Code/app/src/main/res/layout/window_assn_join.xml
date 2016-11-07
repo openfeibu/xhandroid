@@ -68,6 +68,9 @@
                         android:hint="请输入姓名"
                         android:textColor="@color/font_brown_light"
                         android:textColorHint="@color/font_brown_light"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
                         android:textSize="14sp" />
 
                     <View
@@ -107,6 +110,9 @@
                         android:hint="请输入专业"
                         android:textColor="@color/font_brown_light"
                         android:textColorHint="@color/font_brown_light"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
                         android:textSize="14sp" />
 
                     <View
@@ -146,6 +152,9 @@
                         android:hint="请输入手机号码"
                         android:textColor="@color/font_brown_light"
                         android:textColorHint="@color/font_brown_light"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
                         android:textSize="14sp" />
 
                     <View
@@ -167,6 +176,8 @@
                 android:padding="8dp"
                 android:hint="申请理由"
                 android:gravity="top|left"
+                android:inputType="text"
+                android:imeOptions="actionDone"
                 android:textColor="@color/font_brown_light"
                 android:textColorHint="@color/font_brown_light"
                 android:textSize="12sp" />

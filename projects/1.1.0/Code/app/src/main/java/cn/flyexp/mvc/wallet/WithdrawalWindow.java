@@ -65,7 +65,7 @@ public class WithdrawalWindow extends AbstractWindow implements View.OnClickList
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_fee.isFocused());
     }
 
     public void payPwdResponse(String paypwd) {

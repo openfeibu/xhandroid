@@ -85,7 +85,7 @@ public class TaskPublishWindow extends AbstractWindow implements View.OnClickLis
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_phone.isFocused() || et_fee.isFocused() || et_description.isFocused() || et_destination.isFocused());
     }
 
     private void setDefault() {

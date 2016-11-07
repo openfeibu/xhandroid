@@ -71,7 +71,7 @@ public class RegisterInfoWindow extends AbstractWindow implements View.OnClickLi
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_nickname.isFocused() || et_year.isFocused() || et_vertifycode.isFocused());
     }
 
     public void initRequest(RegisterRequest registerRequest) {

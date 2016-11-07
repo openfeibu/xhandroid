@@ -53,7 +53,7 @@ public class RegisterWindow extends AbstractWindow implements View.OnClickListen
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_phone.isFocused() || et_pwd.isFocused());
     }
 
     @Override

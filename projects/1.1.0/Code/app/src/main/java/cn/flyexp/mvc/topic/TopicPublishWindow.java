@@ -141,7 +141,7 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_content.isFocused());
     }
 
     public void response() {

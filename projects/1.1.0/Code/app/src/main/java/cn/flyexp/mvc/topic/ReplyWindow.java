@@ -40,7 +40,7 @@ public class ReplyWindow extends AbstractWindow implements View.OnClickListener 
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_content.isFocused());
     }
 
 

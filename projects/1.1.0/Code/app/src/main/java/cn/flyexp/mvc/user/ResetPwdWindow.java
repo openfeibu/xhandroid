@@ -58,7 +58,7 @@ public class ResetPwdWindow extends AbstractWindow implements View.OnClickListen
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_phone.isFocused() || et_pwd.isFocused() || et_vertifycode.isFocused());
     }
 
     private void countDown() {

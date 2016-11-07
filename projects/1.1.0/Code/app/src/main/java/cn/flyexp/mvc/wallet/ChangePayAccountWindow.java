@@ -54,7 +54,7 @@ public class ChangePayAccountWindow extends AbstractWindow implements View.OnCli
 
     @Override
     protected boolean canHandleKeyBackUp() {
-        return false;
+        return !(et_name.isFocused() || et_account.isFocused() || et_vertifycode.isFocused());
     }
 
     private void countDown() {
