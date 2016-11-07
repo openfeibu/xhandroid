@@ -16,6 +16,7 @@ import android.widget.PopupWindow;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -102,8 +103,8 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
                 break;
             case R.id.btn_confirm:
                 final String name = tv_name.getText().toString().trim();
-                final String numberid = tv_name.getText().toString().trim();
-                if(TextUtils.isEmpty(name) || TextUtils.isEmpty(numberid) ){
+                final String numberid = tv_numberid.getText().toString().trim();
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(numberid)) {
                     WindowHelper.showToast("请输入完整信息");
                     return;
                 }
@@ -115,6 +116,11 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
                     WindowHelper.showToast("请上传身份证反面");
                     return;
                 }
+                Pattern pattern = Pattern.compile("^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
+                if (pattern.matcher(numberid).matches()) {
+                    WindowHelper.showToast("身份证格式错误");
+                    return;
+                }
                 token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
@@ -122,7 +128,7 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
                 }
                 showProgressDialog("提交中...");
                 v.setEnabled(false);
-                new Thread(){
+                new Thread() {
                     @Override
                     public void run() {
                         CertificationRequest certificationRequest = new CertificationRequest();

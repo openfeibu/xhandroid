@@ -62,7 +62,7 @@ public class LoginWindow extends AbstractWindow implements View.OnClickListener,
         et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE){
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     login();
                 }
                 return false;
@@ -80,7 +80,7 @@ public class LoginWindow extends AbstractWindow implements View.OnClickListener,
         if (!lineNumber.equals("")) {
             et_phone.setText(lineNumber);
         }
-        if("".equals(et_phone.getText().toString())) {
+        if ("".equals(et_phone.getText().toString())) {
             et_phone.setText(callBack.getUIData(WindowCallBack.UIDataKeysDef.LOGIN_PHONE_NUM));
         }
     }
@@ -133,7 +133,7 @@ public class LoginWindow extends AbstractWindow implements View.OnClickListener,
     }
 
 
-    private void login(){
+    private void login() {
         String phone = et_phone.getText().toString().trim();
         String pwd = et_pwd.getText().toString().trim();
         String vertifyCode = et_vertifycode.getText().toString().trim();
@@ -144,14 +144,8 @@ public class LoginWindow extends AbstractWindow implements View.OnClickListener,
             WindowHelper.showToast("密码长度必须为6~12位");
             return;
         }
-        Pattern pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
-        Matcher ma = pa.matcher(pwd);
-        if (!ma.matches()) {
-            WindowHelper.showToast("密码不支持特殊字符");
-            return;
-        }
-        pa = Pattern.compile("1\\d{10}");
-        ma = pa.matcher(phone);
+        Pattern pa = Pattern.compile("1\\d{10}");
+        Matcher ma = pa.matcher(phone);
         if (!ma.matches()) {
             WindowHelper.showToast("手机号码有误");
             return;
@@ -167,9 +161,9 @@ public class LoginWindow extends AbstractWindow implements View.OnClickListener,
         loginRequest.setMid(mid);
         loginRequest.setPlatform("and");
         loginRequest.setDevice_token(device_token.equals("") ? "0" : device_token);
-        if(push.equals(SharedPrefs.VALUE_XMPUSH)){
+        if (push.equals(SharedPrefs.VALUE_XMPUSH)) {
             loginRequest.setPush_server("xiaomi");
-        }else if(push.equals(SharedPrefs.VALUE_XGPUSH)){
+        } else if (push.equals(SharedPrefs.VALUE_XGPUSH)) {
             loginRequest.setPush_server("xinge");
         }
         callBack.loginRequest(loginRequest);

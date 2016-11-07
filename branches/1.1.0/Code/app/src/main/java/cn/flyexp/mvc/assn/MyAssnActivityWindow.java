@@ -65,6 +65,7 @@ public class MyAssnActivityWindow extends AbstractWindow implements View.OnClick
         assnActivityAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                callBack.activityDetailEnter(data.get(position));
             }
         });
         rv_assnactivity = (LoadMoreRecyclerView) findViewById(R.id.rv_assnactivity);

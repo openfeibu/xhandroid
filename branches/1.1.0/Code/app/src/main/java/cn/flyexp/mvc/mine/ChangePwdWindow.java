@@ -63,18 +63,6 @@ public class ChangePwdWindow extends AbstractWindow implements View.OnClickListe
                     WindowHelper.showToast("密码长度必须为6~12位");
                     return;
                 }
-                Pattern pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
-                Matcher ma = pa.matcher(oldPwd);
-                if (!ma.matches()) {
-                    WindowHelper.showToast("旧密码不支持特殊字符");
-                    return;
-                }
-                pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
-                ma = pa.matcher(newPwd);
-                if (!ma.matches()) {
-                    WindowHelper.showToast("新密码不支持特殊字符");
-                    return;
-                }
                 if (oldPwd.equals(newPwd)) {
                     WindowHelper.showToast("新旧密码不能一致");
                     return;
