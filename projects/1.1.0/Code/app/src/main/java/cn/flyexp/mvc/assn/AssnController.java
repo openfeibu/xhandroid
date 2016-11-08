@@ -836,13 +836,13 @@ public class AssnController extends AbstractController implements AssnViewCallBa
             public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
                 if (response.body() != null && response.isSuccess()) {
                     CommonResponse commonResponse =
-                            GsonUtil.fromEncodeJson(response.body().getData(), CommonResponse
-                                    .class);
+                            GsonUtil.fromEncodeJson(response.body().getData(), CommonResponse.class);
                     int code = commonResponse.getCode();
                     switch (code) {
                         case ResponseCode.RESPONSE_200:
                             WindowHelper.showToast("已退出社团");
                             myAssnDetailWindow.hideWindow(true);
+                            myAssnWindow.readMyAssnList();
                             break;
                         case ResponseCode.RESPONSE_2001:
                             againLogin(myAssnDetailWindow);

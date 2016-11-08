@@ -111,14 +111,8 @@ public class ResetPwdWindow extends AbstractWindow implements View.OnClickListen
                     WindowHelper.showToast("密码长度必须为6~12位");
                     return;
                 }
-                Pattern pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
-                Matcher ma = pa.matcher(pwd);
-                if (!ma.matches()) {
-                    WindowHelper.showToast("密码不支持特殊字符");
-                    return;
-                }
-                pa = Pattern.compile("1\\d{10}");
-                ma = pa.matcher(phone);
+                Pattern pa = Pattern.compile("1\\d{10}");
+                Matcher ma = pa.matcher(phone);
                 if (!ma.matches()) {
                     WindowHelper.showToast("手机号码有误");
                     return;
