@@ -30,6 +30,10 @@ public class MyAssnWindow extends AbstractWindow implements View.OnClickListener
         super(callBack);
         this.callBack = callBack;
         initView();
+        readMyAssnList();
+    }
+
+    public void readMyAssnList(){
         String token = WindowHelper.getStringByPreference("token");
         if (!TextUtils.isEmpty(token)) {
             callBack.getMyAssnList(token);
@@ -57,9 +61,10 @@ public class MyAssnWindow extends AbstractWindow implements View.OnClickListener
     }
 
     public void reponseData(ArrayList<MyAssnResponse.MyAssnResponseData> reponseData) {
-        if (data.size() == 0) {
+        if (reponseData.size() == 0) {
             hintLayout.setVisibility(VISIBLE);
         } else {
+            data.clear();
             data.addAll(reponseData);
             myAssnAdapter.notifyDataSetChanged();
         }

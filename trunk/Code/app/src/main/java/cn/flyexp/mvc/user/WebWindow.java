@@ -1,7 +1,9 @@
 package cn.flyexp.mvc.user;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,6 +50,7 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
     private boolean goBack;
     private TextView tv_close;
     private ProgressBar pb_web;
+    private String originalUrlUrl;
 
     public WebWindow(UserViewCallBack callBack) {
         super(callBack);
@@ -63,6 +66,9 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
         pb_web = (ProgressBar) findViewById(R.id.pb_web);
         tv_close = (TextView) findViewById(R.id.tv_close);
         tv_close.setOnClickListener(this);
+
+        findViewById(R.id.tv_refresh).setOnClickListener(this);
+
         tv_title = (TextView) findViewById(R.id.tv_title);
 
         webView = (WebView) findViewById(R.id.webView);
@@ -147,6 +153,7 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
     }
 
     public void loadUrl(String url) {
+        originalUrlUrl = url;
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -234,7 +241,6 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                webView.setVisibility(GONE);
             }
 
 
@@ -246,6 +252,21 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_refresh:
+                if (webView.getUrl() != null) {
+                    webView.reload();
+                } else {
+                  if (originalUrlUrl == null) {
+                      if (webView.canGoBack()) {
+                          webView.goBack();
+                      } else {
+                          WindowHelper.showToast(getContext().getString(R.string.neterror));
+                      }
+                  } else {
+                      webView.loadUrl(originalUrlUrl);
+                  }
+                }
+                break;
             case R.id.iv_back:
                 if (goBack) {
                     webView.goBack();

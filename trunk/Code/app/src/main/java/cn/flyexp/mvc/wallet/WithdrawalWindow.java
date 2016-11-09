@@ -63,6 +63,11 @@ public class WithdrawalWindow extends AbstractWindow implements View.OnClickList
         btn_withdrawal.setEnabled(true);
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(et_fee.isFocused());
+    }
+
     public void payPwdResponse(String paypwd) {
         showProgressDialog("提现中...");
         withdrawalRequst.setPay_password(paypwd);

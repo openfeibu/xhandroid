@@ -38,6 +38,11 @@ public class ReplyWindow extends AbstractWindow implements View.OnClickListener 
         et_content.addTextChangedListener(this);
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(et_content.isFocused());
+    }
+
 
     public void initData(ReplyListResponse.ReplyListResponseData responseData) {
         this.responseData = responseData;

@@ -13,6 +13,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
+import cn.flyexp.MainActivity;
 import cn.flyexp.framework.AbstractController;
 import cn.flyexp.framework.AbstractWindow;
 import cn.flyexp.framework.NotifyIDDefine;
@@ -28,16 +29,26 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!MainActivity.isActive){
+            finish();
+            return;
+        }
         api = WXAPIFactory.createWXAPI(this, "wx13275568a3405957", false);
         api.registerApp("wx13275568a3405957");
         api.handleIntent(getIntent(), this);
+        finish();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if (!MainActivity.isActive){
+            finish();
+            return;
+        }
         setIntent(intent);
         api.handleIntent(intent, this);
+        finish();
     }
 
     @Override

@@ -52,6 +52,11 @@ public class RegisterWindow extends AbstractWindow implements View.OnClickListen
     }
 
     @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(et_phone.isFocused() || et_pwd.isFocused());
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
@@ -64,7 +69,7 @@ public class RegisterWindow extends AbstractWindow implements View.OnClickListen
                     WindowHelper.showToast("密码长度必须为6~12位");
                     return;
                 }
-                Pattern pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
+                Pattern pa = Pattern.compile("[a-zA-Z0-9.]{6,16}");
                 Matcher ma = pa.matcher(pwd);
                 if (!ma.matches()) {
                     WindowHelper.showToast("密码不支持特殊字符");

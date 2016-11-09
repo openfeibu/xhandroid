@@ -51,6 +51,11 @@ public class ChangePwdWindow extends AbstractWindow implements View.OnClickListe
     }
 
     @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(et_newPwd.isFocused() || et_oldPwd.isFocused());
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
@@ -61,18 +66,6 @@ public class ChangePwdWindow extends AbstractWindow implements View.OnClickListe
                 String newPwd = et_newPwd.getText().toString().trim();
                 if (oldPwd.length() < 6 || oldPwd.length() > 16 || newPwd.length() < 6 || newPwd.length() > 16) {
                     WindowHelper.showToast("密码长度必须为6~12位");
-                    return;
-                }
-                Pattern pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
-                Matcher ma = pa.matcher(oldPwd);
-                if (!ma.matches()) {
-                    WindowHelper.showToast("旧密码不支持特殊字符");
-                    return;
-                }
-                pa = Pattern.compile("[a-zA-Z0-9]{6,16}");
-                ma = pa.matcher(newPwd);
-                if (!ma.matches()) {
-                    WindowHelper.showToast("新密码不支持特殊字符");
                     return;
                 }
                 if (oldPwd.equals(newPwd)) {

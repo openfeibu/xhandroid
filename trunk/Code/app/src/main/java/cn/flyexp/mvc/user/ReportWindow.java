@@ -58,6 +58,11 @@ public class ReportWindow extends AbstractWindow implements View.OnClickListener
     }
 
     @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(et_content.isFocused());
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:

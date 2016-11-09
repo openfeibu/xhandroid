@@ -52,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
     public static Tencent mTencent;
     public static IWXAPI api;
     private boolean isSoftShowing;
+    public static boolean isActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isActive = true;
         init();
     }
 
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Environment.onDestroy();
+        isActive = false;
     }
 
     @Override

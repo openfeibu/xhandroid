@@ -83,6 +83,11 @@ public class TaskPublishWindow extends AbstractWindow implements View.OnClickLis
         et_phone.addTextChangedListener(this);
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(et_phone.isFocused() || et_fee.isFocused() || et_description.isFocused() || et_destination.isFocused());
+    }
+
     private void setDefault() {
         String phone = WindowHelper.getStringByPreference("mobile_no");
         if (!phone.equals("")) {

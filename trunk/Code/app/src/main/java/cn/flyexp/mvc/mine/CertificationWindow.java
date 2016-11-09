@@ -5,13 +5,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,6 +70,16 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
         tv_name = (EditText) findViewById(R.id.tv_name);
         tv_numberid = (EditText) findViewById(R.id.tv_numberid);
 
+        tv_numberid.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
+                    confirm();
+                }
+                return false;
+            }
+        });
+
         View popPicLayout = LayoutInflater.from(getContext()).inflate(R.layout
                 .pop_pic_method, null);
         popPicLayout.findViewById(R.id.btn_album).setOnClickListener(this);
@@ -87,6 +100,11 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
     }
 
     @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(tv_name.isFocused() || tv_numberid.isFocused());
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
@@ -101,40 +119,7 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
                 picPopupWindow.showAtLocation(certifiLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.btn_confirm:
-                final String name = tv_name.getText().toString().trim();
-                final String numberid = tv_name.getText().toString().trim();
-                if(TextUtils.isEmpty(name) || TextUtils.isEmpty(numberid) ){
-                    WindowHelper.showToast("请输入完整信息");
-                    return;
-                }
-                if (frontPath.equals("")) {
-                    WindowHelper.showToast("请上传身份证正面");
-                    return;
-                }
-                if (inverPath.equals("")) {
-                    WindowHelper.showToast("请上传身份证反面");
-                    return;
-                }
-                token = WindowHelper.getStringByPreference("token");
-                if (token.equals("")) {
-                    callBack.loginWindowEnter();
-                    return;
-                }
-                showProgressDialog("提交中...");
-                v.setEnabled(false);
-                new Thread(){
-                    @Override
-                    public void run() {
-                        CertificationRequest certificationRequest = new CertificationRequest();
-                        certificationRequest.setToken(token);
-                        certificationRequest.setId_number(numberid);
-                        certificationRequest.setName(name);
-                        final ArrayList<File> files = new ArrayList<>();
-                        files.add(BitmapUtil.compressBmpToFile(frontPath));
-                        files.add(BitmapUtil.compressBmpToFile(inverPath));
-                        callBack.uploadImageCertifi(certificationRequest, files);
-                    }
-                }.start();
+                confirm();
                 break;
             case R.id.btn_album:
                 picPopupWindow.dismiss();
@@ -221,6 +206,62 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
             btn_confirm.setAlpha(1f);
             btn_confirm.setEnabled(true);
         }
+    }
+
+    private void confirm(){
+        final String name = tv_name.getText().toString().trim();
+        final String numberid = tv_numberid.getText().toString().trim();
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(numberid) ){
+            WindowHelper.showToast("请输入完整信息");
+            return;
+        }
+
+        int len = name.length();
+        if (len < 2) {
+            WindowHelper.showToast("请输入正确的姓名");
+            return;
+        }
+
+        len = numberid.length();
+        if (len != 15 && len != 18) {
+            WindowHelper.showToast("身份证长度不对");
+            return;
+        }
+        for(int i = 0; i < len - 1; i ++){
+            if(!Character.isDigit(numberid.charAt(i))){
+                WindowHelper.showToast("请输入正确的身份证号码");
+                return;
+            }
+        }
+
+        if (frontPath.equals("")) {
+            WindowHelper.showToast("请上传自拍手持身份证有头像一面");
+            return;
+        }
+        if (inverPath.equals("")) {
+            WindowHelper.showToast("身份证有国微一面");
+            return;
+        }
+        token = WindowHelper.getStringByPreference("token");
+        if (token.equals("")) {
+            callBack.loginWindowEnter();
+            return;
+        }
+        showProgressDialog("提交中...");
+        btn_confirm.setEnabled(false);
+        new Thread(){
+            @Override
+            public void run() {
+                CertificationRequest certificationRequest = new CertificationRequest();
+                certificationRequest.setToken(token);
+                certificationRequest.setId_number(numberid);
+                certificationRequest.setName(name);
+                final ArrayList<File> files = new ArrayList<>();
+                files.add(BitmapUtil.compressBmpToFile(frontPath));
+                files.add(BitmapUtil.compressBmpToFile(inverPath));
+                callBack.uploadImageCertifi(certificationRequest, files);
+            }
+        }.start();
     }
 
 }

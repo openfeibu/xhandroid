@@ -49,6 +49,11 @@ public class ResetPayPwdWindow extends AbstractWindow implements View.OnClickLis
         et_pwd.addTextChangedListener(this);
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(et_pwd.isFocused() || et_vertifycode.isFocused());
+    }
+
     private void countDown() {
         new CountDownTimer(60000, 1000) {
 

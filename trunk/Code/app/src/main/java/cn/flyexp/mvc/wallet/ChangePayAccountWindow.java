@@ -52,6 +52,11 @@ public class ChangePayAccountWindow extends AbstractWindow implements View.OnCli
         et_vertifycode.addTextChangedListener(this);
     }
 
+    @Override
+    protected boolean canHandleKeyBackUp() {
+        return !(et_name.isFocused() || et_account.isFocused() || et_vertifycode.isFocused());
+    }
+
     private void countDown() {
         new CountDownTimer(60000, 1000) {
 
