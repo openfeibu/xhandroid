@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static Tencent mTencent;
     public static IWXAPI api;
-    private boolean isSoftShowing;
     public static boolean isActive;
 
     @Override
@@ -111,19 +110,18 @@ public class MainActivity extends AppCompatActivity {
         isActive = false;
     }
 
+    public static boolean HadKeyDown = false;
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN ||  event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP){
-            return super.dispatchKeyEvent(event);
+        if (event.getAction() == KeyEvent.ACTION_DOWN){
+            HadKeyDown = true;
         }
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            if (isSoftShowing) {
-                hideInput();
-                return true;
-            }
+        boolean result = Environment.dispatchKeyEvent(event);// || super.dispatchKeyEvent(event);
+        if (event.getAction() == KeyEvent.ACTION_UP){
+            HadKeyDown = false;
         }
-        Environment.dispatchKeyEvent(event);
-        return true;
+        return result;
     }
 
     @Override
@@ -146,39 +144,6 @@ public class MainActivity extends AppCompatActivity {
 //        CrashHandler.getInstance().init(getApplicationContext());
         qqApiInit();
         wxApiInit();
-        initInput();
-    }
-
-    private void initInput(){
-        final View root = getRootView();
-        root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                root.getWindowVisibleDisplayFrame(r);
-                int screenHeight = root.getRootView().getHeight();
-                int heightDiff = screenHeight - (r.bottom - r.top);
-                boolean visible = heightDiff > screenHeight / 3;
-                if (visible) {
-                    isSoftShowing = true;
-                } else {
-                    isSoftShowing = false;
-                }
-            }
-        });
-    }
-
-
-    private View getRootView() {
-        return ((ViewGroup)findViewById(android.R.id.content)).getChildAt(0);
-    }
-
-    private void hideInput(){
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        View v = getCurrentFocus();
-        if (v != null) {
-            imm.hideSoftInputFromInputMethod(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
     }
 
 

@@ -139,11 +139,6 @@ public class TopicPublishWindow extends AbstractWindow implements View.OnClickLi
         picAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected boolean canHandleKeyBackUp() {
-        return !(et_content.isFocused());
-    }
-
     public void response() {
         dismissProgressDialog();
         tv_send.setEnabled(true);

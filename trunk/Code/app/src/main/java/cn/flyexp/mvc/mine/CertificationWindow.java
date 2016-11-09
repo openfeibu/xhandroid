@@ -100,11 +100,6 @@ public class CertificationWindow extends AbstractWindow implements View.OnClickL
     }
 
     @Override
-    protected boolean canHandleKeyBackUp() {
-        return !(tv_name.isFocused() || tv_numberid.isFocused());
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:

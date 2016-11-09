@@ -109,11 +109,6 @@ public class AssnActivityPublishWindow extends AbstractWindow implements View.On
         btn_confirm.setEnabled(true);
     }
 
-    @Override
-    protected boolean canHandleKeyBackUp() {
-        return !(et_content.isFocused() || et_place.isFocused() || et_title.isFocused());
-    }
-
     public void setAid(int aid) {
         this.aid = aid;
     }

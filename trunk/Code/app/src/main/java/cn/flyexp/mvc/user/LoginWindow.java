@@ -85,11 +85,6 @@ public class LoginWindow extends AbstractWindow implements View.OnClickListener,
         }
     }
 
-    @Override
-    protected boolean canHandleKeyBackUp() {
-        return !(et_phone.isFocused() || et_pwd.isFocused() || et_vertifycode.isFocused());
-    }
-
     public void vertifyLogin() {
         if (isVertify) {
             et_vertifycode.setText("");

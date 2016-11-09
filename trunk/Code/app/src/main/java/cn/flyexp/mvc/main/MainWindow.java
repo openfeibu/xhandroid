@@ -189,18 +189,4 @@ public class MainWindow extends AbstractWindow implements View.OnClickListener {
         }
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (windows[currentWindowIndex].dispatchKeyEvent(event)) {
-            return true;
-        }
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            int keyCode = event.getKeyCode();
-            if (keyCode == event.KEYCODE_BACK) {
-                exitApp();
-            }
-            return true;
-        }
-        return false;
-    }
 }

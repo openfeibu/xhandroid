@@ -51,11 +51,6 @@ public class ChangePwdWindow extends AbstractWindow implements View.OnClickListe
     }
 
     @Override
-    protected boolean canHandleKeyBackUp() {
-        return !(et_newPwd.isFocused() || et_oldPwd.isFocused());
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:

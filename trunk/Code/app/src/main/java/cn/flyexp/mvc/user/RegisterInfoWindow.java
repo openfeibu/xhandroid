@@ -69,11 +69,6 @@ public class RegisterInfoWindow extends AbstractWindow implements View.OnClickLi
 
     }
 
-    @Override
-    protected boolean canHandleKeyBackUp() {
-        return !(et_nickname.isFocused() || et_year.isFocused() || et_vertifycode.isFocused());
-    }
-
     public void initRequest(RegisterRequest registerRequest) {
         this.registerRequest = registerRequest;
         tv_phone.setText("你填写的手机为" + registerRequest.getMobile_no());

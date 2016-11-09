@@ -51,11 +51,6 @@ public class ChangePayPwdWindow extends AbstractWindow implements View.OnClickLi
     }
 
     @Override
-    protected boolean canHandleKeyBackUp() {
-        return !(et_oldPwd.isFocused() || et_newPwd.isFocused());
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:

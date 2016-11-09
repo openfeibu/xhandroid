@@ -78,7 +78,8 @@ public class WindowManager {
             currentWindow = windowStack.isEmpty() ? null : windowStack.peek();
             return true;
         }
-        return false;
+        exitApp();
+        return true;
     }
 
     public void exitApp() {
@@ -93,9 +94,7 @@ public class WindowManager {
 
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (currentWindow != null) {
-           if (currentWindow.dispatchKeyEvent(event)) {
-               return true;
-           }
+            return currentWindow.dispatchKeyEvent(event);
         }
         return false;
     }

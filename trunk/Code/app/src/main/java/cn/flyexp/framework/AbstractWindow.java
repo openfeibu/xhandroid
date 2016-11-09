@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
+import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.entity.WebBean;
 import cn.flyexp.util.LogUtil;
@@ -97,20 +98,13 @@ public class AbstractWindow extends FrameLayout {
         return System.currentTimeMillis() - this.lastRequestTime - REQUEST_PERIOD > 0;
     }
 
-    protected boolean canHandleKeyBackUp() {
-        return true;
-    }
-
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_UP) {
             int keyCode = event.getKeyCode();
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                if (canHandleKeyBackUp()){
+                if (MainActivity.HadKeyDown){
                     return windowManager.popWindow(true);
-                } else {
-                    return true;
                 }
             }
         }
@@ -139,9 +133,6 @@ public class AbstractWindow extends FrameLayout {
         windowManager.clearWindow();
     }
 
-    public void exitApp() {
-        windowManager.exitApp();
-    }
 
     public View getView(int layoutId) {
         return inflate(getContext(), layoutId, this);
