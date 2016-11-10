@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/item_width"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_white_round"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:gravity="center"
+            android:text="@string/call"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_large" />
+
+        <View style="@style/horizontalLine" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_setmanager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:gravity="center"
+            android:text="@string/set_manager"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_large" />
+
+        <View style="@style/horizontalLine" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_setmember"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:gravity="center"
+            android:text="@string/set_member"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_large" />
+
+        <View style="@style/horizontalLine" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_expel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:gravity="center"
+            android:text="@string/expel"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_large" />
+
+        <View style="@style/horizontalLine" />
+
+    </LinearLayout>
+
+</LinearLayout>

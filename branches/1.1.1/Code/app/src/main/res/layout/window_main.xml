@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/headview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/light_blue"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/status_bar_height"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_height"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_home"
+            android:background="@drawable/onclick_backgroud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/icon_campus_nor"
+            android:gravity="center"
+            android:text="@string/campus"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_task"
+            android:background="@drawable/onclick_backgroud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/icon_campustask_nor"
+            android:gravity="center"
+            android:text="@string/task"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_topic"
+            android:background="@drawable/onclick_backgroud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/icon_topic_nor"
+            android:gravity="center"
+            android:text="@string/topic"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_store"
+            android:background="@drawable/onclick_backgroud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/icon_store_nor"
+            android:gravity="center"
+            android:text="@string/store"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_mine"
+            android:background="@drawable/onclick_backgroud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/icon_mine_nor"
+            android:gravity="center"
+            android:text="@string/mine"
+            android:textSize="@dimen/font_small" />
+
+    </LinearLayout>
+
+</LinearLayout>

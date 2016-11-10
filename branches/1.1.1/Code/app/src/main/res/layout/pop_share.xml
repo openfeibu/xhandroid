@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <View style="@style/horizontalLine" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_qq"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/onclick_backgroud"
+            android:drawablePadding="@dimen/margin_least"
+            android:drawableTop="@mipmap/icon_share_qq"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_normal"
+            android:paddingTop="@dimen/margin_normal"
+            android:text="@string/qq_firend"
+            android:textColor="@color/font_light"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_wxf"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/onclick_backgroud"
+            android:drawablePadding="@dimen/margin_least"
+            android:drawableTop="@mipmap/icon_share_wechat"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_normal"
+            android:paddingTop="@dimen/margin_normal"
+            android:text="@string/weixin_firend"
+            android:textColor="@color/font_light"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_wxq"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/onclick_backgroud"
+            android:drawablePadding="@dimen/margin_least"
+            android:drawableTop="@mipmap/icon_share_circleoffriend"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_normal"
+            android:paddingTop="@dimen/margin_normal"
+            android:text="@string/weixin_quan"
+            android:textColor="@color/font_light"
+            android:textSize="@dimen/font_small" />
+    </LinearLayout>
+
+</LinearLayout>

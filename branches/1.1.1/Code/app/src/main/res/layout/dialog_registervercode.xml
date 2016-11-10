@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_normal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_register_statement"
+            android:textColor="@color/font_light"
+            android:textSize="@dimen/font_normal"  />
+
+        <TextView
+            android:id="@+id/tv_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_user_agreement"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_normal"  />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/edt_vercode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@mipmap/icon_vercode"
+            android:hint="@string/vercode"
+            android:maxLength="5"
+            android:maxLines="1"
+            android:padding="@dimen/margin_small"
+            android:textColor="@color/font_dark"
+            android:textColorHint="@color/font_light"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_getvercode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/get_vercode"
+            android:textColor="@color/light_blue"
+            android:textSize="@dimen/font_normal" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/horizontalLine"
+        android:layout_marginTop="@dimen/margin_small" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:background="@drawable/btn_blue_round"
+        android:text="@string/comfirm"
+        android:textColor="@drawable/font_white_gray" />
+
+</LinearLayout>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/certifilayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/headview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:layout_marginTop="@dimen/status_bar_height"
+        android:background="@color/light_blue">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:background="@drawable/btn_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/certification"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_most" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layout_negphoto"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_height_large"
+                android:background="@color/app_bg">
+
+                <ImageView
+                    android:id="@+id/img_negphoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/idcard_negative" />
+
+                <ImageView
+                    android:layout_width="@dimen/avatar_big"
+                    android:layout_height="@dimen/avatar_big"
+                    android:layout_centerInParent="true"
+                    android:alpha="0.5"
+                    android:src="@mipmap/icon_addmessage" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_posphoto"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_height_large"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@color/app_bg">
+
+                <ImageView
+                    android:id="@+id/img_posphoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/idcard_positive" />
+
+                <ImageView
+                    android:layout_width="@dimen/avatar_big"
+                    android:layout_height="@dimen/avatar_big"
+                    android:layout_centerInParent="true"
+                    android:alpha="0.5"
+                    android:src="@mipmap/icon_addmessage" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/hint_certification_1"
+                android:textColor="@color/light_red"
+                android:textSize="@dimen/font_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_certification_2"
+                android:textColor="@color/light_gray"
+                android:textSize="@dimen/font_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_certification_3"
+                android:textSize="@dimen/font_small" />
+
+            <EditText
+                android:id="@+id/edt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/background_gray_round_border"
+                android:hint="@string/name"
+                android:maxLength="6"
+                android:padding="@dimen/margin_small"
+                android:textColor="@color/font_dark"
+                android:textColorHint="@color/font_light"
+                android:textSize="@dimen/font_normal" />
+
+            <EditText
+                android:id="@+id/edt_numberid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/background_gray_round_border"
+                android:hint="@string/numberid"
+                android:maxLength="18"
+                android:padding="@dimen/margin_small"
+                android:textColor="@color/font_dark"
+                android:textColorHint="@color/font_light"
+                android:textSize="@dimen/font_normal" />
+
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:alpha="0.5"
+                android:background="@drawable/btn_red_round"
+                android:enabled="false"
+                android:text="@string/comfirm"
+                android:textColor="@drawable/font_white_gray"
+                android:textSize="@dimen/font_large" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

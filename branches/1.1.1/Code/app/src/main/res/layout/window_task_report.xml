@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/headview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:layout_marginTop="@dimen/status_bar_height"
+        android:background="@color/light_blue">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:background="@drawable/btn_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/task_report"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_most" />
+
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/edt_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_height_large"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@drawable/background_gray_round_border"
+        android:gravity="left|top"
+        android:hint="@string/hint_task_report"
+        android:maxLength="250"
+        android:maxLines="10"
+        android:padding="@dimen/margin_small"
+        android:textColor="@color/font_dark"
+        android:textColorHint="@color/font_light"
+        android:textSize="@dimen/font_large" />
+
+    <CheckBox
+        android:id="@+id/cb_report1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:text="@string/report1"
+        android:textColor="@color/font_dark"
+        android:textSize="@dimen/font_normal" />
+
+    <CheckBox
+        android:id="@+id/cb_report2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/report2"
+        android:textColor="@color/font_dark"
+        android:textSize="@dimen/font_normal" />
+
+    <CheckBox
+        android:id="@+id/cb_report3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/report3"
+        android:textColor="@color/font_dark"
+        android:textSize="@dimen/font_normal" />
+
+    <CheckBox
+        android:id="@+id/cb_report4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/report4"
+        android:textColor="@color/font_dark"
+        android:textSize="@dimen/font_normal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btn_report"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:alpha="0.5"
+        android:background="@drawable/btn_blue_round"
+        android:enabled="false"
+        android:text="@string/report"
+        android:textColor="@drawable/font_white_gray"
+        android:textSize="@dimen/font_large" />
+</LinearLayout>

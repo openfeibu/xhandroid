@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tasklayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/headview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:layout_marginTop="@dimen/status_bar_height"
+        android:background="@color/light_blue">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:background="@drawable/btn_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/task_publish"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_most" />
+
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/edt_description"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_height_large"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@drawable/background_gray_round_border"
+        android:gravity="top|left"
+        android:hint="@string/hint_task_description"
+        android:maxLines="7"
+        android:padding="@dimen/margin_small"
+        android:textColor="@color/font_dark"
+        android:textSize="@dimen/font_normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/task_reward"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/font_normal" />
+
+            <EditText
+                android:id="@+id/edt_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_weight="1"
+                android:background="@null"
+                android:inputType="numberDecimal"
+                android:maxLength="6"
+                android:padding="@dimen/margin_small"
+                android:singleLine="true"
+                android:text="2.00"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/font_normal" />
+
+            <TextView
+                android:id="@+id/tv_limit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/task_publish_limit_money"
+                android:textColor="@color/light_red"
+                android:textSize="@dimen/font_small"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_marginTop="@dimen/margin_small" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/task_destination"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/font_normal" />
+
+            <EditText
+                android:id="@+id/edt_destination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:background="@null"
+                android:maxLength="40"
+                android:padding="@dimen/margin_small"
+                android:singleLine="true"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/font_normal" />
+
+        </LinearLayout>
+
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_marginTop="@dimen/margin_small" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_phone_number"
+                android:textColor="@color/font_dark"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:background="@null"
+                android:inputType="number"
+                android:maxLength="11"
+                android:padding="@dimen/margin_small"
+                android:singleLine="true"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/font_normal" />
+
+        </LinearLayout>
+
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_marginTop="@dimen/margin_small" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="horizontal">
+
+        <TextView
+            android:drawableLeft="@mipmap/icon_check"
+            android:layout_width="wrap_content"
+            android:drawablePadding="@dimen/margin_least"
+            android:layout_height="wrap_content"
+            android:text="@string/abide"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_normal" />
+
+        <TextView
+            android:id="@+id/tv_taskstatement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/task_statement"
+            android:textColor="@color/light_blue"
+            android:textSize="@dimen/font_normal" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_publish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:alpha="0.5"
+        android:background="@drawable/btn_blue_round"
+        android:enabled="false"
+        android:text="@string/publish"
+        android:textColor="@drawable/font_white_gray"
+        android:textSize="@dimen/margin_normal" />
+
+</LinearLayout>

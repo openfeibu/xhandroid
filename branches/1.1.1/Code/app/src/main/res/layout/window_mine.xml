@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/headview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tool_bar_height"
+            android:background="@color/light_blue">
+
+            <TextView
+                android:id="@+id/tv_changecampus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:padding="@dimen/margin_small"
+                android:text="@string/change_campus"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small" />
+
+            <ImageView
+                android:id="@+id/img_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:src="@mipmap/icon_message_nor" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layout_myinfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_blue"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small">
+
+                <cn.flyexp.view.CircleImageView
+                    android:id="@+id/img_avatar"
+                    android:layout_width="@dimen/avatar_big"
+                    android:layout_height="@dimen/avatar_big"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:src="@mipmap/icon_defaultavatar_big" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/avatar_big"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_toRightOf="@id/img_avatar"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="@string/hint_mine_name"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_normal" />
+
+                    <TextView
+                        android:id="@+id/tv_campus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:drawableLeft="@mipmap/icon_address"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:text="@string/hint_loading"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_small" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:src="@mipmap/icon_details" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_mytopic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_blue"
+                    android:drawablePadding="@dimen/margin_least"
+                    android:drawableTop="@mipmap/icon_mine_topic"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/margin_least"
+                    android:paddingTop="@dimen/margin_least"
+                    android:text="@string/mytopic"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_small" />
+
+                <View
+                    android:layout_width="@dimen/line"
+                    android:layout_height="match_parent"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_mytask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_blue"
+                    android:drawablePadding="@dimen/margin_least"
+                    android:drawableTop="@mipmap/icon_mine_campustask"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/margin_least"
+                    android:paddingTop="@dimen/margin_least"
+                    android:text="@string/mytask"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_small" />
+
+                <View
+                    android:layout_width="@dimen/line"
+                    android:layout_height="match_parent"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_myorder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_blue"
+                    android:drawablePadding="@dimen/margin_least"
+                    android:drawableTop="@mipmap/icon_mine_order"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/margin_least"
+                    android:paddingTop="@dimen/margin_least"
+                    android:text="@string/myorder"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_small" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layout_mywallet"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_select_height"
+                android:background="@drawable/onclick_backgroud">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:background="@drawable/onclick_backgroud"
+                    android:drawableLeft="@mipmap/icon_mine_wallet"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="@string/mywallet"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/font_normal" />
+
+                <View
+                    style="@style/horizontalLine"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_myintergal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_select_height"
+                android:background="@drawable/onclick_backgroud">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:background="@drawable/onclick_backgroud"
+                    android:drawableLeft="@mipmap/icon_mine_level"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="@string/myintergal"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/font_normal" />
+
+                <View
+                    style="@style/horizontalLine"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_myassn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_select_height"
+                android:background="@drawable/onclick_backgroud">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:background="@drawable/onclick_backgroud"
+                    android:drawableLeft="@mipmap/icon_association"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="@string/myassn"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/font_normal" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layout_storecollection"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_select_height"
+                android:background="@drawable/onclick_backgroud">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:background="@drawable/onclick_backgroud"
+                    android:drawableLeft="@mipmap/icon_mine_storecollection"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="@string/store_collection"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/font_normal" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layout_share"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_select_height"
+                android:background="@drawable/onclick_backgroud">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:drawableLeft="@mipmap/icon_mine_share"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="@string/mine_share"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/font_normal" />
+
+                <View
+                    style="@style/horizontalLine"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_certifition"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_select_height"
+                android:background="@drawable/onclick_backgroud"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:drawableLeft="@mipmap/icon_mine_rna"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="@string/certification"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/font_normal" />
+
+                <View
+                    style="@style/horizontalLine"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_setting"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_select_height"
+                android:background="@drawable/onclick_backgroud">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:drawableLeft="@mipmap/icon_setting"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/font_normal" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
