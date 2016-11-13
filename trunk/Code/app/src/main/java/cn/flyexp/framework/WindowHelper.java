@@ -55,6 +55,14 @@ public class WindowHelper{
         PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putInt(key, value).commit();
     }
 
+    public static long getLongByPreference(String key) {
+        return PreferenceManager.getDefaultSharedPreferences(getContext()).getLong(key, -1L);
+    }
+
+    public static void putLongByPreference(String key, long value) {
+        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putLong(key, value).commit();
+    }
+
     public static float getFloatByPreference(String key) {
         return PreferenceManager.getDefaultSharedPreferences(getContext()).getFloat(key, -1f);
     }

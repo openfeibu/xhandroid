@@ -15,6 +15,8 @@ public class SharedPrefs {
     public static final String VALUE_XMPUSH = "xmpush";
     public static final String VALUE_XGPUSH = "xgpush";
 
+    public static final String VALUE_LAST_UPDATE = "lastupdate";
+
     public static final String KET_OPENID = "mine_openid";
 
     public static final String KET_REMIND_NOTICE = "remind_notice";

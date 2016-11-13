@@ -132,6 +132,11 @@ public class TaskController extends AbstractController implements TaskViewCallBa
     }
 
     @Override
+    public void myTaskEnter() {
+        sendMessage(MessageIDDefine.MYTASK_OPEN);
+    }
+
+    @Override
     public void publishEnter() {
         sendMessage(MessageIDDefine.TASK_PUBLISH_OPEN);
     }

@@ -3,6 +3,8 @@ package cn.flyexp.mvc.user;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Message;
 
@@ -10,6 +12,7 @@ import java.io.File;
 import java.util.Date;
 
 import cn.flyexp.R;
+import cn.flyexp.constants.SharedPrefs;
 import cn.flyexp.entity.ClientVerifyRequest;
 import cn.flyexp.entity.ClientVerifyResponse;
 import cn.flyexp.entity.CommonResponse;
@@ -58,9 +61,11 @@ public class UserController extends AbstractController implements UserViewCallBa
     private ReportWindow reportWindow;
     private RegisterInfoWindow registerInfoWindow;
     private WebWindow webWindow;
+    private int curVersionCode = 4;
 
     public UserController() {
         super();
+        loadVersion();
     }
 
     protected void handleMessage(Message mes) {
@@ -95,6 +100,15 @@ public class UserController extends AbstractController implements UserViewCallBa
             webWindow = new WebWindow(this);
             webWindow.initData((WebBean)mes.obj);
             webWindow.showWindow();
+        }
+    }
+
+    private void loadVersion() {
+        try {
+            PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+            curVersionCode = packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -507,7 +521,7 @@ public class UserController extends AbstractController implements UserViewCallBa
                             responseData(updateResponse.getData());
                             break;
                         case ResponseCode.RESPONSE_110:
-                            WindowHelper.showToast(updateResponse.getDetail());
+//                            WindowHelper.showToast(updateResponse.getDetail());
                             break;
                     }
                 } else {
@@ -553,11 +567,13 @@ public class UserController extends AbstractController implements UserViewCallBa
 
 
     public void responseData(final UpdateResponse.UpdateResponseData data) {
-        if (data.getCompulsion() == 1) {
+        WindowHelper.putLongByPreference(SharedPrefs.VALUE_LAST_UPDATE, System.currentTimeMillis());
+        int updateCode = data.getCode();
+        if (updateCode > curVersionCode) {
             WindowHelper.showAlertDialog(data.getDetail(), "取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((Activity) getContext()).finish();
+                    WindowHelper.showLongToast("您可在：我的->设置->关于校汇->检查更新");
                 }
             }, "前往下载", new DialogInterface.OnClickListener() {
                 @Override
