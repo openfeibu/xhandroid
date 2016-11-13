@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import cn.flyexp.R;
+import cn.flyexp.constants.SharedPrefs;
 import cn.flyexp.entity.ClientVerifyRequest;
 import cn.flyexp.entity.UpdateRequest;
 import cn.flyexp.framework.AbstractWindow;
@@ -30,7 +31,6 @@ public class SplashWindow extends AbstractWindow {
         initView();
         checkClient();
         checkLog();
-        checkUpdate();
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -38,6 +38,7 @@ public class SplashWindow extends AbstractWindow {
                     boolean isNoFirstRun = WindowHelper.getBooleanByPreference("isNoFirstRun");
                     if (isNoFirstRun) {
                         callBack.mainEnter();
+                        checkUpdate();
                     } else {
                         callBack.guideEnter();
                     }
@@ -73,10 +74,15 @@ public class SplashWindow extends AbstractWindow {
 
 
     private void checkUpdate() {
-        UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.setPlatform("and");
-        updateRequest.setAuto("1");//自动请求
-        callBack.update(updateRequest);
+        long last = WindowHelper.getLongByPreference(SharedPrefs.VALUE_LAST_UPDATE);
+        long now = System.currentTimeMillis();
+        if (last - now >= 7L * 24 * 60 * 60 * 1000) {
+            UpdateRequest updateRequest = new UpdateRequest();
+            updateRequest.setPlatform("and");
+            updateRequest.setAuto("1");//自动请求
+            callBack.update(updateRequest);
+        }
+
     }
 
 

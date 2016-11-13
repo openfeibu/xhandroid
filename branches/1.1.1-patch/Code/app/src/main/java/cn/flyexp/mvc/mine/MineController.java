@@ -645,6 +645,7 @@ public class MineController extends AbstractController implements MineViewCallBa
                     int code = updateResponse.getCode();
                     switch (code) {
                         case ResponseCode.RESPONSE_200:
+                            WindowHelper.putLongByPreference(SharedPrefs.VALUE_LAST_UPDATE, System.currentTimeMillis());
                             aboutWindow.responseData(updateResponse.getData());
                             break;
                         case ResponseCode.RESPONSE_110:

@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.Date;
 
 import cn.flyexp.R;
+import cn.flyexp.constants.SharedPrefs;
 import cn.flyexp.entity.ClientVerifyRequest;
 import cn.flyexp.entity.ClientVerifyResponse;
 import cn.flyexp.entity.CommonResponse;
@@ -566,12 +567,13 @@ public class UserController extends AbstractController implements UserViewCallBa
 
 
     public void responseData(final UpdateResponse.UpdateResponseData data) {
+        WindowHelper.putLongByPreference(SharedPrefs.VALUE_LAST_UPDATE, System.currentTimeMillis());
         int updateCode = data.getCode();
         if (updateCode > curVersionCode) {
             WindowHelper.showAlertDialog(data.getDetail(), "取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((Activity) getContext()).finish();
+                    WindowHelper.showLongToast("您可在：我的->设置->关于校汇->检查更新");
                 }
             }, "前往下载", new DialogInterface.OnClickListener() {
                 @Override
