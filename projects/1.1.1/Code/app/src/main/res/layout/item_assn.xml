@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="@drawable/btn_white"
+    android:orientation="horizontal"
+    android:paddingTop="5dp">
+
+    <cn.flyexp.view.RoundImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@mipmap/icon_launchericon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_assn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="哆啦协会"
+                android:textColor="@color/font_brown_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_leader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="·哆啦A梦"
+                android:textColor="@color/font_brown_light"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="我是哆啦A梦"
+            android:ellipsize="end"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textColor="@color/font_brown_light"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="1000人活跃·20个活动·#舞动青春#"
+            android:textColor="@color/font_brown_light"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/app_background" />
+
+    </LinearLayout>
+
+</LinearLayout>

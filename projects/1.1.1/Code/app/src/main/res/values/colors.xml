@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <color name="light_gray">#dddddd</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="dark_blue">#23b7fa</color>
+    <color name="app_background">#f5f5f5</color>
+    <color name="button_red">#ff7373</color>
+    <color name="light_blue">#5ac8fa</color>
+    <color name="light_orange">#f29f5b</color>
+    <color name="dark_orange">#fc8c2f</color>
+    <color name="light_red">#ef7272</color>
+    <color name="light_pink">#ffbdbd</color>
+    <color name="dark_red">#df5e5e</color>
+    <color name="font_brown_dark">#555555</color>
+    <color name="font_brown_light">#aaaaaa</color>
+    <color name="light_green">#67B489</color>
+    <color name="dark_green">#5BB282</color>
+
+    <color name="task_new">#ffbdbd</color>
+    <color name="task_comped">#92deff</color>
+    <color name="task_finish">#dddddd </color>
+
+
+    <color name="red">#ff0000</color>
+    <color name="google_blue">#4285F4</color>
+    <color name="google_red">#EA4335</color>
+    <color name="google_green">#34A853</color>
+    <color name="google_yellow">#FBBC05</color>
+
+    <color name="yalantis_saffron">#F4B63E</color>
+    <color name="yalantis_eggplant">#663D4E</color>
+    <color name="yalantis_sienna">#EB6460</color>
+
+</resources>
