@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.flyexp.view.SquareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/btn_white"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5dp"
+        android:drawableTop="@mipmap/icon_mine_myinfo"
+        android:text="我的资料"
+        android:textColor="@color/font_brown_light"
+        android:textSize="14sp" />
+
+</cn.flyexp.view.SquareLinearLayout>
+

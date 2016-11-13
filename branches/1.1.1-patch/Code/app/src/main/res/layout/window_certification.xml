@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xyl="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/certifiLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/light_blue">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/btn_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="13dp"
+            android:text="@string/certification"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_margin="16dp"
+                android:background="@color/app_background">
+
+                <ImageView
+                    android:id="@+id/iv_neg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/idcard_negative" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/app_background">
+
+                <ImageView
+                    android:id="@+id/iv_pos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/idcard_positive" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:text="注意：\n照片中提供的身份证信息必须是真实有效且清晰可见"
+                android:textColor="@color/light_red"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="（以上示例照片为保护模特隐私，不便显示相关信息）"
+                android:textColor="@color/light_gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="1.自拍手持身份证有头像一面\n2.身份证有国微一面的清晰照片各一张\n3.点击上方照片框即可添加照片"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_gray_bg"
+                android:hint="姓名"
+                android:imeOptions="actionNext"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:inputType="text"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/tv_numberid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_gray_bg"
+                android:hint="身份证号码"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textSize="14sp" />
+
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:alpha="0.5"
+                android:background="@drawable/btn_red"
+                android:enabled="false"
+                android:text="提交"
+                android:textColor="@drawable/font_white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

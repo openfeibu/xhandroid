@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/light_blue">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/btn_back" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="13dp"
+            android:text="@string/social_activity_detail"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:maxEms="15"
+                    android:maxLines="1"
+                    android:text="舞蹈社女生跳舞"
+                    android:textColor="@color/font_brown_dark"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/iv_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_activity_waiting" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_img"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="舞蹈社的女生跳舞你居然不来？我们这有什么鬼什么鬼的我们这有什么鬼什么鬼的我们这有什么鬼什么鬼的"
+                android:textColor="@color/font_brown_dark"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="地点：体育楼二楼"
+                    android:textColor="@color/font_brown_dark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_stime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="开始时间：7-21 9：00"
+                    android:textColor="@color/light_red"
+                    android:textSize="12sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_etime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="结束时间：7-21 9：00"
+                        android:textColor="@color/font_brown_dark"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_assn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="舞蹈社"
+                        android:textColor="@color/font_brown_light"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tv_viewnum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:layout_toLeftOf="@id/tv_assn"
+                        android:text="围观：1，205"
+                        android:textColor="@color/font_brown_light"
+                        android:textSize="10sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
