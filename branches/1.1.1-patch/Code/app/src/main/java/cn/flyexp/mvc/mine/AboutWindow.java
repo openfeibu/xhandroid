@@ -85,6 +85,7 @@ public class AboutWindow extends AbstractWindow implements View.OnClickListener 
             case R.id.layout_checkupdate:
                 UpdateRequest updateRequest = new UpdateRequest();
                 updateRequest.setPlatform("and");
+                updateRequest.setAuto("0");//主请求
                 callBack.update(updateRequest);
                 v.setEnabled(false);
                 break;

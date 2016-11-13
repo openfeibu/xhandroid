@@ -49,6 +49,7 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
     private void initView() {
         setContentView(R.layout.window_task);
         findViewById(R.id.iv_publish).setOnClickListener(this);
+        findViewById(R.id.tv_my_task).setOnClickListener(this);
 
         progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
         progressBar.show();
@@ -168,18 +169,21 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_my_task:
+                callBack.myTaskEnter();
+                break;
             case R.id.iv_back:
                 hideWindow(true);
                 break;
             case R.id.iv_publish:
-                int isAuth = WindowHelper.getIntByPreference("is_auth");
-                if (isAuth == 0) {
-                    WindowHelper.showToast(getContext().getString(R.string.none_certifition));
-                    return;
-                } else if (isAuth == 2) {
-                    WindowHelper.showToast(getContext().getString(R.string.certifing));
-                    return;
-                }
+//                int isAuth = WindowHelper.getIntByPreference("is_auth");
+//                if (isAuth == 0) {
+//                    WindowHelper.showToast(getContext().getString(R.string.none_certifition));
+//                    return;
+//                } else if (isAuth == 2) {
+//                    WindowHelper.showToast(getContext().getString(R.string.certifing));
+//                    return;
+//                }
                 String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();

@@ -4,25 +4,22 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import cn.flyexp.R;
-import cn.flyexp.adapter.MyOrderAdapter;
-import cn.flyexp.adapter.MyTaskAdapter;
 import cn.flyexp.adapter.TaskAdapter;
 import cn.flyexp.entity.MyTaskRequest;
 import cn.flyexp.entity.MyTaskResponse;
 import cn.flyexp.framework.AbstractWindow;
 import cn.flyexp.framework.WindowHelper;
+import cn.flyexp.util.DateUtil;
 import cn.flyexp.util.OnItemClickListener;
 import cn.flyexp.view.LoadMoreListener;
 import cn.flyexp.view.LoadMoreRecyclerView;
@@ -36,6 +33,7 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
 
     private TaskViewCallBack callBack;
     private ViewPager vp_mytask;
+    private boolean haveReceivedData;
     private View[] views;
     private ArrayList<MyTaskResponse.MyTaskResponseData> taskData = new ArrayList<MyTaskResponse.MyTaskResponseData>();
     private ArrayList<MyTaskResponse.MyTaskResponseData> orderData = new ArrayList<MyTaskResponse.MyTaskResponseData>();
@@ -220,6 +218,8 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
             taskAdapter.notifyDataSetChanged();
         }
         isResponse = true;
+        setUserCareMoreTab();
+        haveReceivedData = true;
     }
 
     public void getMyOrderListResponse(ArrayList<MyTaskResponse.MyTaskResponseData> myOrderData) {
@@ -241,6 +241,33 @@ public class MyTaskWindow extends AbstractWindow implements View.OnClickListener
             orderAdapter.notifyDataSetChanged();
         }
         isResponse = true;
+        setUserCareMoreTab();
+        haveReceivedData = true;
+    }
+
+    /**
+     * 在用还没有切过tab时
+     * 根据返回的2个列表，哪个tab第一个时间最新，则切到这个tab
+     **/
+    private void setUserCareMoreTab(){
+        if (haveReceivedData) {
+            int orderSize = orderData.size();
+            int taskSize = taskData.size();
+            if (orderSize == 0 && taskSize == 0) {
+//                return;
+            } else if(orderSize == 0 && taskSize > 0) {
+//                tabLayout.setScrollPosition(0, 0.5f, false);
+            } else if(orderSize > 0 && taskSize == 0) {
+                vp_mytask.setCurrentItem(1, true);
+            } else {
+                MyTaskResponse.MyTaskResponseData order = orderData.get(0);
+                MyTaskResponse.MyTaskResponseData task = taskData.get(0);
+                if (DateUtil.date2Long(order.getTime().getNew_time()) > DateUtil.date2Long(task.getTime().getNew_time())) {
+                    vp_mytask.setCurrentItem(1, true);
+                }
+            }
+
+        }
     }
 
     public void taskLoadingFailure() {

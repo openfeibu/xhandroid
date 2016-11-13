@@ -30,6 +30,7 @@ public class SplashWindow extends AbstractWindow {
         initView();
         checkClient();
         checkLog();
+        checkUpdate();
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -74,6 +75,7 @@ public class SplashWindow extends AbstractWindow {
     private void checkUpdate() {
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setPlatform("and");
+        updateRequest.setAuto("1");//自动请求
         callBack.update(updateRequest);
     }
 

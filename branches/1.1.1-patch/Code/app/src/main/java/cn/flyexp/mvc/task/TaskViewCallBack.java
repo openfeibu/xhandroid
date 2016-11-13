@@ -19,6 +19,8 @@ public interface TaskViewCallBack extends AbstractWindow.WindowCallBack {
 
     void publishEnter();
 
+    void myTaskEnter();
+
     void reportEnter(int oid);
 
     void detailEnter(OrderResponse.OrderResponseData data);

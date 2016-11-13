@@ -3,6 +3,8 @@ package cn.flyexp.mvc.user;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Message;
 
@@ -58,9 +60,11 @@ public class UserController extends AbstractController implements UserViewCallBa
     private ReportWindow reportWindow;
     private RegisterInfoWindow registerInfoWindow;
     private WebWindow webWindow;
+    private int curVersionCode = 4;
 
     public UserController() {
         super();
+        loadVersion();
     }
 
     protected void handleMessage(Message mes) {
@@ -95,6 +99,15 @@ public class UserController extends AbstractController implements UserViewCallBa
             webWindow = new WebWindow(this);
             webWindow.initData((WebBean)mes.obj);
             webWindow.showWindow();
+        }
+    }
+
+    private void loadVersion() {
+        try {
+            PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+            curVersionCode = packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -507,7 +520,7 @@ public class UserController extends AbstractController implements UserViewCallBa
                             responseData(updateResponse.getData());
                             break;
                         case ResponseCode.RESPONSE_110:
-                            WindowHelper.showToast(updateResponse.getDetail());
+//                            WindowHelper.showToast(updateResponse.getDetail());
                             break;
                     }
                 } else {
@@ -553,7 +566,8 @@ public class UserController extends AbstractController implements UserViewCallBa
 
 
     public void responseData(final UpdateResponse.UpdateResponseData data) {
-        if (data.getCompulsion() == 1) {
+        int updateCode = data.getCode();
+        if (updateCode > curVersionCode) {
             WindowHelper.showAlertDialog(data.getDetail(), "取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
