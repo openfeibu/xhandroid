@@ -52,6 +52,7 @@ public class RecomTaskAdapter extends RecyclerView.Adapter<RecomTaskAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int position) {
         OrderResponse.OrderResponseData responseData = taskData.get(position);
         holder.tv_content.setText(responseData.getDescription());
+        holder.tv_nickname.setText(responseData.getNickname());
         holder.tv_fee.setText("￥" + responseData.getFee());
         holder.tv_pleace.setText(responseData.getDestination());
         if (!responseData.getAvatar_url().equals("")) {
@@ -81,11 +82,13 @@ public class RecomTaskAdapter extends RecyclerView.Adapter<RecomTaskAdapter.View
         RoundImageView iv_avatar;
         TextView tv_fee;
         TextView tv_content;
+        TextView tv_nickname;
         TextView tv_pleace;
 
         public ViewHolder(View view) {
             super(view);
             iv_avatar = (RoundImageView) view.findViewById(R.id.iv_avatar);
+            tv_nickname = (TextView) view.findViewById(R.id.tv_nickname);
             tv_fee = (TextView) view.findViewById(R.id.tv_fee);
             tv_content = (TextView) view.findViewById(R.id.tv_content);
             tv_pleace = (TextView) view.findViewById(R.id.tv_pleace);

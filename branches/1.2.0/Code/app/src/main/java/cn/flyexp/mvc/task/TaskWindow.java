@@ -262,7 +262,11 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
         if (isUploading) {
             if (orderResponseDatas.isEmpty()) {
                 //无数据
-                state.setVisibility(VISIBLE);
+                if (datas.isEmpty()) {
+                    recycleView.loadMoreEnd();
+                } else {
+                    state.setVisibility(VISIBLE);
+                }
             } else {
                 datas.clear();
                 datas.addAll(orderResponseDatas);
