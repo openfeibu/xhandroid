@@ -54,7 +54,7 @@
             android:layout_marginRight="16dp"
             android:text="@string/refresh"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <RelativeLayout

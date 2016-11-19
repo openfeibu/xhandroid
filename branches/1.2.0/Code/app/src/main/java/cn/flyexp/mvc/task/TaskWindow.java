@@ -331,8 +331,8 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
     public void refreshData() {
         progressBars[allIndex].show();
         callBack.getOrderList(getTaskRequest(TaskRequest.ALL, 1));
-        progressBars[personalIndex].show();
 
+        progressBars[businessIndex].show();
         postDelayed(
                 new Runnable() {
                     @Override
@@ -342,7 +342,7 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
                 }
                 , 200);
 
-        progressBars[businessIndex].show();
+        progressBars[personalIndex].show();
         postDelayed(
                 new Runnable() {
                     @Override
