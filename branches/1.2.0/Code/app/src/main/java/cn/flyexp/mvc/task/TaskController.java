@@ -58,9 +58,6 @@ public class TaskController extends AbstractController implements TaskViewCallBa
 
     protected void handleMessage(Message mes) {
         if (mes.what == MessageIDDefine.TASK_OPEN) {
-            if (taskWindow == null) {
-                taskWindow = new TaskWindow(this);
-            }
             taskWindow.showWindow();
         } else if (mes.what == MessageIDDefine.TASK_DETAIL_OPEN) {
             taskDetailWindow = new TaskDetailWindow(this);
@@ -292,7 +289,9 @@ public class TaskController extends AbstractController implements TaskViewCallBa
                     switch (code) {
                         case ResponseCode.RESPONSE_200:
                             WindowHelper.showToast(getContext().getString(R.string.claim_success));
-                            taskDetailWindow.hideWindow(false);
+                            if (taskDetailWindow != null) {
+                                taskDetailWindow.hideWindow(false);
+                            }
                             taskWindow.refreshData();
                             break;
                         case ResponseCode.RESPONSE_2001:
@@ -305,12 +304,17 @@ public class TaskController extends AbstractController implements TaskViewCallBa
                             WindowHelper.showToast("不能接自己发的任务");
                             break;
                     }
-                } else {
+                }
+                if (taskDetailWindow != null) {
+                    taskDetailWindow.dismissProgressDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<EncodeData> call, Throwable t) {
+                if (taskDetailWindow != null) {
+                    taskDetailWindow.dismissProgressDialog();
+                }
             }
         });
     }
@@ -463,7 +467,7 @@ public class TaskController extends AbstractController implements TaskViewCallBa
     }
 
     @Override
-    public void cancelTask(CancelTaskRequest cancelTaskRequest) {
+    public void cancelTask(CancelTaskRequest cancelTaskRequest, final boolean isFromMyOrderDetail) {
         if (cancelTaskRequest == null) {
             return;
         }
@@ -477,8 +481,16 @@ public class TaskController extends AbstractController implements TaskViewCallBa
                     switch (code) {
                         case ResponseCode.RESPONSE_200:
                             WindowHelper.showToast("取消成功");
-                            myOrderDetailWindow.hideWindow(true);
-                            myTaskWindow.refreshMyOrder();
+                            if (isFromMyOrderDetail && myOrderDetailWindow != null) {
+                                myOrderDetailWindow.hideWindow(true);
+                            }
+                            if (!isFromMyOrderDetail && myTaskDetailWindow != null) {
+                                myTaskDetailWindow.hideWindow(true);
+                            }
+                            if (myTaskWindow != null) {
+                                myTaskWindow.refreshMyOrder();
+                            }
+                            taskWindow.refreshData();
                             break;
                         case ResponseCode.RESPONSE_2001:
                             againLogin(myOrderDetailWindow);
@@ -489,12 +501,20 @@ public class TaskController extends AbstractController implements TaskViewCallBa
                     }
                 } else {
                 }
-                myOrderDetailWindow.response();
+                if (isFromMyOrderDetail && myOrderDetailWindow != null) {
+                    myOrderDetailWindow.response();
+                }
             }
 
             @Override
             public void onFailure(Call<EncodeData> call, Throwable t) {
-                myOrderDetailWindow.response();
+                WindowHelper.showToast("取消失败请重试");
+                if (isFromMyOrderDetail && myOrderDetailWindow != null) {
+                    myOrderDetailWindow.response();
+                }
+                if (!isFromMyOrderDetail && myTaskDetailWindow != null) {
+                    myTaskDetailWindow.responseCancel();
+                }
             }
         });
     }

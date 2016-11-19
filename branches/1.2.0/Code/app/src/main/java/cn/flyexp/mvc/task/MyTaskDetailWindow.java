@@ -1,5 +1,6 @@
 package cn.flyexp.mvc.task;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,6 +16,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import cn.flyexp.R;
+import cn.flyexp.entity.CancelTaskRequest;
 import cn.flyexp.entity.FinishWorkRequest;
 import cn.flyexp.entity.MyTaskResponse;
 import cn.flyexp.framework.AbstractWindow;
@@ -42,6 +44,7 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
     private PopupWindow picPopupWindow;
     private View taskLayout;
     private Button btn_finish;
+    private Button btn_cancel;
 
     public MyTaskDetailWindow(TaskViewCallBack callBack) {
         super(callBack);
@@ -73,6 +76,7 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
         picPopupWindow.setAnimationStyle(R.style.popwin_anim_style);
 
         btn_finish = (Button) findViewById(R.id.btn_finish);
+        btn_cancel = (Button) findViewById(R.id.btn_cancel);
 
         tv_nickname = (TextView) findViewById(R.id.tv_nickname);
         tv_nickname.setOnClickListener(this);
@@ -123,6 +127,8 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
             btn_finish.setVisibility(VISIBLE);
             btn_finish.setText("完成任务");
             btn_finish.setOnClickListener(this);
+            btn_cancel.setOnClickListener(this);
+            btn_cancel.setVisibility(VISIBLE);
         } else {
             btn_finish.setVisibility(GONE);
         }
@@ -132,10 +138,13 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
         btn_finish.setEnabled(true);
         dismissProgressDialog();
     }
+    public void responseCancel() {
+    }
 
 
     @Override
     public void onClick(View v) {
+        final String token = WindowHelper.getStringByPreference("token");
         switch (v.getId()) {
             case R.id.iv_back:
                 hideWindow(true);
@@ -146,9 +155,23 @@ public class MyTaskDetailWindow extends AbstractWindow implements View.OnClickLi
             case R.id.tv_report:
                 callBack.reportEnter(orderId);
                 break;
+            case R.id.btn_cancel:
+                if ("".equals(token)) {
+                    callBack.loginWindowEnter();
+                    return;
+                }
+                WindowHelper.showAlertDialog("确定要取消任务吗~", "考虑一下", "取消任务", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CancelTaskRequest cancelTaskRequest = new CancelTaskRequest();
+                        cancelTaskRequest.setToken(token);
+                        cancelTaskRequest.setOrder_id(orderId);
+                        callBack.cancelTask(cancelTaskRequest, false);
+                    }
+                });
+                break;
             case R.id.btn_finish:
-                String token = WindowHelper.getStringByPreference("token");
-                if (token.equals("")) {
+                if ("".equals(token)) {
                     callBack.loginWindowEnter();
                     return;
                 }

@@ -160,6 +160,7 @@ public class TaskDetailWindow extends AbstractWindow implements View.OnClickList
                         TaskClaimRequest taskClaimRequest = new TaskClaimRequest();
                         taskClaimRequest.setToken(token);
                         taskClaimRequest.setOrder_id(data.getOid());
+                        showProgressDialog("正在提交接收申请...");
                         callBack.claimOrder(taskClaimRequest);
                     }
                 });

@@ -77,7 +77,10 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
         adapters[allIndex].setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                callBack.detailEnter(adapters[allIndex].getTaskData().get(position));
+                OrderResponse.OrderResponseData data = adapters[allIndex].getTaskData().get(position);
+                if ("new".equals(data.getStatus())) {
+                    callBack.detailEnter(data);
+                }
             }
         });
         taskRecyclerView.setAdapter(adapters[allIndex]);
@@ -107,7 +110,10 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
         adapters[personalIndex].setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                callBack.detailEnter(adapters[personalIndex].getTaskData().get(position));
+                OrderResponse.OrderResponseData data = adapters[personalIndex].getTaskData().get(position);
+                if ("new".equals(data.getStatus())) {
+                    callBack.detailEnter(data);
+                }
             }
         });
         taskRecyclerView.setAdapter(adapters[personalIndex]);
@@ -137,7 +143,10 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
         adapters[businessIndex].setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                callBack.detailEnter(adapters[businessIndex].getTaskData().get(position));
+                OrderResponse.OrderResponseData data = adapters[businessIndex].getTaskData().get(position);
+                if ("new".equals(data.getStatus())) {
+                    callBack.detailEnter(data);
+                }
             }
         });
         taskRecyclerView.setAdapter(adapters[businessIndex]);

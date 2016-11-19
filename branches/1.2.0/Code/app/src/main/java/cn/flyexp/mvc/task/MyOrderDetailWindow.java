@@ -212,7 +212,7 @@ public class MyOrderDetailWindow extends AbstractWindow implements View.OnClickL
                             CancelTaskRequest cancelTaskRequest = new CancelTaskRequest();
                             cancelTaskRequest.setToken(token);
                             cancelTaskRequest.setOrder_id(orderId);
-                            callBack.cancelTask(cancelTaskRequest);
+                            callBack.cancelTask(cancelTaskRequest, true);
                         }
                     });
 
