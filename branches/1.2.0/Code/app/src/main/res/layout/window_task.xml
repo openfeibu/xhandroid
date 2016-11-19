@@ -20,10 +20,10 @@
             android:layout_marginBottom="13dp"
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/iv_back"
-            android:text="@string/my_task"
+            android:text="@string/my"
             android:background="@drawable/common_view_bg"
             android:textColor="@color/white"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,41 +50,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/refreshlayout"
+        <LinearLayout
+            android:id="@+id/assn_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:tabBackground="?attr/selectableItemBackground"
+                app:tabIndicatorColor="@color/light_blue"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/font_brown_dark"
+                app:tabTextColor="@color/font_brown_dark" />
 
-                <cn.flyexp.view.LoadMoreRecyclerView
-                    android:id="@+id/rv_task"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />
-
-                <android.support.v4.widget.ContentLoadingProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-
-                <TextView
-                    android:id="@+id/tv_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="数据加载失败..."
-                    android:textColor="@color/light_blue"
-                    android:textSize="20sp"
-                    android:visibility="gone" />
-            </FrameLayout>
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
+            <android.support.v4.view.ViewPager
+                android:id="@+id/tasks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

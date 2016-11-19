@@ -224,8 +224,13 @@ public class CampusWindow extends AbstractWindow implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        String token = WindowHelper.getStringByPreference("token");
         switch (v.getId()) {
             case R.id.tv_assn:
+                if ("".equals(token)) {
+                    callBack.loginWindowEnter();
+                    return;
+                }
                 callBack.userCount("assn_info");
                 callBack.assnEnter();
                 break;
@@ -237,6 +242,10 @@ public class CampusWindow extends AbstractWindow implements View.OnClickListener
                 callBack.webWindowEnter(bean);
                 break;
             case R.id.tv_fault:
+                if ("".equals(token)) {
+                    callBack.loginWindowEnter();
+                    return;
+                }
                 WebBean bean2 = new WebBean();
                 bean2.setRequest(true);
                 bean2.setTitle("网络报障");

@@ -371,6 +371,7 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
         //上拉刷新清空数据 下拉加载追加数据
         if (isUpLoading) {
             data.clear();
+            data.addAll(topicResponseDatas);
         } else {
             //追加的数据为空 显示没有更多数据
             this.data.addAll(topicResponseDatas);
@@ -380,8 +381,6 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
                 rv_topic.loadMoreComplete();
             }
         }
-
-        data.addAll(topicResponseDatas);
         //追加的数据为空显示友好提示
         if (data.size() == 0) {
             tv_state.setText("暂无话题");
@@ -397,9 +396,10 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
 
     public void loadingFailure() {
         progressBar.hide();
-        tv_state.setText("数据加载失败...");
-        tv_state.setVisibility(View.VISIBLE);
-        rv_topic.setVisibility(View.GONE);
+        WindowHelper.showToast("数据加载失败...");
+//        tv_state.setText("数据加载失败...");
+//        tv_state.setVisibility(View.VISIBLE);
+//        rv_topic.setVisibility(View.GONE);
         rv_topic.loadMoreComplete();
         refreshlayout.setRefreshing(false);
         isResponse = true;

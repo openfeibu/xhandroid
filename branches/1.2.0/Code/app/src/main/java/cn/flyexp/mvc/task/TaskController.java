@@ -58,7 +58,9 @@ public class TaskController extends AbstractController implements TaskViewCallBa
 
     protected void handleMessage(Message mes) {
         if (mes.what == MessageIDDefine.TASK_OPEN) {
-            taskWindow = new TaskWindow(this);
+            if (taskWindow == null) {
+                taskWindow = new TaskWindow(this);
+            }
             taskWindow.showWindow();
         } else if (mes.what == MessageIDDefine.TASK_DETAIL_OPEN) {
             taskDetailWindow = new TaskDetailWindow(this);
@@ -166,7 +168,7 @@ public class TaskController extends AbstractController implements TaskViewCallBa
     }
 
     @Override
-    public void getOrderList(TaskRequest taskRequest) {
+    public void getOrderList(final TaskRequest taskRequest) {
         if (taskRequest == null) {
             return;
         }
@@ -180,7 +182,7 @@ public class TaskController extends AbstractController implements TaskViewCallBa
                     int code = orderResponse.getCode();
                     switch (code) {
                         case ResponseCode.RESPONSE_200:
-                            taskWindow.orderListResponse(orderResponse.getData());
+                            taskWindow.orderListResponse(orderResponse.getData(), taskRequest);
                             break;
                         case ResponseCode.RESPONSE_2001:
                             againLogin(taskWindow);
@@ -190,13 +192,13 @@ public class TaskController extends AbstractController implements TaskViewCallBa
                             break;
                     }
                 } else {
-                    taskWindow.loadingFailure();
+                    taskWindow.loadingFailure(taskRequest);
                 }
             }
 
             @Override
             public void onFailure(Call<EncodeData> call, Throwable t) {
-                taskWindow.loadingFailure();
+                taskWindow.loadingFailure(taskRequest);
             }
         });
     }

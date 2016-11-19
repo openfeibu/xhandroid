@@ -13,6 +13,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.flyexp.R;
 import cn.flyexp.entity.MyTaskResponse;
@@ -29,13 +30,13 @@ import cn.flyexp.view.RoundImageView;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private ArrayList<OrderResponse.OrderResponseData> taskData = new ArrayList<>();
+    private List<OrderResponse.OrderResponseData> taskData = new ArrayList<>();
     private ArrayList<MyTaskResponse.MyTaskResponseData> myTaskData = new ArrayList<MyTaskResponse.MyTaskResponseData>();
     private OnItemClickListener onItemClickListener;
     private Context context;
     private boolean isMyTaskData;
 
-    public TaskAdapter(Context context, ArrayList<OrderResponse.OrderResponseData> data) {
+    public TaskAdapter(Context context, List<OrderResponse.OrderResponseData> data) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.taskData = data;
@@ -49,6 +50,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public void setMyTaskData(ArrayList<MyTaskResponse.MyTaskResponseData> myTaskData) {
         this.myTaskData = myTaskData;
         isMyTaskData = true;
+    }
+
+    public List<OrderResponse.OrderResponseData> getTaskData() {
+        return this.taskData;
     }
 
     @Override

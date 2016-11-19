@@ -1,13 +1,19 @@
 package cn.flyexp.mvc.task;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.flyexp.R;
 import cn.flyexp.adapter.TaskAdapter;
@@ -23,168 +29,333 @@ import cn.flyexp.view.ProgressView;
 
 /**
  * Created by txy on 2016/6/5.
+ * modified bt zlk 2016/11/19，改成3个tab
  */
 public class TaskWindow extends AbstractWindow implements View.OnClickListener {
-
-    private ArrayList<OrderResponse.OrderResponseData> data = new ArrayList<OrderResponse
-            .OrderResponseData>();
-
     private TaskViewCallBack callBack;
-    private TaskAdapter taskAdapter;
-    private LoadMoreRecyclerView rv_task;
-    private SwipeRefreshLayout refreshlayout;
-    private int page = 1;
-    private boolean isUpLoading = true;
-    private ContentLoadingProgressBar progressBar;
-    private TextView tv_state;
-    private boolean isResponse;
+    private  final String[] tabTitle = new String[]{"全部", "校友", "商家"};
+    private  final String[] tabType = new String[]{TaskRequest.ALL, TaskRequest.PERSONAL, TaskRequest.BUSINESS};
+    private  final SwipeRefreshLayout[] refreshLayouts = new SwipeRefreshLayout[3];
+    private  final ContentLoadingProgressBar[] progressBars = new ContentLoadingProgressBar[3];
+    private  final TextView[] states = new TextView[3];
+    private  final TaskAdapter[] adapters = new TaskAdapter[3];
+    private  final boolean[] uploads = new boolean[]{true, true, true};
+    private  final LoadMoreRecyclerView[] recyclerViews = new LoadMoreRecyclerView[3];
+    private  final int[] pages = new int[]{1,1,1};
+    private  final int allIndex = 0;
+    private  final int personalIndex = 1;
+    private  final int businessIndex = 2;
 
     public TaskWindow(TaskViewCallBack orderViewCallBack) {
         super(orderViewCallBack);
         this.callBack = orderViewCallBack;
         initView();
-        callBack.getOrderList(getTaskRequest());
+        refreshData();
     }
+
+    View[] views;
 
     private void initView() {
         setContentView(R.layout.window_task);
         findViewById(R.id.iv_publish).setOnClickListener(this);
         findViewById(R.id.tv_my_task).setOnClickListener(this);
 
-        progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
-        progressBar.show();
-        progressBar.hide();
 
-        tv_state = (TextView) findViewById(R.id.tv_state);
 
-        refreshlayout = (SwipeRefreshLayout) findViewById(R.id.refreshlayout);
-        refreshlayout.setColorSchemeResources(R.color.light_blue);
-        refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        views = new View[3];
+        views[allIndex] = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_recyclerview_refresh, null);
+        views[personalIndex] = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_recyclerview_refresh, null);
+        views[businessIndex] = LayoutInflater.from(getContext()).inflate(R.layout.layout_common_recyclerview_refresh, null);
+
+
+        progressBars[allIndex] = (ContentLoadingProgressBar)views[allIndex].findViewById(R.id.progressBar);
+        states[allIndex] = (TextView)views[allIndex].findViewById(R.id.tv_state);
+        LoadMoreRecyclerView taskRecyclerView = (LoadMoreRecyclerView) views[allIndex].findViewById(R.id.recyclerView);
+        recyclerViews[allIndex] = taskRecyclerView;
+        taskRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapters[allIndex] = new TaskAdapter(getContext(), new ArrayList<OrderResponse.OrderResponseData>());
+        adapters[allIndex].setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                callBack.detailEnter(adapters[allIndex].getTaskData().get(position));
+            }
+        });
+        taskRecyclerView.setAdapter(adapters[allIndex]);
+        taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        taskRecyclerView.setVisibility(VISIBLE);
+
+        taskRecyclerView.setFootLoadingView(ProgressView.BallPulse);
+        taskRecyclerView.setFootEndView("没有更多任务了~");
+        taskRecyclerView.setLoadMoreListener(new LoadMoreListener() {
+
+            @Override
+            public void onLoadMore() {
+                callBack.getOrderList(getTaskRequest(TaskRequest.ALL, pages[allIndex] + 1));
+                uploads[allIndex] = false;
+                progressBars[allIndex].show();
+            }
+        });
+
+
+        progressBars[personalIndex] = (ContentLoadingProgressBar)views[personalIndex].findViewById(R.id.progressBar);
+        states[personalIndex] = (TextView)views[personalIndex].findViewById(R.id.tv_state);
+        taskRecyclerView = (LoadMoreRecyclerView) views[personalIndex].findViewById(R.id.recyclerView);
+        recyclerViews[personalIndex] = taskRecyclerView;
+        taskRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapters[personalIndex] = new TaskAdapter(getContext(), new ArrayList<OrderResponse.OrderResponseData>());
+        adapters[personalIndex].setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                callBack.detailEnter(adapters[personalIndex].getTaskData().get(position));
+            }
+        });
+        taskRecyclerView.setAdapter(adapters[personalIndex]);
+        taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        taskRecyclerView.setVisibility(VISIBLE);
+
+        taskRecyclerView.setFootLoadingView(ProgressView.BallPulse);
+        taskRecyclerView.setFootEndView("没有更多任务了~");
+        taskRecyclerView.setLoadMoreListener(new LoadMoreListener() {
+
+            @Override
+            public void onLoadMore() {
+                callBack.getOrderList(getTaskRequest(TaskRequest.PERSONAL, pages[personalIndex] + 1));
+                uploads[personalIndex] = false;
+                progressBars[personalIndex].show();
+            }
+        });
+
+
+        progressBars[businessIndex] = (ContentLoadingProgressBar)views[businessIndex].findViewById(R.id.progressBar);
+        states[businessIndex] = (TextView)views[businessIndex].findViewById(R.id.tv_state);
+        taskRecyclerView = (LoadMoreRecyclerView) views[businessIndex].findViewById(R.id.recyclerView);
+        recyclerViews[businessIndex] = taskRecyclerView;
+        taskRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapters[businessIndex] = new TaskAdapter(getContext(), new ArrayList<OrderResponse.OrderResponseData>());
+        adapters[businessIndex].setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                callBack.detailEnter(adapters[businessIndex].getTaskData().get(position));
+            }
+        });
+        taskRecyclerView.setAdapter(adapters[businessIndex]);
+        taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        taskRecyclerView.setVisibility(VISIBLE);
+
+        taskRecyclerView.setFootLoadingView(ProgressView.BallPulse);
+        taskRecyclerView.setFootEndView("没有更多任务了~");
+        taskRecyclerView.setLoadMoreListener(new LoadMoreListener() {
+
+            @Override
+            public void onLoadMore() {
+                callBack.getOrderList(getTaskRequest(TaskRequest.BUSINESS, pages[businessIndex] + 1));
+                uploads[businessIndex] = false;
+                progressBars[businessIndex].show();
+            }
+        });
+
+        ViewPager vp_mytask = (ViewPager) findViewById(R.id.tasks);
+        vp_mytask.setAdapter(new PagerAdapter() {
+            @Override
+            public int getCount() {
+                return views.length;
+            }
+
+            @Override
+            public boolean isViewFromObject(View view, Object object) {
+                return view == object;
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                container.addView(views[position]);
+                return views[position];
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                container.removeView(views[position]);
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return tabTitle[position];
+            }
+        });
+        final TabLayout tablayout = (TabLayout) findViewById(R.id.tablayout);
+        tablayout.setupWithViewPager(vp_mytask);
+        tablayout.setTabMode(TabLayout.MODE_FIXED);
+
+
+        SwipeRefreshLayout.OnRefreshListener listener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!isResponse || !canRequest()) {
-                    refreshlayout.postDelayed(new Runnable() {
+                final int selected = tablayout.getSelectedTabPosition();
+                if (!canRequest()) {
+                    refreshLayouts[selected].postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            refreshlayout.setRefreshing(false);
+                            refreshLayouts[selected].setRefreshing(false);
                         }
                     }, 200);
                     return;
                 }
                 setRequestTimeNow();
-                page = 1;
-                isUpLoading = true;
-                rv_task.loadMoreComplete();
-                callBack.userCount("task");
-                callBack.getOrderList(getTaskRequest());
+                uploads[selected] = true;
+                callBack.getOrderList(getTaskRequest(tabType[selected], 1));
             }
-        });
-        taskAdapter = new TaskAdapter(getContext(), data);
-        taskAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if(data.get(position).getStatus().equals("new")){
-                    callBack.detailEnter(data.get(position));
-                }
-            }
-        });
-        rv_task = (LoadMoreRecyclerView) findViewById(R.id.rv_task);
-        rv_task.setLayoutManager(new LinearLayoutManager(getContext()));
-        rv_task.setAdapter(taskAdapter);
-        rv_task.setItemAnimator(new DefaultItemAnimator());
-        rv_task.setFootLoadingView(ProgressView.BallPulse);
-        rv_task.setFootEndView("没有更多任务了~");
-        rv_task.setLoadMoreListener(new LoadMoreListener() {
+        };
 
-            @Override
-            public void onLoadMore() {
-                if (!isResponse) {
-                    return;
-                }
-                page++;
-                isUpLoading = false;
-                callBack.userCount("task");
-                callBack.getOrderList(getTaskRequest());
-            }
-        });
-        rv_task.setVisibility(VISIBLE);
+        SwipeRefreshLayout refreshlayout = (SwipeRefreshLayout)views[allIndex].findViewById(R.id.refreshlayout);
+        refreshLayouts[allIndex] = refreshlayout;
+        refreshlayout.setColorSchemeResources(R.color.light_blue);
+        refreshlayout.setOnRefreshListener(listener);
+
+        refreshlayout = (SwipeRefreshLayout)views[personalIndex].findViewById(R.id.refreshlayout);
+        refreshLayouts[personalIndex] = refreshlayout;
+        refreshlayout.setColorSchemeResources(R.color.light_blue);
+        refreshlayout.setOnRefreshListener(listener);
+
+        refreshlayout = (SwipeRefreshLayout)views[businessIndex].findViewById(R.id.refreshlayout);
+        refreshLayouts[businessIndex] = refreshlayout;
+        refreshlayout.setColorSchemeResources(R.color.light_blue);
+        refreshlayout.setOnRefreshListener(listener);
+
     }
 
-    public void refreshData() {
-        callBack.getOrderList(getTaskRequest());
-    }
 
-    public TaskRequest getTaskRequest() {
-        isResponse = false;
+    public TaskRequest getTaskRequest(String type, int page) {
         TaskRequest taskRequest = new TaskRequest();
+        taskRequest.setType(type);
         taskRequest.setPage(page);
         return taskRequest;
     }
 
-    public void orderListResponse(ArrayList<OrderResponse.OrderResponseData> orderResponseDatas) {
-        //隐藏加载提示
-        progressBar.hide();
-        tv_state.setVisibility(View.GONE);
-        //上拉刷新清空数据 下拉加载追加数据
-        if (isUpLoading) {
-            data.clear();
+    public void orderListResponse(ArrayList<OrderResponse.OrderResponseData> orderResponseDatas, TaskRequest request) {
+        TaskAdapter adapter = null;
+        List<OrderResponse.OrderResponseData> datas = null;
+        TextView state = null;
+        ContentLoadingProgressBar progressBar = null;
+        SwipeRefreshLayout refreshlayout = null;
+        LoadMoreRecyclerView recycleView = null;
+        boolean isUploading = false;
+        int index = 0;
+        if (TaskRequest.ALL.equals(request.getType())){
+            index = allIndex;
+        } else if (TaskRequest.PERSONAL.equals(request.getType())) {
+            index = personalIndex;
         } else {
-            //追加的数据为空 显示没有更多数据
-            this.data.addAll(orderResponseDatas);
-            if (orderResponseDatas.size() == 0) {
-                rv_task.loadMoreEnd();
-            } else {
-                rv_task.loadMoreComplete();
-            }
+            index = businessIndex;
         }
 
-        data.addAll(orderResponseDatas);
-        //追加的数据为空显示友好提示
-        if (data.size() == 0) {
-            tv_state.setText("暂无任务");
-            tv_state.setVisibility(View.VISIBLE);
-            rv_task.setVisibility(View.GONE);
+        adapter = adapters[index];
+        datas = adapter.getTaskData();
+        isUploading = uploads[index];
+        state = states[index];
+        progressBar = progressBars[index];
+        refreshlayout = refreshLayouts[index];
+        recycleView = recyclerViews[index];
+
+        if (isUploading) {
+            if (orderResponseDatas.isEmpty()) {
+                //无数据
+                state.setVisibility(VISIBLE);
+            } else {
+                datas.clear();
+                datas.addAll(orderResponseDatas);
+                state.setVisibility(INVISIBLE);
+            }
         } else {
-            rv_task.setVisibility(View.VISIBLE);
-            taskAdapter.notifyDataSetChanged();
+            datas.addAll(orderResponseDatas);
+            state.setVisibility(INVISIBLE);
+            if (orderResponseDatas.isEmpty()) {
+                recycleView.loadMoreEnd();
+            } else {
+                recycleView.loadMoreComplete();
+                pages[index] = request.getPage();
+            }
         }
         refreshlayout.setRefreshing(false);
-        isResponse = true;
+        progressBar.hide();
+        adapter.notifyDataSetChanged();
     }
 
     /**
      * 网络连接失败或者请求失败的友好提示
      */
-    public void loadingFailure() {
-        progressBar.hide();
-        tv_state.setText("数据加载失败...");
-        tv_state.setVisibility(View.VISIBLE);
-        rv_task.setVisibility(View.GONE);
-        rv_task.loadMoreComplete();
+    public void loadingFailure(TaskRequest request) {
+        List<OrderResponse.OrderResponseData> datas = null;
+        TextView state = null;
+        ContentLoadingProgressBar progressBar = null;
+        SwipeRefreshLayout refreshlayout = null;
+        LoadMoreRecyclerView recycleView = null;
+        int index = allIndex;
+        if (TaskRequest.ALL.equals(request.getType())){
+            index = allIndex;
+        } else if (TaskRequest.PERSONAL.equals(request.getType())) {
+            index = personalIndex;
+        } else {
+            index = businessIndex;
+        }
+
+        datas = adapters[index].getTaskData();
+        state = states[index];
+        progressBar = progressBars[index];
+        refreshlayout = refreshLayouts[index];
+        recycleView = recyclerViews[index];
+
+        if (datas.isEmpty()) {
+            state.setVisibility(VISIBLE);
+        }
+        recycleView.loadMoreComplete();
         refreshlayout.setRefreshing(false);
-        isResponse = true;
+        progressBar.hide();
+    }
+
+    public void refreshData() {
+        progressBars[allIndex].show();
+        callBack.getOrderList(getTaskRequest(TaskRequest.ALL, 1));
+        progressBars[personalIndex].show();
+
+        postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        callBack.getOrderList(getTaskRequest(TaskRequest.BUSINESS, 1));
+                    }
+                }
+                , 200);
+
+        progressBars[businessIndex].show();
+        postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        callBack.getOrderList(getTaskRequest(TaskRequest.PERSONAL, 1));
+                    }
+                }
+                , 400);
     }
 
 
     @Override
     public void onClick(View v) {
+        String token = WindowHelper.getStringByPreference("token");
         switch (v.getId()) {
             case R.id.tv_my_task:
+                if (token.equals("")) {
+                    callBack.loginWindowEnter();
+                    return;
+                }
                 callBack.myTaskEnter();
                 break;
             case R.id.iv_back:
                 hideWindow(true);
                 break;
             case R.id.iv_publish:
-//                int isAuth = WindowHelper.getIntByPreference("is_auth");
-//                if (isAuth == 0) {
-//                    WindowHelper.showToast(getContext().getString(R.string.none_certifition));
-//                    return;
-//                } else if (isAuth == 2) {
-//                    WindowHelper.showToast(getContext().getString(R.string.certifing));
-//                    return;
-//                }
-                String token = WindowHelper.getStringByPreference("token");
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;
