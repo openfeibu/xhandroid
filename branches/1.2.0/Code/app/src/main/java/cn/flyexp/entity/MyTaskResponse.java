@@ -47,6 +47,8 @@ public class MyTaskResponse implements Serializable {
         private int oid;
         @SerializedName("status")
         private String status;
+        @SerializedName("order_status")
+        private String order_status;
         @SerializedName("nickname")
         private String nickname;
         @SerializedName("avatar_url")
@@ -158,6 +160,14 @@ public class MyTaskResponse implements Serializable {
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public String getOrder_status() {
+            return order_status;
+        }
+
+        public void setOrder_status(String status) {
+            this.order_status = status;
         }
 
         public String getNickname() {

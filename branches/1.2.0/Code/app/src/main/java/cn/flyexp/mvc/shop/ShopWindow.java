@@ -2,12 +2,7 @@ package cn.flyexp.mvc.shop;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -17,7 +12,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
@@ -28,21 +22,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import cn.flyexp.MainActivity;
 import cn.flyexp.R;
-import cn.flyexp.adapter.ShopAdapter;
 import cn.flyexp.entity.PicBrowserBean;
-import cn.flyexp.entity.ShopResponse;
-import cn.flyexp.entity.WebBean;
-import cn.flyexp.entity.WebUrlRequest;
 import cn.flyexp.framework.AbstractWindow;
 import cn.flyexp.framework.WindowHelper;
-import cn.flyexp.mvc.user.UserViewCallBack;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.LogUtil;
-import cn.flyexp.util.OnItemClickListener;
-import cn.flyexp.view.LoadMoreRecyclerView;
 
 /**
  * Created by txy on 2016/8/9 0009.
@@ -262,7 +250,7 @@ public class ShopWindow extends AbstractWindow implements View.OnClickListener {
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_UP) {
             int keyCode = event.getKeyCode();
-            if (keyCode == event.KEYCODE_BACK) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && MainActivity.HadKeyDown) {
                 if (webView.canGoBack()) {
                     webView.goBack();
                     return true;

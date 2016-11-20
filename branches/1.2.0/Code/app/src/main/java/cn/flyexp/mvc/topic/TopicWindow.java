@@ -77,7 +77,6 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
     private void initView() {
         setContentView(R.layout.window_topic);
         titleBar = (RelativeLayout) findViewById(R.id.title_bar);
-        findViewById(R.id.fab_publish).setOnClickListener(this);
         findViewById(R.id.iv_back).setVisibility(View.GONE);
 
         tv_newmes = (TextView) findViewById(R.id.tv_newmes);

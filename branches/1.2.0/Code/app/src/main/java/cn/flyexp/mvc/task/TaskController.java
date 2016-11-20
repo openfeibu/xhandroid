@@ -489,6 +489,7 @@ public class TaskController extends AbstractController implements TaskViewCallBa
                             }
                             if (myTaskWindow != null) {
                                 myTaskWindow.refreshMyOrder();
+                                myTaskWindow.refreshMyTask();
                             }
                             taskWindow.refreshData();
                             break;

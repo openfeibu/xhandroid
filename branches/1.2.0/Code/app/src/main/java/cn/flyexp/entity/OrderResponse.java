@@ -46,6 +46,8 @@ public class OrderResponse implements Serializable {
         private int oid;
         @SerializedName("status")
         private String status;
+        @SerializedName("order_status")
+        private String order_status;
         @SerializedName("nickname")
         private String nickname;
         @SerializedName("avatar_url")
@@ -148,6 +150,14 @@ public class OrderResponse implements Serializable {
             this.status = status;
         }
 
+        public String getOrder_status() {
+            return order_status;
+        }
+
+        public void setOrder_status(String status) {
+            this.order_status = status;
+        }
+
         public String getNickname() {
             return nickname;
         }
@@ -189,6 +199,12 @@ public class OrderResponse implements Serializable {
         }
 
         public String getFee() {
+            try{
+                float f = Float.parseFloat(fee);
+                return "" + (int)f;
+            } catch (Exception e){
+
+            }
             return fee;
         }
 

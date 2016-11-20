@@ -9,4 +9,7 @@
     <dimen name="title_bar_height">48dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="task_item_round">8dp</dimen>
+    <dimen name="task_item_state_round">3dp</dimen>
+    <dimen name="task_item_padding">2dp</dimen>
 </resources>

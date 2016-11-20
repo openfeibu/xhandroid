@@ -57,7 +57,7 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
 
     private void initView() {
         setContentView(R.layout.window_task);
-        findViewById(R.id.iv_publish).setOnClickListener(this);
+        findViewById(R.id.fab_publish).setOnClickListener(this);
         findViewById(R.id.tv_my_task).setOnClickListener(this);
 
 
@@ -368,7 +368,7 @@ public class TaskWindow extends AbstractWindow implements View.OnClickListener {
             case R.id.iv_back:
                 hideWindow(true);
                 break;
-            case R.id.iv_publish:
+            case R.id.fab_publish:
                 if (token.equals("")) {
                     callBack.loginWindowEnter();
                     return;

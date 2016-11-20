@@ -2,7 +2,14 @@ package cn.flyexp.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,13 +76,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        float round = context.getResources().getDimensionPixelSize(R.dimen.task_item_round);
+        float[] outerR = new float[] { 0, 0, round, round, round, round, 0, 0 };
+        RoundRectShape rr = new RoundRectShape(outerR, null, null);
+        ShapeDrawable drawableMoney = new ShapeDrawable(rr);
+
+        round = context.getResources().getDimensionPixelSize(R.dimen.task_item_state_round);
+        outerR = new float[] { round, round, round, round, round, round, round, round };
+        rr = new RoundRectShape(outerR, null, null);
+        ShapeDrawable drawableState = new ShapeDrawable(rr);
+
+        // 指定填充模式
+        drawableMoney.getPaint().setStyle(Paint.Style.FILL);
+        drawableState.getPaint().setStyle(Paint.Style.FILL);
+
         if (!isMyTaskData) {
             OrderResponse.OrderResponseData responseData = taskData.get(position);
             holder.senderName.setText(responseData.getNickname());
             holder.orderTime.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData.getCreated_at())));
-            holder.orderMoney.setText("￥" + responseData.getFee());
+            holder.orderMoney.setText("" + responseData.getFee());
             holder.orderContent.setText(responseData.getDescription());
-            holder.orderState.setText(parseStatus(responseData.getStatus()));
+            holder.orderState.setText(responseData.getOrder_status());
             holder.orderAddress.setText(responseData.getDestination());
             if (!responseData.getAvatar_url().equals("")) {
                 Picasso.with(context).load(responseData.getAvatar_url()).config(Bitmap.Config.RGB_565)
@@ -85,19 +106,29 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 holder.senderIcon.setImageResource(R.mipmap.icon_defaultavatar_small);
             }
             if (responseData.getStatus().equals("new")) {
-                holder.stateView.setBackgroundColor(context.getResources().getColor(R.color.task_new));
+                drawableMoney.getPaint().setColor(context.getResources().getColor(R.color.task_new));
+                drawableState.getPaint().setColor(context.getResources().getColor(R.color.task_new));
+                holder.stateView.setBackgroundDrawable(drawableMoney);
+                //指定填充颜色
+                holder.orderState.setBackgroundDrawable(drawableState);
             } else if (responseData.getStatus().equals("accepted")) {
-                holder.stateView.setBackgroundColor(context.getResources().getColor(R.color.task_comped));
+                drawableMoney.getPaint().setColor(context.getResources().getColor(R.color.task_comped));
+                drawableState.getPaint().setColor(context.getResources().getColor(R.color.task_comped));
+                holder.stateView.setBackgroundDrawable(drawableMoney);
+                holder.orderState.setBackgroundDrawable(drawableState);
             } else {
-                holder.stateView.setBackgroundColor(context.getResources().getColor(R.color.task_finish));
+                drawableMoney.getPaint().setColor(context.getResources().getColor(R.color.task_finish));
+                drawableState.getPaint().setColor(context.getResources().getColor(R.color.task_finish));
+                holder.stateView.setBackgroundDrawable(drawableMoney);
+                holder.orderState.setBackgroundDrawable(drawableState);
             }
         } else {
             MyTaskResponse.MyTaskResponseData myTaskResponseData = myTaskData.get(position);
             holder.senderName.setText(myTaskResponseData.getNickname());
             holder.orderTime.setText(DateUtil.getStandardDate(DateUtil.date2Long(myTaskResponseData.getCreated_at())));
-            holder.orderMoney.setText("￥" + myTaskResponseData.getFee());
+            holder.orderMoney.setText("" + (int)myTaskResponseData.getFee());
             holder.orderContent.setText(myTaskResponseData.getDescription());
-            holder.orderState.setText(parseStatus(myTaskResponseData.getStatus()));
+            holder.orderState.setText(myTaskResponseData.getOrder_status());
             holder.orderAddress.setText(myTaskResponseData.getDestination());
             if (!myTaskResponseData.getAvatar_url().equals("")) {
                 Picasso.with(context).load(myTaskResponseData.getAvatar_url()).config(Bitmap.Config.RGB_565)
@@ -107,13 +138,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 holder.senderIcon.setImageResource(R.mipmap.icon_defaultavatar_small);
             }
             if (myTaskResponseData.getStatus().equals("new")) {
-                holder.stateView.setBackgroundColor(context.getResources().getColor(R.color.task_new));
+                drawableMoney.getPaint().setColor(context.getResources().getColor(R.color.task_new));
+                drawableState.getPaint().setColor(context.getResources().getColor(R.color.task_new));
+                holder.stateView.setBackgroundDrawable(drawableMoney);
+                holder.orderState.setBackgroundDrawable(drawableMoney);
             } else if (myTaskResponseData.getStatus().equals("accepted")) {
-                holder.stateView.setBackgroundColor(context.getResources().getColor(R.color.task_comped));
-            } else if (myTaskResponseData.getStatus().equals("completed")) {
-                holder.stateView.setBackgroundColor(context.getResources().getColor(R.color.task_finish));
+                drawableMoney.getPaint().setColor(context.getResources().getColor(R.color.task_comped));
+                drawableState.getPaint().setColor(context.getResources().getColor(R.color.task_comped));
+                holder.stateView.setBackgroundDrawable(drawableMoney);
+                holder.orderState.setBackgroundDrawable(drawableState);
+            } else {
+                drawableMoney.getPaint().setColor(context.getResources().getColor(R.color.task_finish));
+                drawableState.getPaint().setColor(context.getResources().getColor(R.color.task_finish));
+                holder.stateView.setBackgroundDrawable(drawableMoney);
+                holder.orderState.setBackgroundDrawable(drawableState);
             }
         }
+
+        int padding = context.getResources().getDimensionPixelSize(R.dimen.task_item_padding);
+        holder.stateView.setPadding(padding, 0, padding, 0);
+        String textStr = holder.orderMoney.getText().toString() + "元";
+        float size = holder.orderMoney.getTextSize();
+        SpannableStringBuilder builder = new SpannableStringBuilder(textStr);
+
+        builder.setSpan(new AbsoluteSizeSpan((int)(size / 2)), textStr.length() - 1, textStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.orderMoney.setText(builder);
 
         if (onItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -123,20 +172,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 }
             });
         }
-    }
-
-    private String parseStatus(String status) {
-        String str = "";
-        if (status.equals("new")) {
-            str = "可接单";
-        } else if (status.equals("finish")) {
-            str = "待结算";
-        } else if (status.equals("accepted")) {
-            str = "已接单";
-        } else if (status.equals("completed")) {
-            str = "已结算";
-        }
-        return str;
     }
 
     @Override

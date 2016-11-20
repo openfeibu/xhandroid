@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.entity.PicBrowserBean;
 import cn.flyexp.entity.WebBean;
@@ -284,7 +285,7 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_UP) {
             int keyCode = event.getKeyCode();
-            if (keyCode == event.KEYCODE_BACK) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && MainActivity.HadKeyDown) {
                 if (webView.canGoBack()) {
                     webView.goBack();
                     return true;

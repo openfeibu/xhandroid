@@ -7,6 +7,8 @@
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="10dp">
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,24 +16,20 @@
         android:padding="8dp">
 
         <cn.flyexp.view.RoundImageView
-            android:id="@+id/iv_avatar"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@mipmap/icon_defaultavatar_small" />
 
         <TextView
-            android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/iv_avatar"
             android:text="老司机"
             android:textColor="@color/font_brown_dark"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_surplustime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -62,18 +60,7 @@
             android:textColor="@color/font_brown_dark"
             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/tv_name"
-            android:layout_marginRight="29dp"
-            android:layout_marginTop="36dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。今晚有老司机开车吗，求带飞。"
-            android:textColor="@color/font_brown_light"
-            android:textSize="14sp" />
+
 
         <TextView
             android:id="@+id/tv_fee"
