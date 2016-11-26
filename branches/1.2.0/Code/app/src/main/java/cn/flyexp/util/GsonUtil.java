@@ -35,9 +35,9 @@ public class GsonUtil {
     private <T> T _fromEncodeJson(String data, Class dataClass) {
         T object = null;
         try {
-            LogUtil.error(getClass(), "decode classname:" + dataClass.getSimpleName() + " data:" + CommonUtil
-                    .decode(data));
-            object = (T) gson.fromJson(CommonUtil.decode(data), dataClass);
+            String dataResult = CommonUtil.decode(data);
+            LogUtil.error(getClass(), "decode classname:" + dataClass.getSimpleName() + " data:" + dataResult);
+            object = (T) gson.fromJson(dataResult, dataClass);
         } catch (Exception e) {
             LogUtil.error(getClass(), "classname:" + dataClass.getSimpleName() + "parseError");
         }
@@ -56,9 +56,9 @@ public class GsonUtil {
     private <T> T _fromJsonList(String data, Type type) {
         T object = null;
         try {
-            LogUtil.error(getClass(), "decode classname:" + data.getClass().getSimpleName() + " data:" + CommonUtil
-                    .decode(data));
-            object = gson.fromJson(data, type);
+            String dataResult = CommonUtil.decode(data);
+            LogUtil.error(getClass(), "decode classname:" + data.getClass().getSimpleName() + " data:" + dataResult);
+            object = gson.fromJson(dataResult, type);
         } catch (Exception e) {
             LogUtil.error(getClass(), "classname:" + type.getClass().getSimpleName() + "parseError");
         }
