@@ -22,13 +22,6 @@
                 android:background="@color/light_blue"
                 android:scaleType="centerCrop" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_centerHorizontal="true"
-                android:alpha="0.5"
-                android:background="@color/black" />
-
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
@@ -37,15 +30,23 @@
                 android:layout_marginLeft="16dp"
                 android:src="@drawable/btn_back" />
 
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="175dp"
                 android:background="@drawable/round_white_background"
                 android:orientation="vertical"
-                android:paddingTop="50dp">
+                android:paddingBottom="2dp"
+                android:paddingTop="100dp">
 
                 <TextView
                     android:id="@+id/tv_nickname"
@@ -80,7 +81,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="125dp">
+                android:layout_alignParentTop="true"
+                >
 
                 <cn.flyexp.view.RoundImageView
                     android:id="@+id/iv_avatar"
@@ -114,43 +116,10 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="50dp"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:src="@mipmap/icon_startpage"
             android:layout_height="wrap_content" />
-
-
-        <RelativeLayout
-            android:id="@+id/layout_tashop"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/btn_white"
-            android:clickable="true"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:drawableLeft="@mipmap/icon_mytaodan"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:text="@string/ta_shop"
-                android:textColor="@color/font_brown_dark"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/icon_fillinfo" />
-
-        </RelativeLayout>
-
     </LinearLayout>
 </ScrollView>

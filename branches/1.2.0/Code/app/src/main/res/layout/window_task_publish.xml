@@ -87,7 +87,7 @@
                 android:inputType="number"
                 android:maxLength="6"
                 android:singleLine="true"
-                android:hint="客官，2元起步哦"
+                android:hint="2元起步，提高赏金能更快被接"
                 android:textColorHint="@color/light_red"
                 android:textColor="@color/font_brown_dark"
                 android:textSize="14sp" />

@@ -83,13 +83,14 @@ public class WindowManager {
     }
 
     public void exitApp() {
-        long curTime = System.currentTimeMillis();
-        if (curTime - lastTime > 1000) {
-            Toast.makeText(activity, "再点一次退出", Toast.LENGTH_SHORT).show();
-            lastTime = curTime;
-        } else {
-            activity.finish();
-        }
+        activity.moveTaskToBack(true);
+//        long curTime = System.currentTimeMillis();
+//        if (curTime - lastTime > 1000) {
+//            Toast.makeText(activity, "再点一次退出", Toast.LENGTH_SHORT).show();
+//            lastTime = curTime;
+//        } else {
+//            activity.finish();
+//        }
     }
 
     public boolean dispatchKeyEvent(KeyEvent event) {
