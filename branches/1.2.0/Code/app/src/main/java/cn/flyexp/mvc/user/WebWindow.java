@@ -51,6 +51,7 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
     private boolean goBack;
     private TextView tv_close;
     private ProgressBar pb_web;
+    private View toolbar;
     private String originalUrlUrl;
 
     public WebWindow(UserViewCallBack callBack) {
@@ -64,6 +65,7 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
         setContentView(R.layout.window_web);
         findViewById(R.id.iv_back).setOnClickListener(this);
 
+        toolbar = findViewById(R.id.toolbar);
         pb_web = (ProgressBar) findViewById(R.id.pb_web);
         tv_close = (TextView) findViewById(R.id.tv_close);
         tv_close.setOnClickListener(this);
@@ -90,6 +92,9 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
     public void initData(WebBean bean) {
         boolean isRequest = bean.isRequest();
         tv_title.setText(bean.getTitle());
+        if (bean.isHideTitle()) {
+            toolbar.setVisibility(GONE);
+        }
         if (isRequest) {
             WebUrlRequest webUrlRequest = new WebUrlRequest();
             webUrlRequest.setUrl_name(bean.getName());
@@ -131,26 +136,6 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
             return "";
         }
 
-        @JavascriptInterface
-        public void onClickImage(String json) {
-            try {
-                JSONObject jsonObject = new JSONObject(json);
-                int currpos = jsonObject.getInt("currpos");
-                String imageUrl = jsonObject.getString("imageurl");
-                String[] splitImageUrl = CommonUtil.splitImageUrl(imageUrl);
-                ArrayList<String> imgList = new ArrayList<String>();
-                for(String url :splitImageUrl){
-                    imgList.add(url);
-                }
-                PicBrowserBean picBrowserBean = new PicBrowserBean();
-                picBrowserBean.setImgUrl(imgList);
-                picBrowserBean.setCurSelectedIndex(currpos);
-                picBrowserBean.setType(1);
-                callBack.picBrowserEnter(picBrowserBean);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void loadUrl(String url) {
@@ -257,15 +242,15 @@ public class WebWindow extends AbstractWindow implements View.OnClickListener {
                 if (webView.getUrl() != null) {
                     webView.reload();
                 } else {
-                  if (originalUrlUrl == null) {
-                      if (webView.canGoBack()) {
-                          webView.goBack();
-                      } else {
-                          WindowHelper.showToast(getContext().getString(R.string.neterror));
-                      }
-                  } else {
-                      webView.loadUrl(originalUrlUrl);
-                  }
+                    if (originalUrlUrl == null) {
+                        if (webView.canGoBack()) {
+                            webView.goBack();
+                        } else {
+                            WindowHelper.showToast(getContext().getString(R.string.neterror));
+                        }
+                    } else {
+                        webView.loadUrl(originalUrlUrl);
+                    }
                 }
                 break;
             case R.id.iv_back:

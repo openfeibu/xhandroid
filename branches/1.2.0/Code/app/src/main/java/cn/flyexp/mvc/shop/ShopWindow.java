@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.entity.PicBrowserBean;
+import cn.flyexp.entity.WebBean;
 import cn.flyexp.framework.AbstractWindow;
 import cn.flyexp.framework.WindowHelper;
 import cn.flyexp.permission.PermissionHandler;
@@ -50,9 +51,8 @@ public class ShopWindow extends AbstractWindow implements View.OnClickListener {
         super(callBack);
         this.callBack = callBack;
         initView();
-        loadUrl("http://xhplus.feibu.info/fb/index.html#/shop");
+        loadUrl("http://192.168.0.129/fb/index.html?device=android#/shop");
     }
-
 
 
     @SuppressLint("JavascriptInterface")
@@ -109,23 +109,19 @@ public class ShopWindow extends AbstractWindow implements View.OnClickListener {
         }
 
         @JavascriptInterface
-        public void onClickImage(String json) {
-            try {
-                JSONObject jsonObject = new JSONObject(json);
-                int currpos = jsonObject.getInt("currpos");
-                String imageUrl = jsonObject.getString("imageurl");
-                String[] splitImageUrl = CommonUtil.splitImageUrl(imageUrl);
-                ArrayList<String> imgList = new ArrayList<String>();
-                for(String url :splitImageUrl){
-                    imgList.add(url);
+        public void openWindow(final String type, final String url) {
+            ((Activity) getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WindowHelper.showToast("type" + type + "url" + url);
                 }
-                PicBrowserBean picBrowserBean = new PicBrowserBean();
-                picBrowserBean.setImgUrl(imgList);
-                picBrowserBean.setCurSelectedIndex(currpos);
-                picBrowserBean.setType(1);
-                callBack.picBrowserEnter(picBrowserBean);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            });
+            if (TextUtils.equals(type, "shop")) {
+                WebBean webBean = new WebBean();
+                webBean.setUrl(url);
+                webBean.setRequest(false);
+                webBean.setHideTitle(true);
+                callBack.webWindowEnter(webBean);
             }
         }
     }

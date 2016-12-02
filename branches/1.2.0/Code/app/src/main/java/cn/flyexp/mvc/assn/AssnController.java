@@ -1,5 +1,6 @@
 package cn.flyexp.mvc.assn;
 
+import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 
@@ -71,6 +72,7 @@ public class AssnController extends AbstractController implements AssnViewCallBa
     private AssnExamineWindow assnExamineWindow;
     private AssnExamineDetailWindow assnExamineDetailWindow;
     private final AssnModel assnModel;
+    private AssnMemberWindow assnMemberWindow;
 
     public AssnController() {
         super();
@@ -132,6 +134,10 @@ public class AssnController extends AbstractController implements AssnViewCallBa
             assnExamineDetailWindow = new AssnExamineDetailWindow(this);
             assnExamineDetailWindow.initData((AssnExamineListResponse.AssnExamineListResponseData) mes.obj);
             assnExamineDetailWindow.showWindow();
+        } else if (mes.what == MessageIDDefine.ASSN_MEMBER_OPEN) {
+            assnMemberWindow = new AssnMemberWindow(this);
+            assnMemberWindow.init(mes.getData());
+            assnMemberWindow.showWindow();
         }
     }
 
@@ -151,6 +157,7 @@ public class AssnController extends AbstractController implements AssnViewCallBa
         registerMessage(MessageIDDefine.MYASSN_ACTIVITY_OPEN, this);
         registerMessage(MessageIDDefine.ASSN_EXAMINE_OPEN, this);
         registerMessage(MessageIDDefine.ASSN_EXAMINE_DETAIL_OPEN, this);
+        registerMessage(MessageIDDefine.ASSN_MEMBER_OPEN, this);
         registerNotify(NotifyIDDefine.NOTIFY_ASSN_MENBER_REFRESH, this);
         registerNotify(NotifyIDDefine.NOTIFY_ASSN_ACT_REFRESH, this);
         registerNotify(NotifyIDDefine.NOTIFY_ASSN_NOTICE_REFRESH, this);
@@ -158,40 +165,6 @@ public class AssnController extends AbstractController implements AssnViewCallBa
 
     @Override
     public void onNotify(Message mes) {
-        if (mes.what == NotifyIDDefine.NOTIFY_ASSN_NOTICE_REFRESH) {
-            String data = (String) mes.obj;
-            if (TextUtils.isEmpty(data)) {
-                return;
-            }
-            if (myAssnDetailWindow == null) {
-                WindowHelper.putBooleanByPreference(SharedPrefs.KET_REMIND_NOTICE, true);
-                WindowHelper.putIntByPreference(SharedPrefs.KET_REMIND_NOTICE_AID, getAidByNotify(data));
-            } else {
-                myAssnDetailWindow.remindNotice(getAidByNotify(data));
-            }
-        } else if (mes.what == NotifyIDDefine.NOTIFY_ASSN_ACT_REFRESH) {
-            String data = (String) mes.obj;
-            if (TextUtils.isEmpty(data)) {
-                return;
-            }
-            if (myAssnDetailWindow == null) {
-                WindowHelper.putBooleanByPreference(SharedPrefs.KET_REMIND_ACTI, true);
-                WindowHelper.putIntByPreference(SharedPrefs.KET_REMIND_ACTI_AID, getAidByNotify(data));
-            } else {
-                myAssnDetailWindow.remindActi(getAidByNotify(data));
-            }
-        } else if (mes.what == NotifyIDDefine.NOTIFY_ASSN_MENBER_REFRESH) {
-            String data = (String) mes.obj;
-            if (TextUtils.isEmpty(data)) {
-                return;
-            }
-            if (myAssnDetailWindow == null) {
-                WindowHelper.putBooleanByPreference(SharedPrefs.KET_REMIND_EXAMINE, true);
-                WindowHelper.putIntByPreference(SharedPrefs.KET_REMIND_EXAMINE_AID, getAidByNotify(data));
-            } else {
-                myAssnDetailWindow.remindExamine(getAidByNotify(data));
-            }
-        }
     }
 
     private int getAidByNotify(String data) {
@@ -259,6 +232,13 @@ public class AssnController extends AbstractController implements AssnViewCallBa
         sendMessage(MessageIDDefine.ASSN_EXAMINE_OPEN, aid);
     }
 
+    @Override
+    public void assnMemberEnter(Bundle bundle) {
+        Message msg = Message.obtain();
+        msg.what = MessageIDDefine.ASSN_MEMBER_OPEN;
+        msg.setData(bundle);
+        sendMessage(msg);
+    }
 
     @Override
     public void assnExamineDetailEnter(AssnExamineListResponse.AssnExamineListResponseData data) {
@@ -499,7 +479,6 @@ public class AssnController extends AbstractController implements AssnViewCallBa
                             WindowHelper.showToast(myAssnResponse.getDetail());
                             break;
                     }
-                } else {
                 }
             }
 
@@ -520,13 +499,44 @@ public class AssnController extends AbstractController implements AssnViewCallBa
                     int code = assnDetailResponse.getCode();
                     switch (code) {
                         case ResponseCode.RESPONSE_200:
-                            myAssnDetailWindow.responseData(assnDetailResponse.getData());
+                            myAssnDetailWindow.myAssnDetailResponse(assnDetailResponse.getData());
                             break;
                         case ResponseCode.RESPONSE_2001:
                             againLogin(myAssnDetailWindow);
                             break;
                         case ResponseCode.RESPONSE_110:
                             WindowHelper.showToast(assnDetailResponse.getDetail());
+                            break;
+                    }
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EncodeData> call, Throwable t) {
+            }
+        });
+    }
+
+    @Override
+    public void getMemberListByMyAssn(AssnMemberRequest assnMemberRequest) {
+        Call<EncodeData> call = service.getAssociationMember(GsonUtil.toEncodeJson(assnMemberRequest));
+        call.enqueue(new Callback<EncodeData>() {
+            @Override
+            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
+                if (response.body() != null && response.isSuccess()) {
+                    AssnMemberResponse assnMemberResponse = GsonUtil.fromEncodeJson(response.body().getData(), AssnMemberResponse
+                            .class);
+                    int code = assnMemberResponse.getCode();
+                    switch (code) {
+                        case ResponseCode.RESPONSE_200:
+                            myAssnDetailWindow.memberListResponse(assnMemberResponse.getData());
+                            break;
+                        case ResponseCode.RESPONSE_2001:
+                            againLogin(myAssnDetailWindow);
+                            break;
+                        case ResponseCode.RESPONSE_110:
+                            WindowHelper.showToast(assnMemberResponse.getDetail());
                             break;
                     }
                 } else {
@@ -648,10 +658,10 @@ public class AssnController extends AbstractController implements AssnViewCallBa
                     int code = assnMemberResponse.getCode();
                     switch (code) {
                         case ResponseCode.RESPONSE_200:
-                            myAssnDetailWindow.responseData(assnMemberResponse.getData());
+                            assnMemberWindow.memberResponse(assnMemberResponse.getData());
                             break;
                         case ResponseCode.RESPONSE_2001:
-                            againLogin(myAssnDetailWindow);
+                            againLogin(assnMemberWindow);
                             break;
                         case ResponseCode.RESPONSE_110:
                             WindowHelper.showToast(assnMemberResponse.getDetail());
@@ -680,7 +690,7 @@ public class AssnController extends AbstractController implements AssnViewCallBa
                     int code = myAssnActivityResponse.getCode();
                     switch (code) {
                         case ResponseCode.RESPONSE_200:
-                            myAssnActivityWindow.responseData(myAssnActivityResponse.getData());
+                            myAssnDetailWindow.myAssnActiResponse(myAssnActivityResponse.getData());
                             break;
                         case ResponseCode.RESPONSE_2001:
                             againLogin(myAssnActivityWindow);
@@ -816,14 +826,42 @@ public class AssnController extends AbstractController implements AssnViewCallBa
                             WindowHelper.showToast(assnExamineListResponse.getDetail());
                             break;
                     }
-                } else {
-                    assnWindow.activityLoadingFailure();
                 }
             }
 
             @Override
             public void onFailure(Call<EncodeData> call, Throwable t) {
-                assnWindow.activityLoadingFailure();
+            }
+        });
+    }
+
+    @Override
+    public void examineMembarListByMyAssn(AssnExamineListRequest assnExamineListRequest) {
+        Call<EncodeData> call = service.checkMemberList(GsonUtil.toEncodeJson(assnExamineListRequest));
+        call.enqueue(new Callback<EncodeData>() {
+            @Override
+            public void onResponse(Call<EncodeData> call, Response<EncodeData> response) {
+                if (response.body() != null && response.isSuccess()) {
+                    AssnExamineListResponse assnExamineListResponse =
+                            GsonUtil.fromEncodeJson(response.body().getData(), AssnExamineListResponse
+                                    .class);
+                    int code = assnExamineListResponse.getCode();
+                    switch (code) {
+                        case ResponseCode.RESPONSE_200:
+                            myAssnDetailWindow.examineListResponse(assnExamineListResponse.getData());
+                            break;
+                        case ResponseCode.RESPONSE_2001:
+                            againLogin(myAssnDetailWindow);
+                            break;
+                        case ResponseCode.RESPONSE_110:
+                            WindowHelper.showToast(assnExamineListResponse.getDetail());
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EncodeData> call, Throwable t) {
             }
         });
     }

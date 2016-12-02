@@ -24,6 +24,17 @@ public class WebBean implements Serializable {
     @SerializedName("isRequest")
     private boolean isRequest;
 
+    @SerializedName("isHideTitle")
+    private boolean isHideTitle;
+
+    public boolean isHideTitle() {
+        return isHideTitle;
+    }
+
+    public void setHideTitle(boolean hideTitle) {
+        isHideTitle = hideTitle;
+    }
+
     public String getName() {
         return name;
     }

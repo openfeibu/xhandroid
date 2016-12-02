@@ -20,8 +20,8 @@ import cn.flyexp.R;
 import cn.flyexp.entity.AssnActivityResponse;
 import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.DateUtil;
-import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.OnItemClickListener;
+import cn.flyexp.view.RoundImageView;
 
 /**
  * Created by txy on 2016/7/18.
@@ -54,11 +54,11 @@ public class AssnActivityAdapter extends RecyclerView.Adapter {
         if (holder instanceof ViewHolder) {
             ViewHolder viewHolder = (ViewHolder) holder;
             if (DateUtil.date2Long(responseData.getStart_time()) > new Date().getTime()) {
-                viewHolder.iv_state.setImageResource(R.mipmap.icon_activity_waiting);
+                viewHolder.iv_state.setImageResource(R.mipmap.icon_community_activity_notstarted);
             } else if (DateUtil.date2Long(responseData.getEnd_time()) < new Date().getTime()) {
-                viewHolder.iv_state.setImageResource(R.mipmap.icon_activity_end);
+                viewHolder.iv_state.setImageResource(R.mipmap.icon_community_activity_over);
             } else {
-                viewHolder.iv_state.setImageResource(R.mipmap.icon_activity_ongoing);
+                viewHolder.iv_state.setImageResource(R.mipmap.icon_community_activity_ongoing);
             }
             viewHolder.tv_title.setText(responseData.getTitle().trim());
             viewHolder.tv_content.setText(responseData.getContent().trim());
@@ -70,26 +70,28 @@ public class AssnActivityAdapter extends RecyclerView.Adapter {
         } else if (holder instanceof PicViewHolder) {
             PicViewHolder viewHolder = (PicViewHolder) holder;
             if (DateUtil.date2Long(responseData.getStart_time()) > new Date().getTime()) {
-                viewHolder.iv_state.setImageResource(R.mipmap.icon_activity_waiting);
-                viewHolder.tv_stime.setTextColor(context.getResources().getColor(R.color.light_blue));
+                viewHolder.imgState.setImageResource(R.mipmap.icon_community_activity_notstarted);
+                viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.light_blue));
             } else if (DateUtil.date2Long(responseData.getEnd_time()) < new Date().getTime()) {
-                viewHolder.iv_state.setImageResource(R.mipmap.icon_activity_end);
-                viewHolder.tv_stime.setTextColor(context.getResources().getColor(R.color.light_gray));
+                viewHolder.imgState.setImageResource(R.mipmap.icon_community_activity_over);
+                viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.light_gray));
             } else {
-                viewHolder.iv_state.setImageResource(R.mipmap.icon_activity_ongoing);
-                viewHolder.tv_stime.setTextColor(context.getResources().getColor(R.color.light_red));
+                viewHolder.imgState.setImageResource(R.mipmap.icon_community_activity_ongoing);
+                viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.light_red));
             }
-            viewHolder.tv_title.setText(responseData.getTitle());
-            viewHolder.tv_content.setText(responseData.getContent());
-            viewHolder.tv_place.setText(responseData.getPlace());
-            viewHolder.tv_stime.setText("开始时间：" + DateUtil.long2Date(DateUtil.date2Long(responseData.getStart_time()), "yy-MM-dd HH:mm"));
-            viewHolder.tv_etime.setText("结束时间：" + DateUtil.long2Date(DateUtil.date2Long(responseData.getEnd_time()), "yy-MM-dd HH:mm"));
-            viewHolder.tv_assn.setText(responseData.getAname());
-            viewHolder.tv_viewnum.setText("浏览" + responseData.getView_num());
+            viewHolder.tvTitle.setText(responseData.getTitle());
+            viewHolder.tvDate.setText(DateUtil.long2Date(DateUtil.date2Long(responseData.getStart_time()), "yy-MM-dd HH:mm"));
+            viewHolder.tvAssn.setText(responseData.getAname());
+            viewHolder.tvViewNum.setText("浏览" + responseData.getView_num());
             if (!TextUtils.isEmpty(responseData.getImg_url())) {
                 Picasso.with(context).load(responseData.getImg_url()).config(Bitmap.Config.RGB_565)
-                        .resize(CommonUtil.getScreenWidth(context), CommonUtil.dip2px(context, 150))
-                        .memoryPolicy(MemoryPolicy.NO_CACHE).into(viewHolder.iv_img);
+                        .resize(CommonUtil.dip2px(context, 76), CommonUtil.dip2px(context, 76))
+                        .memoryPolicy(MemoryPolicy.NO_CACHE).into(viewHolder.imgPic);
+            }
+            if (!TextUtils.isEmpty(responseData.getAvatar_url())) {
+                Picasso.with(context).load(responseData.getImg_url()).config(Bitmap.Config.RGB_565)
+                        .resize(CommonUtil.dip2px(context, 32), CommonUtil.dip2px(context, 32))
+                        .memoryPolicy(MemoryPolicy.NO_CACHE).into(viewHolder.imgAvatar);
             }
         }
         if (onItemClickListener != null) {
@@ -148,27 +150,23 @@ public class AssnActivityAdapter extends RecyclerView.Adapter {
 
     class PicViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView iv_img;
-        private ImageView iv_state;
-        private TextView tv_title;
-        private TextView tv_content;
-        private TextView tv_place;
-        private TextView tv_stime;
-        private TextView tv_etime;
-        private TextView tv_assn;
-        private TextView tv_viewnum;
+        private ImageView imgPic;
+        private ImageView imgState;
+        private TextView tvTitle;
+        private TextView tvDate;
+        private TextView tvAssn;
+        private TextView tvViewNum;
+        private RoundImageView imgAvatar;
 
         public PicViewHolder(View view) {
             super(view);
-            iv_img = (ImageView) view.findViewById(R.id.iv_img);
-            iv_state = (ImageView) view.findViewById(R.id.iv_state);
-            tv_title = (TextView) view.findViewById(R.id.tv_title);
-            tv_content = (TextView) view.findViewById(R.id.tv_content);
-            tv_place = (TextView) view.findViewById(R.id.tv_place);
-            tv_stime = (TextView) view.findViewById(R.id.tv_stime);
-            tv_etime = (TextView) view.findViewById(R.id.tv_etime);
-            tv_assn = (TextView) view.findViewById(R.id.tv_assn);
-            tv_viewnum = (TextView) view.findViewById(R.id.tv_viewnum);
+            imgPic = (ImageView) view.findViewById(R.id.img_pic);
+            imgState = (ImageView) view.findViewById(R.id.img_state);
+            tvTitle = (TextView) view.findViewById(R.id.tv_title);
+            tvDate = (TextView) view.findViewById(R.id.tv_date);
+            tvAssn = (TextView) view.findViewById(R.id.tv_assn);
+            tvViewNum = (TextView) view.findViewById(R.id.tv_viewnum);
+            imgAvatar = (RoundImageView) view.findViewById(R.id.img_avatar);
         }
     }
 }

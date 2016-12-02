@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/myassnLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/menuLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
         android:background="@color/light_blue">
 
         <ImageView
-            android:id="@+id/iv_back"
+            android:id="@+id/img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -32,16 +30,14 @@
             android:textSize="20sp" />
 
         <ImageView
-            android:id="@+id/iv_menu"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:id="@+id/img_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
-            android:background="@mipmap/icon_club_menu" />
+            android:background="@mipmap/icon_community_menu" />
     </RelativeLayout>
 
     <android.support.v4.widget.NestedScrollView
@@ -53,112 +49,205 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="80dp"
+                android:background="@color/light_blue"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:background="@color/app_background" />
-
+                <cn.flyexp.view.RoundImageView
+                    android:id="@+id/img_avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@mipmap/icon_defaultavatar_big" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_alignParentBottom="true"
-                    android:alpha="0.5"
-                    android:background="@color/font_brown_dark"
-                    android:orientation="horizontal">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
 
-                    <cn.flyexp.view.RoundImageView
-                        android:id="@+id/iv_avatar"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@mipmap/icon_defaultavatar_small" />
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tv_assn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="16dp"
-                        android:orientation="vertical">
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/tv_assn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="13dp"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/tv_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:drawableLeft="@mipmap/icon_community_members_number"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/tv_detail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:background="@color/dark_blue"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <ImageView
-                    android:id="@+id/iv_assnnotice"
-                    android:layout_width="100dp"
-                    android:layout_height="32dp"
-                    android:src="@mipmap/icon_club_announcement" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="社团简介"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
-                <ImageView
-                    android:id="@+id/iv_assnactivity"
-                    android:layout_width="100dp"
-                    android:layout_height="32dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@mipmap/icon_club_activity" />
+                <TextView
+                    android:id="@+id/tv_introduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLength="140"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
-                <ImageView
-                    android:id="@+id/iv_assnexamine"
-                    android:layout_width="100dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@mipmap/icon_audit"
-                    android:visibility="gone" />
+            </LinearLayout>
 
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layout_member"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="24dp"
-                android:text="社团人员"
-                android:textColor="@color/font_brown_dark"
-                android:textSize="14sp" />
+                android:background="@drawable/common_view_bg"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/member"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="社团成员"
+                        android:textColor="@color/font_brown_dark"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_remine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_toRightOf="@id/member"
+                        android:text="有审核"
+                        android:textColor="@color/light_red"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_member"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="12dp"
+                    android:overScrollMode="never" />
+            </LinearLayout>
 
             <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/light_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="社团公告"
+                        android:textColor="@color/font_brown_dark"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="编辑"
+                        android:textColor="@color/font_brown_light"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_notice_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/font_brown_light" />
+
+                <TextView
+                    android:id="@+id/tv_notice_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:textColor="@color/font_brown_light" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/light_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="社团活动"
+                    android:textColor="@color/font_brown_dark"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_acti_publish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawableLeft="@mipmap/icon_community_publishactivity"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:text="发布社团活动"
+                    android:textColor="@color/font_brown_light"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
                 android:background="@color/light_gray" />
 
             <cn.flyexp.view.LoadMoreRecyclerView
-                android:id="@+id/rv_myassnmember"
+                android:id="@+id/rv_acti"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

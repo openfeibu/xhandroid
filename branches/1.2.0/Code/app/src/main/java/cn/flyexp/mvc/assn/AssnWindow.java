@@ -29,6 +29,7 @@ import cn.flyexp.framework.AbstractWindow;
 import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.OnItemClickListener;
+import cn.flyexp.view.DividerItemDecoration;
 import cn.flyexp.view.LoadMoreListener;
 import cn.flyexp.view.LoadMoreRecyclerView;
 import cn.flyexp.view.ProgressView;
@@ -97,7 +98,7 @@ public class AssnWindow extends AbstractWindow implements View.OnClickListener {
         assnAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                callBack.assnDetailEnter(assnData.get(position).getAid());
+                callBack.myAssnDetailEnter(assnData.get(position).getAid(), assnData.get(position).getMylevel());
             }
         });
         rv_assnlist = (LoadMoreRecyclerView) views[0].findViewById(R.id.rv_assnlist);
@@ -121,6 +122,7 @@ public class AssnWindow extends AbstractWindow implements View.OnClickListener {
                 callBack.activityDetailEnter(activityData.get(position));
             }
         });
+        activityRecyclerView.addItemDecoration(new DividerItemDecoration(getContext()));
         activityRecyclerView.setAdapter(assnActivityAdapter);
         activityRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

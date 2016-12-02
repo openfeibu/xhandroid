@@ -35,6 +35,7 @@ import cn.flyexp.util.CommonUtil;
 import cn.flyexp.util.DateUtil;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.OnItemClickListener;
+import cn.flyexp.view.DividerItemDecoration;
 import cn.flyexp.view.UPMarqueeView;
 import cn.flyexp.view.VerticalMarqueeView;
 import me.relex.circleindicator.CircleIndicator;
@@ -93,6 +94,7 @@ public class CampusWindow extends AbstractWindow implements View.OnClickListener
                 callBack.activityDetailEnter(activityData.get(position));
             }
         });
+        actiRecyclerView.addItemDecoration(new DividerItemDecoration(getContext()));
         actiRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         actiRecyclerView.setItemAnimator(new DefaultItemAnimator());
         actiRecyclerView.setHasFixedSize(false);

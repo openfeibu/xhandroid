@@ -1,5 +1,7 @@
 package cn.flyexp.mvc.assn;
 
+import android.os.Bundle;
+
 import java.io.File;
 import java.util.List;
 
@@ -48,6 +50,8 @@ public interface AssnViewCallBack extends AbstractWindow.WindowCallBack {
 
     void assnExamineEnter(int aid);
 
+    void assnMemberEnter(Bundle bundle);
+
     void assnExamineDetailEnter(AssnExamineListResponse.AssnExamineListResponseData data);
 
     void submitNotice(AssnNoticePublishRequest assnNoticePublishRequest);
@@ -76,11 +80,15 @@ public interface AssnViewCallBack extends AbstractWindow.WindowCallBack {
 
     void examineMembarList(AssnExamineListRequest assnExamineRequest);
 
+    void examineMembarListByMyAssn(AssnExamineListRequest assnExamineListRequest);
+
     void assnQuit(AssnQuitRequest assnExitRequest);
 
     void assnDetailEnter(int aid);
 
     void getMyAssnDetails(AssnDetailRequest assnDetailRequest);
+
+    void getMemberListByMyAssn(AssnMemberRequest assnMemberRequest);
 
     void setMemberLevel(SetMemberLevelRequest setMemberLevelRequest);
 

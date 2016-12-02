@@ -81,6 +81,8 @@ public class MessageIDDefine {
 
     public static int ASSN_EXAMINE_DETAIL_OPEN = generateMessageId();
 
+    public static int ASSN_MEMBER_OPEN = generateMessageId();
+
     public static int ASSN_MANAGE_OPEN = generateMessageId();
 
     public static int ASSN_INTRODUCE_PUBLISH_OPEN = generateMessageId();

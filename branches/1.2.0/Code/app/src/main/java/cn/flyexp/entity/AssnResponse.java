@@ -99,6 +99,15 @@ public class AssnResponse implements Serializable{
             private int activity_count;
             private String introduction;
             private int uid;
+            private int mylevel;
+
+            public int getMylevel() {
+                return mylevel;
+            }
+
+            public void setMylevel(int mylevel) {
+                this.mylevel = mylevel;
+            }
 
             public int getUid() {
                 return uid;

@@ -13,6 +13,7 @@ import cn.flyexp.entity.MyAssnActivityRequest;
 import cn.flyexp.entity.AssnActivityResponse;
 import cn.flyexp.framework.AbstractWindow;
 import cn.flyexp.util.OnItemClickListener;
+import cn.flyexp.view.DividerItemDecoration;
 import cn.flyexp.view.LoadMoreListener;
 import cn.flyexp.view.LoadMoreRecyclerView;
 import cn.flyexp.view.ProgressView;
@@ -74,6 +75,7 @@ public class MyAssnActivityWindow extends AbstractWindow implements View.OnClick
         rv_assnactivity.setHasFixedSize(false);
         rv_assnactivity.setAdapter(assnActivityAdapter);
         rv_assnactivity.setItemAnimator(new DefaultItemAnimator());
+        rv_assnactivity.addItemDecoration(new DividerItemDecoration(getContext()));
         rv_assnactivity.setFootLoadingView(ProgressView.BallPulse);
         rv_assnactivity.setFootEndView("没有更多活动了~");
         rv_assnactivity.setLoadMoreListener(new LoadMoreListener() {
