@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -126,6 +127,16 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
                 editTextInput.setFocusable(true);
                 editTextInput.setFocusableInTouchMode(true);
                 editTextInput.requestFocus();
+                editTextInput.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                editTextInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            submitComment();
+                        }
+                        return false;
+                    }
+                });
                 InputMethodManager imm = (InputMethodManager) getContext()
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -168,7 +179,17 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
                     inputContainer.setVisibility(View.VISIBLE);
                     editTextInput.setFocusable(true);
                     editTextInput.setFocusableInTouchMode(true);
+                    editTextInput.setImeOptions(EditorInfo.IME_ACTION_DONE);
                     editTextInput.requestFocus();
+                    editTextInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                submitFeedBackComment(token, commentId, topicId);
+                            }
+                            return false;
+                        }
+                    });
                     InputMethodManager imm = (InputMethodManager) getContext()
                             .getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -182,23 +203,7 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
                     buttonSubmit.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String comment = editTextInput.getText().toString().trim();
-                            if (comment == null || comment.equals("")) {
-                                editTextInput.setHint("评论一下");
-                                return;
-                            }
-                            editTextInput.setText("");
-                            CommentRequest commentRequest = new CommentRequest();
-                            commentRequest.setToken(token);
-                            hideKeyboard(editTextInput.getWindowToken());
-//                            int topicId=data.get(currentPosition).getTid();
-                            if (topicId != 0) {
-                                commentRequest.setTopic_id(topicId);
-                            }
-                            commentRequest.setTopic_comment(comment);
-                            commentRequest.setComment_id(commentId);
-                            callBack.commentTopic(commentRequest);
-                            WindowHelper.showToast(getContext().getString(R.string.please_wait));
+                            submitFeedBackComment(token, commentId, topicId);
                         }
                     });
                 } else {
@@ -271,6 +276,53 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
                 }
             }
         });
+    }
+
+    /**
+     * 评论人家的主题
+     */
+    private void submitComment() {
+        String tokens = WindowHelper.getStringByPreference("token");
+        if (tokens.equals("")) {
+            callBack.loginWindowEnter();
+            return;
+        }
+        String comment = editTextInput.getText().toString().trim();
+        if (comment == null || comment.equals("")) {
+            editTextInput.setHint("评论一下");
+            return;
+        }
+        hideKeyboard(buttonSubmit.getWindowToken());
+        CommentRequest commentRequest = new CommentRequest();
+        commentRequest.setToken(tokens);
+        int topicId = data.get(currentPosition).getTid();
+        if (topicId != 0) {
+            commentRequest.setTopic_id(topicId);
+        }
+        commentRequest.setTopic_comment(comment);
+        commentRequest.setComment_id(0);
+        callBack.commentTopic(commentRequest);
+        WindowHelper.showToast(getContext().getString(R.string.please_wait));
+    }
+
+    //回复人家的评论
+    private void submitFeedBackComment(String token, int commentId, int topicId) {
+        String comment = editTextInput.getText().toString().trim();
+        if (comment == null || comment.equals("")) {
+            editTextInput.setHint("评论一下");
+            return;
+        }
+        editTextInput.setText("");
+        CommentRequest commentRequest = new CommentRequest();
+        commentRequest.setToken(token);
+        hideKeyboard(editTextInput.getWindowToken());
+        if (topicId != 0) {
+            commentRequest.setTopic_id(topicId);
+        }
+        commentRequest.setTopic_comment(comment);
+        commentRequest.setComment_id(commentId);
+        callBack.commentTopic(commentRequest);
+        WindowHelper.showToast(getContext().getString(R.string.please_wait));
     }
 
 
@@ -437,27 +489,7 @@ public class TopicWindow extends AbstractWindow implements View.OnClickListener 
                 }
                 break;
             case R.id.circle_btn:
-                String tokens = WindowHelper.getStringByPreference("token");
-                if (tokens.equals("")) {
-                    callBack.loginWindowEnter();
-                    return;
-                }
-                String comment = editTextInput.getText().toString().trim();
-                if (comment == null || comment.equals("")) {
-                    editTextInput.setHint("评论一下");
-                    return;
-                }
-                hideKeyboard(v.getWindowToken());
-                CommentRequest commentRequest = new CommentRequest();
-                commentRequest.setToken(tokens);
-                int topicId = data.get(currentPosition).getTid();
-                if (topicId != 0) {
-                    commentRequest.setTopic_id(topicId);
-                }
-                commentRequest.setTopic_comment(comment);
-                commentRequest.setComment_id(0);
-                callBack.commentTopic(commentRequest);
-                WindowHelper.showToast(getContext().getString(R.string.please_wait));
+                submitComment();
                 break;
         }
     }
