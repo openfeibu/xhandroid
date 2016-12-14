@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/onclick_backgroud"
+            android:paddingLeft="@dimen/margin_normal_small"
+            android:paddingRight="@dimen/margin_normal_small"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/mine_share"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_most" />
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="@string/hint_select_share_method"
+        android:textColor="@color/font_dark"
+        android:textSize="@dimen/font_large" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_qq"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/onclick_backgroud_round"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableTop="@mipmap/icon_share_qq"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="@string/qq_firend"
+            android:textColor="@color/font_light"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_wxf"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/onclick_backgroud_round"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableTop="@mipmap/icon_share_wechat"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="@string/weixin_firend"
+            android:textColor="@color/font_light"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tv_wxq"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/onclick_backgroud_round"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableTop="@mipmap/icon_share_circleoffriend"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="@string/weixin_quan"
+            android:textColor="@color/font_light"
+            android:textSize="@dimen/font_small" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="@string/hint_share"
+        android:textColor="@color/font_light"
+        android:textSize="@dimen/font_small" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:src="@mipmap/pic_qrcode" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/hint_qrcode_download"
+        android:textColor="@color/font_light"
+        android:textSize="@dimen/font_small" />
+
+</LinearLayout>

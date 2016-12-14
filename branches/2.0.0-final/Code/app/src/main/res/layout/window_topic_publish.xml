@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/onclick_backgroud"
+            android:paddingLeft="@dimen/margin_normal_small"
+            android:paddingRight="@dimen/margin_normal_small"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/topic_publish"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_most" />
+
+        <TextView
+            android:id="@+id/tv_publish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:alpha="0.5"
+            android:enabled="false"
+            android:text="@string/publish"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_large" />
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edt_content"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_height_large"
+                android:background="@drawable/background_gray_round_border"
+                android:gravity="top|left"
+                android:hint="@string/hint_topic_publish"
+                android:lineSpacingExtra="@dimen/margin_least"
+                android:maxLength="140"
+                android:maxLines="5"
+                android:padding="@dimen/margin_small"
+                android:textColor="@color/font_dark"
+                android:textColorHint="@color/font_light"
+                android:textSize="@dimen/font_normal" />
+
+            <TextView
+                android:id="@+id/tv_tnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_small"
+                android:text="140" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/img_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:src="@mipmap/icon_add" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+    </LinearLayout>
+</LinearLayout>

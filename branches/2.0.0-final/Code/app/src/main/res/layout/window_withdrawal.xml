@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/onclick_backgroud"
+            android:paddingLeft="@dimen/margin_normal_small"
+            android:paddingRight="@dimen/margin_normal_small"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/withdrawal"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_most" />
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mywallet_height"
+        android:background="@color/light_blue"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/margin_normal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:gravity="center"
+            android:text="@string/hint_money"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large" />
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:gravity="center"
+            android:text="0.00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large_small" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:text="@string/hint_withdrawal"
+        android:textSize="@dimen/font_large" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:text="@string/withdrawal_money"
+        android:textSize="@dimen/font_normal" />
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_most" />
+
+        <EditText
+            android:id="@+id/edt_money"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:background="@null"
+            android:inputType="number"
+            android:maxLength="4"
+            android:padding="@dimen/margin_small"
+            android:singleLine="true"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_normal" />
+    </LinearLayout>
+
+    <View
+        style="@style/horizontalLine"
+        android:layout_width="200dp"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/hint_withdrawal_careful"
+        android:textSize="@dimen/font_small" />
+
+    <Button
+        android:id="@+id/btn_withdrawal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:alpha="0.5"
+        android:background="@drawable/btn_blue_round"
+        android:enabled="false"
+        android:text="@string/withdrawal"
+        android:textColor="@drawable/font_white_gray"
+        android:textSize="@dimen/font_large" />
+
+</LinearLayout>

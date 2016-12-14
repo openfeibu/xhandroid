@@ -1,0 +1,31 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/light_blue</item>
+    </style>
+
+    <style name="popwin_anim_style">
+        <item name="android:windowEnterAnimation">@anim/pop_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_bottom_out</item>
+    </style>
+
+    <style name="horizontalLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line</item>
+        <item name="android:background">@color/light_gray</item>
+    </style>
+
+    <style name="verticalLine">
+        <item name="android:layout_width">@dimen/line</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/light_gray</item>
+    </style>
+
+    <style name="clickItem">
+        <item name="android:background">@drawable/onclick_backgroud</item>
+    </style>
+</resources>

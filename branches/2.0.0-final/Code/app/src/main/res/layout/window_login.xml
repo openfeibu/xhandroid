@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@drawable/onclick_backgroud"
+        android:padding="@dimen/margin_normal_small"
+        android:src="@mipmap/icon_login_close" />
+
+    <cn.flyexp.view.CircleImageView
+        android:id="@+id/img_avatar"
+        android:layout_width="@dimen/avatar_large"
+        android:layout_height="@dimen/avatar_large"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:src="@mipmap/icon_login_headpor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large_normal"
+        android:layout_marginRight="@dimen/margin_large_normal"
+        android:layout_marginTop="@dimen/margin_most"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/hint_phone_number"
+                android:inputType="number"
+                android:maxLength="11"
+                android:padding="@dimen/margin_least"
+                android:singleLine="true"
+                android:textColor="@color/font_light"
+                android:textColorHint="@color/font_light"
+                android:textSize="@dimen/font_large" />
+        </android.support.design.widget.TextInputLayout>
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_marginBottom="@dimen/margin_normal" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal">
+
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                android:padding="@dimen/margin_least"
+                android:singleLine="true"
+                android:textColor="@color/font_light"
+                android:textColorHint="@color/font_light"
+                android:textSize="@dimen/font_large" />
+        </android.support.design.widget.TextInputLayout>
+
+        <View style="@style/horizontalLine" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/btn_gray_blue_round"
+            android:enabled="false"
+            android:text="@string/login"
+            android:textColor="@drawable/font_gray_white_gray"
+            android:textSize="@dimen/font_most" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal">
+
+            <TextView
+                android:id="@+id/tv_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speed_register"
+                android:textColor="@drawable/font_gray"
+                android:textSize="@dimen/font_large" />
+
+            <TextView
+                android:id="@+id/tv_resetpwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/login_forget_password"
+                android:textColor="@drawable/font_gray"
+                android:textSize="@dimen/font_large" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

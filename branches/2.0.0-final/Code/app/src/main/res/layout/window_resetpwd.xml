@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/onclick_backgroud"
+            android:paddingLeft="@dimen/margin_normal_small"
+            android:paddingRight="@dimen/margin_normal_small"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/forget_password"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_most" />
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large_normal"
+        android:layout_marginRight="@dimen/margin_large_normal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/hint_phone_number"
+                android:inputType="number"
+                android:maxLength="11"
+                android:padding="@dimen/margin_least"
+                android:singleLine="true"
+                android:textColor="@color/font_light"
+                android:textColorHint="@color/font_light"
+                android:textSize="@dimen/font_large" />
+        </android.support.design.widget.TextInputLayout>
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_marginBottom="@dimen/margin_normal" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal">
+
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/hint_newpwd"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                android:padding="@dimen/margin_least"
+                android:singleLine="true"
+                android:textColor="@color/font_light"
+                android:textColorHint="@color/font_light"
+                android:textSize="@dimen/font_large" />
+        </android.support.design.widget.TextInputLayout>
+
+        <View style="@style/horizontalLine" />
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/btn_gray_blue_round"
+            android:enabled="false"
+            android:text="@string/next"
+            android:textColor="@drawable/font_gray_white_gray"
+            android:textSize="@dimen/font_most" />
+
+    </LinearLayout>
+</LinearLayout>

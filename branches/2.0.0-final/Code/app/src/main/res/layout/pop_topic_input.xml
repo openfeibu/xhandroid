@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <View style="@style/horizontalLine" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:hint="@string/hint_topic_comment"
+            android:padding="@dimen/margin_small"
+            android:singleLine="true"
+            android:textColor="@color/font_dark"
+            android:textColorHint="@color/font_light"
+            android:textSize="@dimen/font_normal" />
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="@dimen/topic_comment_btn_width"
+            android:layout_height="match_parent"
+            android:alpha="0.5"
+            android:background="@drawable/btn_blue"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="@string/topic_comment"
+            android:textColor="@drawable/font_white_gray"
+            android:textSize="@dimen/font_normal" />
+    </LinearLayout>
+
+</LinearLayout>
