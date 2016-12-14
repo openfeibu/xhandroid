@@ -108,4 +108,6 @@ public class WindowIDDefine {
     public static int WINDOW_CHANGEPWD = generateMessageId();
 
     public static int WINDOW_MYINFO_EDIT = generateMessageId();
+
+    public static int WINDOW_OTHERS = generateMessageId();
 }

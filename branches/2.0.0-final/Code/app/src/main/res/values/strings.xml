@@ -332,6 +332,13 @@
     <string name="format_task_address">送达地点：%s</string>
     <string name="recommend_task">推荐任务</string>
 
+    <!---->
+    <string name="hint_others_description">主人很懒，什么都没留下~</string>
+    <string name="tv_others_topic">Ta的话题</string>
+    <string name="tv_others_topic_detail">Ta还没发过话题哦~</string>
+    <string name="tv_others_name">小黛儿</string>
+    <string name="school_name">广东农工商职业技术学院</string>
+
     <array name="guide_color">
         <item>#5AC8FA</item>
         <item>@color/dark_blue</item>

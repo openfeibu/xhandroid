@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingTop="@dimen/status_bar_height"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/margin_large_small"
+            android:background="@drawable/onclick_backgroud"
+            android:src="@mipmap/icon_back"/>
+    </LinearLayout>
+
+    <cn.flyexp.view.CircleImageView
+        android:id="@+id/img_icon"
+        android:layout_width="@dimen/avatar_large"
+        android:layout_height="@dimen/avatar_large"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_large" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_others_name"
+            android:layout_marginBottom="@dimen/margin_very_least"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:textSize="@dimen/font_large"/>
+
+        <!--没找到图片-->
+        <ImageView
+            android:layout_toRightOf="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_below="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/school_name"
+            android:textSize="@dimen/font_small"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_height_small"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:background="@drawable/background_gray_round_border"
+        android:layout_margin="@dimen/margin_small"
+        android:padding="@dimen/margin_small"
+        android:textColor="@color/font_light"
+        android:textSize="@dimen/font_normal"
+        android:hint="@string/hint_others_description"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_others_topic"
+            android:layout_width="@dimen/margin_least"
+            android:layout_height="@dimen/img_height_topic"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:background="@color/red_btn_bg_color"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/iv_others_topic"
+            android:id="@+id/tv_others_topic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_very_least"
+            android:text="@string/tv_others_topic"
+            android:textSize="@dimen/font_normal"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_very_large"
+        android:layout_marginTop="@dimen/margin_very_very_large"
+        android:text="@string/tv_others_topic_detail"
+        android:textSize="@dimen/font_most"/>
+
+</LinearLayout>

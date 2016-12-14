@@ -186,6 +186,8 @@ public class ControllerManager {
                 new MyInfoWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_MYINFO_EDIT) {
                 new MyInfoEditWindow(msg.getData()).showWindow(true);
+            } else if (msg.what == WindowIDDefine.WINDOW_OTHERS) {
+                new MyInfoEditWindow(msg.getData()).showWindow(true);
             }
         }
     }
