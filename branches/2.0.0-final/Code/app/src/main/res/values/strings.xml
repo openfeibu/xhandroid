@@ -344,4 +344,8 @@
         <item>@color/dark_blue</item>
         <item>@color/white</item>
     </array>
+    <string name="complete">完成</string>
+    <string name="gallery_all_images">所有图片</string>
+    <string name="photograph">拍照</string>
+    <string name="gallery_title">图片</string>
 </resources>
