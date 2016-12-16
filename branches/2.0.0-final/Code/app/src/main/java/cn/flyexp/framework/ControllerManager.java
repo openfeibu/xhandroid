@@ -23,6 +23,7 @@ import cn.flyexp.window.mine.FeedbackWindow;
 import cn.flyexp.window.mine.MessageWindow;
 import cn.flyexp.window.mine.SettingWindow;
 import cn.flyexp.window.mine.ShareWindow;
+import cn.flyexp.window.other.GalleryWindow;
 import cn.flyexp.window.other.GuideWindow;
 import cn.flyexp.window.other.PicBrowserWindow;
 import cn.flyexp.window.other.SplashWindow;
@@ -188,6 +189,8 @@ public class ControllerManager {
                 new MyInfoEditWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_OTHERS) {
                 new MyInfoEditWindow(msg.getData()).showWindow(true);
+            } else if (msg.what == WindowIDDefine.WINDOW_GALLERY) {
+                new GalleryWindow(msg.getData()).showWindow(true);
             }
         }
     }

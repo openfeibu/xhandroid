@@ -5,12 +5,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import cn.flyexp.entity.PushOpenBean;
+import cn.flyexp.entity.PushThroughBean;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.util.GsonUtil;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.window.BaseWindow;
 
@@ -33,39 +39,18 @@ public class PushUtil {
     public static void dispatchData(String throughData) {
         LogUtil.e(PushUtil.class.getSimpleName(), throughData);
         Message mes = Message.obtain();
-        try {
-            JSONObject jsonObject = new JSONObject(throughData);
-            int refresh = jsonObject.getInt("refresh");
-            String target = jsonObject.getString("target");
-            String data = jsonObject.getString("data");
-
-            if (refresh == 1) {
-                if (target.equals("ad")) {
-                    mes.what = NotifyIDDefine.NOTIFY_AD_REFRESH;
-                } else if (target.equals("extra")) {
-                    mes.what = NotifyIDDefine.NOTIFY_EXTRA_REFRESH;
-                } else if (target.equals("assn_hotact")) {
-                    mes.what = NotifyIDDefine.NOTIFY_HOTACT_REFRESH;
-                } else if (target.equals("message")) {
-                    mes.what = NotifyIDDefine.NOTIFY_MESSAGE_REFRESH;
-                } else if (target.equals("assn_member_review")) {
-                    mes.what = NotifyIDDefine.NOTIFY_ASSN_MENBER_REFRESH;
-                    mes.obj = data;
-                } else if (target.equals("assn_act")) {
-                    mes.what = NotifyIDDefine.NOTIFY_ASSN_ACT_REFRESH;
-                    mes.obj = data;
-                } else if (target.equals("assn_notice")) {
-                    mes.what = NotifyIDDefine.NOTIFY_ASSN_NOTICE_REFRESH;
-                    mes.obj = data;
-                } else if (target.equals("mytask")) {
-                    mes.what = NotifyIDDefine.NOTIFY_MINE_MYTASK_REFRESH;
-                } else if (target.equals("topic")) {
-                    mes.what = NotifyIDDefine.NOTIFY_TOPIC_REFRESH;
-                }
-                BaseWindow.getNotifyManager().notify(mes);
+        PushThroughBean pushThroughBean = GsonUtil.getInstance().fromJson(throughData, PushThroughBean.class);
+        int refresh = pushThroughBean.getRefresh();
+        String target = pushThroughBean.getTarget();
+        if (refresh == 1) {
+            if (TextUtils.equals(target, "message")) {
+                mes.what = NotifyIDDefine.NOTIFY_MESSAGE_REFRESH;
+            } else if (TextUtils.equals(target, "mytask")) {
+                mes.what = NotifyIDDefine.NOTIFY_MINE_MYTASK_REFRESH;
+            } else if (TextUtils.equals(target, "topic")) {
+                mes.what = NotifyIDDefine.NOTIFY_TOPIC_PUSH;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            BaseWindow.getNotifyManager().notify(mes);
         }
     }
 
@@ -81,28 +66,25 @@ public class PushUtil {
         LogUtil.e(PushUtil.class.getSimpleName(), content);
         int windowId = 0;
         Bundle bundle = new Bundle();
-        try {
-            JSONObject jsonObject = new JSONObject(content);
-            String open = jsonObject.getString("open");
-            String data = jsonObject.getString("data");
-            if (open.equals("web")) {
-                windowId = WindowIDDefine.WINDOW_WEBVIEW;
-            } else if (open.equals("task")) {
-                windowId = WindowIDDefine.WINDOW_TASK_DETAIL;
-            } else if (open.equals("order")) {
-                windowId = WindowIDDefine.WINDOW_ORDER_DETAIL;
-            } else if (open.equals("topic")) {
-                windowId = WindowIDDefine.WINDOW_TOPIC_DETAIL;
-            }
-            bundle.putInt("windowid", windowId);
-            bundle.putString("pushdata", data);
-            Intent intent = null;
-            PackageManager packageManager = context.getPackageManager();
-            intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
-            intent.putExtra("pushbunble", bundle);
-            context.startActivity(intent);
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        PushOpenBean pushOpenBean = GsonUtil.getInstance().fromJson(content, PushOpenBean.class);
+        String open = pushOpenBean.getOpen();
+        ArrayList<String> data = pushOpenBean.getData();
+        if (open.equals("web")) {
+            windowId = WindowIDDefine.WINDOW_WEBVIEW;
+        } else if (open.equals("task")) {
+            windowId = WindowIDDefine.WINDOW_TASK_DETAIL;
+        } else if (open.equals("order")) {
+            windowId = WindowIDDefine.WINDOW_ORDER_DETAIL;
+        } else if (open.equals("topic")) {
+            windowId = WindowIDDefine.WINDOW_TOPIC_DETAIL;
         }
+        bundle.putInt("windowid", windowId);
+        bundle.putStringArrayList("pushdata", data);
+        Intent intent = null;
+        PackageManager packageManager = context.getPackageManager();
+        intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+        intent.putExtra("pushbunble", bundle);
+        context.startActivity(intent);
     }
 }

@@ -33,7 +33,7 @@ import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.task.TaskPublishPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.PatternUtil;
-import cn.flyexp.util.PopupHelper;
+import cn.flyexp.util.PopupUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.PasswordView;
 import cn.flyexp.window.BaseWindow;
@@ -71,7 +71,7 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
     private View inputPayPwdLayout;
     private String paypwd;
     private AlertDialog inputPayPwdDialog;
-    private PopupHelper popupHelper;
+    private PopupUtil popupHelper;
 
     @Override
     protected int getLayoutId() {
@@ -108,7 +108,7 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
         tvBalance.setOnClickListener(paywayOnClick);
         popPicLayout.findViewById(R.id.tv_alipay).setOnClickListener(paywayOnClick);
         popPicLayout.findViewById(R.id.btn_cancel).setOnClickListener(paywayOnClick);
-        popupHelper = new PopupHelper(getContext(), new PopupHelper.Builder(popPicLayout).setAnimationStyle(R.style.popwin_anim_style).create(), true);
+        popupHelper = new PopupUtil(getContext(), new PopupUtil.Builder(popPicLayout).setAnimationStyle(R.style.popwin_anim_style).create(), true);
         popupHelper.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {

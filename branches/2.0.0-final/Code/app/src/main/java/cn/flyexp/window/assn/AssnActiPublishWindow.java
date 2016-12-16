@@ -1,6 +1,7 @@
 package cn.flyexp.window.assn;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -30,6 +31,7 @@ import butterknife.OnClick;
 import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.bean.ImageCropBean;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
+import cn.finalteam.rxgalleryfinal.imageloader.rotate.RotateTransformation;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import cn.flyexp.R;
@@ -39,6 +41,8 @@ import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.ImgUrlResponse;
 import cn.flyexp.entity.TokenRequest;
 import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.framework.NotifyManager;
+import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.assn.AssnActiPublishPresenter;
@@ -54,7 +58,7 @@ import okhttp3.MultipartBody;
 /**
  * Created by tanxinye on 2016/11/5.
  */
-public class AssnActiPublishWindow extends BaseWindow implements TextWatcher, AssnActiPublishCallback.ResponseCallback {
+public class AssnActiPublishWindow extends BaseWindow implements NotifyManager.Notify, TextWatcher, AssnActiPublishCallback.ResponseCallback {
 
     @InjectView(R.id.edt_title)
     EditText edtTitle;
@@ -94,7 +98,7 @@ public class AssnActiPublishWindow extends BaseWindow implements TextWatcher, As
         assnActiPublishPresenter = new AssnActiPublishPresenter(this);
         loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.uploading));
         dateLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_calendar, null);
-
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_GALLERY, this);
         initView();
     }
 
@@ -113,7 +117,9 @@ public class AssnActiPublishWindow extends BaseWindow implements TextWatcher, As
                 }
                 break;
             case R.id.img_add:
-                openGallery();
+                Bundle bundle = new Bundle();
+                bundle.putInt("max", 1);
+                openWindow(WindowIDDefine.WINDOW_GALLERY, bundle);
                 break;
             case R.id.tv_date:
                 showDateDialog();
@@ -126,7 +132,7 @@ public class AssnActiPublishWindow extends BaseWindow implements TextWatcher, As
                 }
                 if (TextUtils.isEmpty(imgPath)) {
                     showToast(R.string.hint_select_pic);
-                    openGallery();
+                    openWindow(WindowIDDefine.WINDOW_GALLERY);
                     return;
                 }
                 DialogHelper.showSelectDialog(getContext(), getResources().getString(R.string.hint_assn_acti_publish), getResources().getString(R.string.comfirm), new SweetAlertDialog.OnSweetClickListener() {
@@ -138,17 +144,6 @@ public class AssnActiPublishWindow extends BaseWindow implements TextWatcher, As
                 });
                 break;
         }
-    }
-
-    private void openGallery() {
-        RxGalleryFinal.with(getContext()).image().radio().imageLoader(ImageLoaderType.GLIDE).subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
-            @Override
-            protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
-                ImageCropBean result = imageRadioResultEvent.getResult();
-                imgPath = result.getOriginalPath();
-                Glide.with(getContext()).load(imgPath).diskCacheStrategy(DiskCacheStrategy.NONE).into(imgPhoto);
-            }
-        }).openGallery();
     }
 
     private boolean isBackInEdit() {
@@ -283,6 +278,18 @@ public class AssnActiPublishWindow extends BaseWindow implements TextWatcher, As
     @Override
     public boolean onBackPressed() {
         return isBackInEdit();
+    }
+
+    @Override
+    public void onNotify(Message mes) {
+        if (mes.what == NotifyIDDefine.NOTIFY_GALLERY) {
+            Bundle bundle = mes.getData();
+            ArrayList<String> images = bundle.getStringArrayList("images");
+            imgPath = images.get(0);
+            Glide.with(getContext()).load(imgPath).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(imgPhoto);
+        }
     }
 }
 

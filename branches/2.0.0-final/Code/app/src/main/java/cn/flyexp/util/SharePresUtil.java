@@ -59,7 +59,7 @@ public class SharePresUtil {
     }
 
     public static boolean getBoolean(String key) {
-        return PreferenceManager.getDefaultSharedPreferences(MainActivity.getActivity()).getBoolean(key, false);
+        return PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext()).getBoolean(key, false);
     }
 
     public static void putBoolean(String key, boolean value) {
@@ -67,7 +67,7 @@ public class SharePresUtil {
     }
 
     public static int getInt(String key) {
-        return PreferenceManager.getDefaultSharedPreferences(MainActivity.getActivity()).getInt(key, 0);
+        return PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext()).getInt(key, 0);
     }
 
     public static float getFloat(String key) {

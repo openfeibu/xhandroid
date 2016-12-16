@@ -32,9 +32,6 @@ public class AssnListPresenter extends BasePresenter implements AssnListCallback
                     case ResponseCode.RESPONSE_200:
                         callback.responseAssnActivity(response);
                         break;
-                    case ResponseCode.RESPONSE_2001:
-                        callback.renewLogin();
-                        break;
                     case ResponseCode.RESPONSE_110:
                         callback.showDetail(response.getDetail());
                         break;
@@ -52,9 +49,6 @@ public class AssnListPresenter extends BasePresenter implements AssnListCallback
                 switch (response.getCode()) {
                     case ResponseCode.RESPONSE_200:
                         callback.responseAssnList(response);
-                        break;
-                    case ResponseCode.RESPONSE_2001:
-                        callback.renewLogin();
                         break;
                     case ResponseCode.RESPONSE_110:
                         callback.showDetail(response.getDetail());

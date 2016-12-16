@@ -31,7 +31,7 @@ public class NotifyIDDefine {
 
     public static int NOTIFY_ASSN_ACTIVITY = generateMessageId();
 
-    public static int NOTIFY_TOPIC_REFRESH = generateMessageId();
+    public static int NOTIFY_TOPIC_PUSH = generateMessageId();
 
     public static int NOTIFY_TOPIC = generateMessageId();
 
@@ -58,4 +58,8 @@ public class NotifyIDDefine {
     public static int NOTICE_SHARE = generateMessageId();
 
     public static int NOTICE_DELETE_PHOTO = generateMessageId();
+
+    public static int NOTIFY_GALLERY = generateMessageId();
+
+    public static int NOTIFY_CAMERA_RESULT = generateMessageId();
 }

@@ -1,6 +1,7 @@
 package cn.flyexp.push;
 
 import android.app.ActivityManager;
+import android.app.Notification;
 import android.content.Context;
 import android.os.Process;
 import android.util.Log;

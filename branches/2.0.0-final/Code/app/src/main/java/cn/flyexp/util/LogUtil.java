@@ -27,4 +27,13 @@ public class LogUtil {
             e("error", mes);
         }
     }
+
+    public static void e(Exception value) {
+        if (!Config.isDebug) {
+            return;
+        }
+        if(value != null) {
+            Log.e(LogUtil.class.getSimpleName(), value.getMessage());
+        }
+    }
 }

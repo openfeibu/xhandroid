@@ -12,7 +12,7 @@ import cn.flyexp.MainActivity;
 public class NetWorkUtil {
 
     public static Context getContext() {
-        return MainActivity.getActivity();
+        return MainActivity.getContext();
     }
 
     public static boolean isNetWorkAvailable() {

@@ -331,7 +331,6 @@
     <string name="hint_upload_avatar">请上传头像</string>
     <string name="format_task_address">送达地点：%s</string>
     <string name="recommend_task">推荐任务</string>
-    <string name="test2">测试2</string>
 
     <!---->
     <string name="hint_others_description">主人很懒，什么都没留下~</string>
@@ -349,4 +348,5 @@
     <string name="gallery_all_images">所有图片</string>
     <string name="photograph">拍照</string>
     <string name="gallery_title">图片</string>
+    <string name="gallery_device_camera_unable">无法打开相机</string>
 </resources>

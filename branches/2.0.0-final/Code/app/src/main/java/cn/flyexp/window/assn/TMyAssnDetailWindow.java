@@ -38,7 +38,7 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.assn.MyAssnDetailPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.GsonUtil;
-import cn.flyexp.util.PopupHelper;
+import cn.flyexp.util.PopupUtil;
 import cn.flyexp.util.ScreenHelper;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.CircleImageView;
@@ -89,7 +89,7 @@ public class TMyAssnDetailWindow extends BaseWindow implements MyAssnDetailCallb
     private SweetAlertDialog loadingDialog;
     private boolean isRefreshMember;
     private boolean isRefresh;
-    private PopupHelper popupHelper;
+    private PopupUtil popupHelper;
 
     @Override
     protected int getLayoutId() {
@@ -140,7 +140,7 @@ public class TMyAssnDetailWindow extends BaseWindow implements MyAssnDetailCallb
         menuPopLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_assn_detail_menu, null);
         menuPopLayout.findViewById(R.id.tv_exit).setOnClickListener(menuOnClick);
         menuPopLayout.findViewById(R.id.tv_about).setOnClickListener(menuOnClick);
-        popupHelper = new PopupHelper(new PopupHelper.Builder(menuPopLayout, ScreenHelper.dip2px(getContext(), 120), ViewGroup.LayoutParams.WRAP_CONTENT).create());
+        popupHelper = new PopupUtil(new PopupUtil.Builder(menuPopLayout, ScreenHelper.dip2px(getContext(), 120), ViewGroup.LayoutParams.WRAP_CONTENT).create());
     }
 
     private void readyMyAssnDetail() {

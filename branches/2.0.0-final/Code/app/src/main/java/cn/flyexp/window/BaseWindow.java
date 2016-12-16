@@ -2,15 +2,8 @@ package cn.flyexp.window;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -21,7 +14,6 @@ import cn.flyexp.framework.ControllerManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowManager;
-import cn.flyexp.util.LogUtil;
 import cn.flyexp.view.SwipeBackLayout;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -30,7 +22,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public abstract class BaseWindow extends SwipeBackLayout implements BaseResponseCallback {
 
-    private static WindowManager windowManager = WindowManager.getInstance(MainActivity.getActivity());
+    private static WindowManager windowManager = WindowManager.getInstance((Activity) MainActivity.getContext());
     private static ControllerManager controllerManager = ControllerManager.getInstance();
     private static NotifyManager notifyManager = NotifyManager.getInstance();
 
@@ -47,7 +39,7 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
     }
 
     public BaseWindow(Bundle bundle) {
-        super(MainActivity.getActivity());
+        super(MainActivity.getContext());
         inflate(getContext(), getLayoutId(), this);
         ButterKnife.inject(this);
     }
@@ -167,6 +159,7 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
     public class Config {
 
         public final int[] ANIMSTYLE_SLIDE = new int[]{R.anim.push_slideup, R.anim.push_slidedown};
+        public final int[] ANIMSTYLE_FADE = new int[]{R.anim.push_fadein, R.anim.push_fadeout};
 
         private int[] animStyle = new int[2];
         private boolean isStateBarEnable = true;

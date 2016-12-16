@@ -1,30 +1,40 @@
 package cn.flyexp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
+import com.xiaomi.mipush.sdk.MiPushMessage;
+import com.xiaomi.mipush.sdk.PushMessageHelper;
 
 import cn.flyexp.constants.Config;
+import cn.flyexp.constants.Constants;
 import cn.flyexp.framework.ControllerManager;
+import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.WindowManager;
+import cn.flyexp.push.XMPush;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static MainActivity activity;
+    private static Context context;
     private static Tencent tencent;
     private static IWXAPI wxapi;
 
-    public static MainActivity getActivity() {
-        return activity;
+    public static Context getContext() {
+        return context;
     }
 
     public static Tencent getTencent() {
@@ -38,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = this;
+        context = this;
         setStatusBar();
         initQQApi();
         initWXApi();
@@ -67,17 +77,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initWindow() {
-        Bundle pushBundle = getIntent().getBundleExtra("pushbunble");
-        if (pushBundle != null) {
-            SharePresUtil.putInt(SharePresUtil.KEY_WINDOW_ID, pushBundle.getInt("windowid"));
-            SharePresUtil.putString(SharePresUtil.KEY_PUSH_DATA, pushBundle.getString("pushdata"));
-        }
         ControllerManager.getInstance().sendMessage(WindowIDDefine.WINDOW_SPLASH);
+    }
+
+    public void getPushData() {
+        MiPushMessage message = (MiPushMessage) getIntent().getSerializableExtra(PushMessageHelper.KEY_MESSAGE);
+        if(message==null){
+            LogUtil.e("mes null");
+        }
+        if (message != null && !TextUtils.isEmpty(message.getContent())) {
+            String content = message.getContent();
+            LogUtil.e("mes activity", content);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        getPushData();
         WindowManager.getInstance(this).onResume();
     }
 
@@ -97,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (tencent != null) {
             tencent.onActivityResult(requestCode, resultCode, data);
+        }
+        if (requestCode == Constants.CAMERA_RESULT && resultCode == RESULT_OK) {
+            LogUtil.e("camera ok");
+            NotifyManager.getInstance().notify(NotifyIDDefine.NOTIFY_CAMERA_RESULT);
         }
     }
 }

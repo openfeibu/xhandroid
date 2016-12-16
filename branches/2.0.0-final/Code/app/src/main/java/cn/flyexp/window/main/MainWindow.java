@@ -1,6 +1,5 @@
 package cn.flyexp.window.main;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
@@ -14,18 +13,16 @@ import java.util.List;
 import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
-import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
-import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.window.BaseWindow;
 import cn.flyexp.window.mine.MineWindow;
 import cn.flyexp.window.store.StoreWindow;
 import cn.flyexp.window.task.TaskWindow;
-import cn.flyexp.window.topic.TopicWindow;
+import cn.flyexp.window.topic.TTopicWindow;
 
 /**
  * Created by tanxinye on 2016/10/22.
@@ -68,7 +65,7 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
 
         views[0] = new HomeWindow();
         views[1] = new TaskWindow();
-        views[2] = new TopicWindow();
+        views[2] = new TTopicWindow();
         views[3] = new StoreWindow();
         views[4] = new MineWindow();
         switchWindow(0);

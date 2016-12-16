@@ -1,5 +1,6 @@
 package cn.flyexp.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,7 +41,7 @@ public class ShareHelper {
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, url);
         params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, context.getResources().getString(R.string.share_qq_img_url));
         params.putString(QQShare.SHARE_TO_QQ_APP_NAME, context.getString(R.string.app_name));
-        MainActivity.getTencent().shareToQQ(MainActivity.getActivity(), params, new IUiListener() {
+        MainActivity.getTencent().shareToQQ((Activity) MainActivity.getContext(), params, new IUiListener() {
             @Override
             public void onComplete(Object o) {
                 if (linstener != null) {

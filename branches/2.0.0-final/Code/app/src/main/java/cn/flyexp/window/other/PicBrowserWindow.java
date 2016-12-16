@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
+import cn.flyexp.constants.Constants;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.window.BaseWindow;
@@ -40,7 +42,7 @@ public class PicBrowserWindow extends BaseWindow {
     private ArrayList<String> uri;
     private ArrayList<View> views = new ArrayList<>();
     private int position;
-    private boolean local;
+    private String type;
     private int currPosition;
     private PagerAdapter pagerAdapter;
 
@@ -50,20 +52,29 @@ public class PicBrowserWindow extends BaseWindow {
     }
 
     public PicBrowserWindow(Bundle bundle) {
+        Config config = new Config();
+        config.setAnimStyle(config.ANIMSTYLE_FADE);
+        setConfig(config);
+
         uri = bundle.getStringArrayList("uri");
         position = bundle.getInt("position");
-        local = bundle.getBoolean("local");
+        type = bundle.getString("type");
         initView();
     }
 
     private void initView() {
-        if (local) {
+        if (TextUtils.equals(type, Constants.LOCAL)) {
             tvSave.setVisibility(GONE);
             tvDelete.setVisibility(VISIBLE);
-        } else {
+        } else if(TextUtils.equals(type, Constants.NET)){
             tvSave.setVisibility(VISIBLE);
             tvDelete.setVisibility(GONE);
+        } else if(TextUtils.equals(type, Constants.GALLERY)){
+            tvSave.setVisibility(GONE);
+            tvDelete.setVisibility(GONE);
+            tvNum.setVisibility(GONE);
         }
+
         for (int i = 0; i < uri.size(); i++) {
             views.add(LayoutInflater.from(getContext()).inflate(R.layout.layout_pic, null));
         }
@@ -119,7 +130,7 @@ public class PicBrowserWindow extends BaseWindow {
         vpPic.setCurrentItem(position, false);
     }
 
-    @OnClick({R.id.img_back, R.id.tv_save, R.id.tv_delete})
+    @OnClick({R.id.img_back,R.id.tv_save, R.id.tv_delete})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:

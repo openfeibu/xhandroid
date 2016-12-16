@@ -1,5 +1,6 @@
 package cn.flyexp.window.topic;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,7 +26,8 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
 import cn.flyexp.adapter.TTopicAdapter;
-import cn.flyexp.callback.topic.MyTopicCallback;
+import cn.flyexp.callback.topic.TopicCallback;
+import cn.flyexp.constants.Constants;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.CommentRequest;
 import cn.flyexp.entity.CommentResponse;
@@ -37,7 +40,7 @@ import cn.flyexp.entity.TopicResponseData;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
-import cn.flyexp.presenter.topic.MyTopicPresenter;
+import cn.flyexp.presenter.topic.TopicPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.PopupUtil;
 import cn.flyexp.util.SharePresUtil;
@@ -46,18 +49,20 @@ import cn.flyexp.window.BaseWindow;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
- * Created by tanxinye on 2016/11/21.
+ * Created by tanxinye on 2016/10/22.
  */
-public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, MyTopicCallback.ResponseCallback {
+public class TTopicWindow extends BaseWindow implements NotifyManager.Notify, TopicCallback.ResponseCallback {
 
-    @InjectView(R.id.vp_mytopic)
+    @InjectView(R.id.vp_topic)
     ViewPager vpTopic;
     @InjectView(R.id.layout_topiclist)
     View layoutTopicList;
+    @InjectView(R.id.img_newmsg)
+    ImageView imgNewMsg;
 
     private int page = 1;
     private ArrayList<TopicResponseData> datas = new ArrayList<>();
-    private MyTopicPresenter myTopicPresenter;
+    private TopicPresenter topicPresenter;
     private TTopicAdapter topicAdapter;
     private View topicInputLayout;
     private PopupUtil popupHelper;
@@ -72,19 +77,34 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
     private int commentpos;
     private LinearLayoutManager linearLayoutManager;
     private boolean isRequesting;
+    private LoadMoreRecyclerView rvTopic;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.window_mytopic;
+        return R.layout.window_topict;
     }
 
-    public MyTopicWindow() {
-        myTopicPresenter = new MyTopicPresenter(this);
+    public TTopicWindow() {
+        topicPresenter = new TopicPresenter(this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC, this);
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC_PUSH, this);
         topicInputLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_topic_input, null);
         popupHelper = new PopupUtil(new PopupUtil.Builder(topicInputLayout).create());
         initView();
-        readyMyTopicList();
+    }
+
+    @Override
+    public void onStart() {
+        readyTopicList();
+    }
+
+    @Override
+    public void onRenew() {
+        isRefresh = true;
+        if (linearLayoutManager != null) {
+            linearLayoutManager.scrollToPosition(0);
+        }
+        readyTopicList();
     }
 
     private void initView() {
@@ -137,7 +157,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
                 imageUrl.addAll(Arrays.asList(splitImageUrl(datas.get(position).getImg())));
                 bundle.putStringArrayList("uri", imageUrl);
                 bundle.putInt("position", picPosition);
-                bundle.putBoolean("local", false);
+                bundle.putString("type", Constants.NET);
                 openWindow(WindowIDDefine.WINDOW_PICBROWSER, bundle);
             }
 
@@ -182,7 +202,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
                 container.removeView(layoutTopic);
             }
         });
-        layoutTopic = LayoutInflater.from(getContext()).inflate(R.layout.layout_mytopic, null);
+        layoutTopic = LayoutInflater.from(getContext()).inflate(R.layout.layout_topic, null);
         refreshLayout = (SwipeRefreshLayout) layoutTopic.findViewById(R.id.layout_refresh);
         refreshLayout.setColorSchemeResources(R.color.light_blue);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -190,10 +210,10 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
             public void onRefresh() {
                 page = 1;
                 isRefresh = true;
-                readyMyTopicList();
+                readyTopicList();
             }
         });
-        LoadMoreRecyclerView rvTopic = (LoadMoreRecyclerView) layoutTopic.findViewById(R.id.rv_topic);
+        rvTopic = (LoadMoreRecyclerView) layoutTopic.findViewById(R.id.rv_topic);
         ((SimpleItemAnimator) rvTopic.getItemAnimator()).setSupportsChangeAnimations(false);
         linearLayoutManager = new LinearLayoutManager(getContext());
         rvTopic.setLayoutManager(linearLayoutManager);
@@ -202,7 +222,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
             @Override
             public void onLoadMore() {
                 page++;
-                readyMyTopicList();
+                readyTopicList();
             }
         });
 
@@ -249,7 +269,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
             deleteCommentRequest.setToken(token);
             deleteCommentRequest.setTopic_id(datas.get(currPosition).getTid());
             deleteCommentRequest.setComment_id(tcid);
-            myTopicPresenter.requestDeleteComment(deleteCommentRequest);
+            topicPresenter.requestDeleteComment(deleteCommentRequest);
             isRequesting = true;
         }
     }
@@ -262,17 +282,19 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
             DeleteTopicRequest deleteTopicRequest = new DeleteTopicRequest();
             deleteTopicRequest.setToken(token);
             deleteTopicRequest.setTopic_id(datas.get(currPosition).getTid());
-            myTopicPresenter.requestDeleteTopic(deleteTopicRequest);
+            topicPresenter.requestDeleteTopic(deleteTopicRequest);
             isRequesting = true;
         }
     }
 
-    private void readyMyTopicList() {
+    private void readyTopicList() {
         String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
         TopicListRequest topicListRequest = new TopicListRequest();
-        topicListRequest.setToken(token);
+        if (!TextUtils.isEmpty(token)) {
+            topicListRequest.setToken(token);
+        }
         topicListRequest.setPage(page);
-        myTopicPresenter.requestMyTopicList(topicListRequest);
+        topicPresenter.requestTopicList(topicListRequest);
     }
 
     private void readyTopicLike() {
@@ -283,7 +305,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
             ThumbUpRequest thumbUpRequest = new ThumbUpRequest();
             thumbUpRequest.setToken(token);
             thumbUpRequest.setTopic_id(datas.get(currPosition).getTid());
-            myTopicPresenter.requestThumbUp(thumbUpRequest);
+            topicPresenter.requestThumbUp(thumbUpRequest);
             isRequesting = true;
         }
     }
@@ -298,7 +320,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
             commentRequest.setTopic_comment(comment);
             commentRequest.setTopic_id(datas.get(currPosition).getTid());
             commentRequest.setComment_id(tcid);
-            myTopicPresenter.requestComment(commentRequest);
+            topicPresenter.requestComment(commentRequest);
             isRequesting = true;
         }
     }
@@ -307,13 +329,10 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
         return imgUrl.split("\\,");
     }
 
-    @OnClick({R.id.img_back, R.id.img_publish})
+    @OnClick({R.id.fab_publish,R.id.img_newmsg})
     void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
-                hideWindow(true);
-                break;
-            case R.id.img_publish:
+            case R.id.fab_publish:
                 String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
                 if (TextUtils.isEmpty(token)) {
                     renewLogin();
@@ -321,7 +340,16 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
                     openWindow(WindowIDDefine.WINDOW_TOPIC_PUBLISH);
                 }
                 break;
+            case R.id.img_newmsg:
+                imgNewMsg.setVisibility(GONE);
+                openWindow(WindowIDDefine.WINDOW_TOPIC_PUBLISH);
+                break;
         }
+    }
+
+    @Override
+    protected boolean isEnabledSwipeBack() {
+        return false;
     }
 
     @Override
@@ -341,7 +369,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
     }
 
     @Override
-    public void responseMyTopicList(TopicListResponse response) {
+    public void responseTopicList(TopicListResponse response) {
         if (isRefresh) {
             datas.clear();
             isRefresh = false;
@@ -387,7 +415,14 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
         if (mes.what == NotifyIDDefine.NOTIFY_TOPIC) {
             isRefresh = true;
             page = 1;
-            readyMyTopicList();
+            readyTopicList();
+        } else if (mes.what == NotifyIDDefine.NOTIFY_TOPIC_PUSH) {
+            ((Activity)getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    imgNewMsg.setVisibility(VISIBLE);
+                }
+            });
         }
     }
 }

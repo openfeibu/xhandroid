@@ -81,10 +81,8 @@ public class WindowManager {
             BaseWindow.Config builder = window.getConfig();
             Animation outAnim = null;
             if (builder == null) {
-                LogUtil.e("builder,null");
                 outAnim = AnimationUtils.loadAnimation(activity, R.anim.push_out);
             } else {
-                LogUtil.e("builder,not null");
                 int[] animStyle = builder.getAnimStyle();
                 outAnim = AnimationUtils.loadAnimation(activity, animStyle[1]);
             }
@@ -113,7 +111,6 @@ public class WindowManager {
 
     public void exitApp() {
         activity.finish();
-        System.exit(0);
     }
 
     public void onBackPressed() {

@@ -65,8 +65,8 @@
     <dimen name="recommend_task_width">125dp</dimen>
     <dimen name="progress_circle_size">36dp</dimen>
     <dimen name="assn_acti_item_height">100dp</dimen>
-
-    <!---->
+    <dimen name="gallery_bottom_height">48dp</dimen>
+    <dimen name="gallery_img_size">88dp</dimen>
     <dimen name="edit_height_small">61dp</dimen>
     <dimen name="img_height_topic">17dp</dimen>
     <dimen name="margin_very_large">102dp</dimen>

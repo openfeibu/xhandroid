@@ -30,6 +30,7 @@ import cn.finalteam.rxgalleryfinal.rxbus.event.ImageMultipleResultEvent;
 import cn.flyexp.R;
 import cn.flyexp.adapter.TopicPicAdapter;
 import cn.flyexp.callback.topic.TopicPublishCallback;
+import cn.flyexp.constants.Constants;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.ImgUrlResponse;
 import cn.flyexp.entity.TokenRequest;
@@ -42,6 +43,7 @@ import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.topic.TopicPublishPresenter;
 import cn.flyexp.util.BitmapUtil;
 import cn.flyexp.util.DialogHelper;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.util.UploadFileHelper;
 import cn.flyexp.window.BaseWindow;
@@ -80,6 +82,7 @@ public class TopicPublishWindow extends BaseWindow implements NotifyManager.Noti
     public TopicPublishWindow() {
         topicPublishPresenter = new TopicPublishPresenter(this);
         getNotifyManager().register(NotifyIDDefine.NOTICE_DELETE_PHOTO, this);
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_GALLERY, this);
         loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.loading));
         initView();
     }
@@ -92,7 +95,7 @@ public class TopicPublishWindow extends BaseWindow implements NotifyManager.Noti
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("uri", imgPaths);
                 bundle.putInt("position", position);
-                bundle.putBoolean("local", true);
+                bundle.putString("type", Constants.LOCAL);
                 openWindow(WindowIDDefine.WINDOW_PICBROWSER, bundle);
             }
         });
@@ -115,7 +118,9 @@ public class TopicPublishWindow extends BaseWindow implements NotifyManager.Noti
                 }
                 break;
             case R.id.img_add:
-                openGallery();
+                Bundle bundle = new Bundle();
+                bundle.putInt("max", 9);
+                openWindow(WindowIDDefine.WINDOW_GALLERY, bundle);
                 break;
         }
     }
@@ -156,27 +161,6 @@ public class TopicPublishWindow extends BaseWindow implements NotifyManager.Noti
                 }
             }.start();
         }
-    }
-
-
-    private void openGallery() {
-        RxGalleryFinal.with(getContext()).image().multiple().maxSize(9 - imgPaths.size()).imageLoader(ImageLoaderType.GLIDE).subscribe(new RxBusResultSubscriber<ImageMultipleResultEvent>() {
-            @Override
-            protected void onEvent(ImageMultipleResultEvent imageMultipleResultEvent) throws Exception {
-                List<MediaBean> result = imageMultipleResultEvent.getResult();
-                for (MediaBean bean : result) {
-                    imgPaths.add(bean.getOriginalPath());
-                }
-                topicPicAdapter.notifyDataSetChanged();
-                if (imgPaths.size() == 9) {
-                    imgAdd.setEnabled(false);
-                    imgAdd.setAlpha(0.5f);
-                } else {
-                    imgAdd.setEnabled(true);
-                    imgAdd.setAlpha(1f);
-                }
-            }
-        }).openGallery();
     }
 
     @Override
@@ -239,6 +223,11 @@ public class TopicPublishWindow extends BaseWindow implements NotifyManager.Noti
                 imgAdd.setEnabled(true);
                 imgAdd.setAlpha(1f);
             }
+        } else if (mes.what == NotifyIDDefine.NOTIFY_GALLERY) {
+            Bundle bundle = mes.getData();
+            imgPaths.clear();
+            imgPaths.addAll(bundle.getStringArrayList("images"));
+            topicPicAdapter.notifyDataSetChanged();
         }
     }
 
