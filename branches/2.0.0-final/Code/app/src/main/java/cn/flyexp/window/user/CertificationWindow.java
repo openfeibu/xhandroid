@@ -1,5 +1,7 @@
 package cn.flyexp.window.user;
 
+import android.os.Bundle;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -16,16 +18,13 @@ import java.util.ArrayList;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
-import cn.finalteam.rxgalleryfinal.bean.ImageCropBean;
-import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
-import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
-import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import cn.flyexp.R;
 import cn.flyexp.callback.user.CertificationCallback;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.CertificationRequest;
 import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.framework.NotifyManager;
+import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.user.CertificationPresenter;
 import cn.flyexp.util.BitmapUtil;
 import cn.flyexp.util.DialogHelper;
@@ -40,7 +39,7 @@ import okhttp3.MultipartBody;
 /**
  * Created by tanxinye on 2016/11/5.
  */
-public class CertificationWindow extends BaseWindow implements TextWatcher, CertificationCallback.ResponseCallback {
+public class CertificationWindow extends BaseWindow implements NotifyManager.Notify, TextWatcher, CertificationCallback.ResponseCallback {
 
     @InjectView(R.id.img_negphoto)
     ImageView imgNegphoto;
@@ -59,6 +58,7 @@ public class CertificationWindow extends BaseWindow implements TextWatcher, Cert
     private String numberId;
     private String negphotoPath;
     private String posphotoPath;
+    private boolean ispos;
 
     @Override
     protected int getLayoutId() {
@@ -66,9 +66,9 @@ public class CertificationWindow extends BaseWindow implements TextWatcher, Cert
     }
 
     public CertificationWindow() {
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_GALLERY, this);
         certificationPresenter = new CertificationPresenter(this);
         loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.loading));
-
         edtName.addTextChangedListener(this);
         edtNumberid.addTextChangedListener(this);
     }
@@ -80,26 +80,16 @@ public class CertificationWindow extends BaseWindow implements TextWatcher, Cert
                 hideWindow(true);
                 break;
             case R.id.layout_negphoto:
-                RxGalleryFinal.with(getContext()).image().radio().imageLoader(ImageLoaderType.GLIDE)
-                        .subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
-                            @Override
-                            protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
-                                ImageCropBean result = imageRadioResultEvent.getResult();
-                                negphotoPath = result.getOriginalPath();
-                                Glide.with(getContext()).load(negphotoPath).diskCacheStrategy(DiskCacheStrategy.NONE).into(imgNegphoto);
-                            }
-                        }).openGallery();
+                ispos = false;
+                Bundle negbundle = new Bundle();
+                negbundle.putInt("max", 1);
+                openWindow(WindowIDDefine.WINDOW_GALLERY, negbundle);
                 break;
             case R.id.layout_posphoto:
-                RxGalleryFinal.with(getContext()).image().radio().imageLoader(ImageLoaderType.GLIDE)
-                        .subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
-                            @Override
-                            protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
-                                ImageCropBean result = imageRadioResultEvent.getResult();
-                                posphotoPath = result.getOriginalPath();
-                                Glide.with(getContext()).load(posphotoPath).diskCacheStrategy(DiskCacheStrategy.NONE).into(imgPosphoto);
-                            }
-                        }).openGallery();
+                ispos = true;
+                Bundle posbundle = new Bundle();
+                posbundle.putInt("max", 1);
+                openWindow(WindowIDDefine.WINDOW_GALLERY, posbundle);
                 break;
             case R.id.btn_confirm:
                 if (numberId.length() != 18 && numberId.length() != 15) {
@@ -171,6 +161,21 @@ public class CertificationWindow extends BaseWindow implements TextWatcher, Cert
         } else {
             btnConfirm.setAlpha(1f);
             btnConfirm.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void onNotify(Message mes) {
+        if (mes.what == NotifyIDDefine.NOTIFY_GALLERY) {
+            Bundle bundle = mes.getData();
+            ArrayList<String> images = bundle.getStringArrayList("images");
+            if (ispos) {
+                posphotoPath = images.get(0);
+                Glide.with(getContext()).load(posphotoPath).diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(imgPosphoto);
+            } else {
+                negphotoPath = images.get(0);
+                Glide.with(getContext()).load(negphotoPath).diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(imgNegphoto);
+            }
         }
     }
 }

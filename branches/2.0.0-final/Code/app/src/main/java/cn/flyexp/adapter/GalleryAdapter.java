@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.finalteam.rxgalleryfinal.imageloader.rotate.RotateTransformation;
 import cn.flyexp.R;
 import cn.flyexp.entity.ImageBean;
 import cn.flyexp.util.LogUtil;
+import cn.flyexp.view.RotateTransformation;
 
 /**
  * Created by tanxinye on 2016/12/15.

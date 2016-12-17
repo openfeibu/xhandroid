@@ -7,11 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/app_bg"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/status_bar_height">
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/headview"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tool_bar_height"
             android:background="@color/white">
@@ -21,6 +19,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/onclick_backgroud"
+                android:drawableLeft="@mipmap/icon_mine_switch"
+                android:drawablePadding="@dimen/margin_very_least"
                 android:gravity="center"
                 android:paddingLeft="@dimen/margin_normal_small"
                 android:paddingRight="@dimen/margin_normal_small"
@@ -28,28 +28,33 @@
                 android:textColor="@color/font_dark"
                 android:textSize="@dimen/font_small" />
 
-            <ImageView
-                android:id="@+id/img_message"
+            <TextView
+                android:id="@+id/tv_message"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_normal"
-                android:src="@mipmap/icon_message_nor" />
+                android:background="@drawable/onclick_backgroud"
+                android:drawableLeft="@mipmap/icon_message_nor"
+                android:drawablePadding="@dimen/margin_very_least"
+                android:gravity="center"
+                android:paddingLeft="@dimen/margin_normal_small"
+                android:paddingRight="@dimen/margin_normal_small"
+                android:text="@string/message"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/font_small" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/layout_myinfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_blue"
+                android:background="@drawable/btn_white"
                 android:paddingBottom="@dimen/margin_small"
                 android:paddingTop="@dimen/margin_small">
 
@@ -65,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/avatar_big"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginLeft="@dimen/margin_small"
                     android:layout_toRightOf="@id/img_avatar"
                     android:orientation="vertical">
 
@@ -74,19 +79,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_small"
-                        android:text="@string/hint_mine_name"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_normal" />
+                        android:text="@string/hint_loading"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/font_large" />
 
                     <TextView
                         android:id="@+id/tv_campus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_small"
-                        android:drawableLeft="@mipmap/icon_address"
-                        android:drawablePadding="@dimen/margin_small"
                         android:text="@string/hint_loading"
-                        android:textColor="@color/white"
+                        android:textColor="@color/font_dark"
                         android:textSize="@dimen/font_small" />
 
                 </LinearLayout>
@@ -96,8 +98,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/margin_normal"
-                    android:src="@mipmap/icon_details" />
+                    android:layout_marginRight="@dimen/margin_normal_small"
+                    android:src="@mipmap/icon_mine_details" />
 
             </RelativeLayout>
 
@@ -111,54 +113,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_blue"
+                    android:background="@drawable/onclick_backgroud"
                     android:drawablePadding="@dimen/margin_least"
                     android:drawableTop="@mipmap/icon_mine_topic"
                     android:gravity="center"
                     android:paddingBottom="@dimen/margin_least"
                     android:paddingTop="@dimen/margin_least"
                     android:text="@string/mytopic"
-                    android:textColor="@color/white"
+                    android:textColor="@color/font_dark"
                     android:textSize="@dimen/font_small" />
-
-                <View
-                    android:layout_width="@dimen/line"
-                    android:layout_height="match_parent"
-                    android:background="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_mytask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_blue"
+                    android:background="@drawable/onclick_backgroud"
                     android:drawablePadding="@dimen/margin_least"
                     android:drawableTop="@mipmap/icon_mine_campustask"
                     android:gravity="center"
                     android:paddingBottom="@dimen/margin_least"
                     android:paddingTop="@dimen/margin_least"
                     android:text="@string/mytask"
-                    android:textColor="@color/white"
+                    android:textColor="@color/font_dark"
                     android:textSize="@dimen/font_small" />
-
-                <View
-                    android:layout_width="@dimen/line"
-                    android:layout_height="match_parent"
-                    android:background="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_myorder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_blue"
+                    android:background="@drawable/onclick_backgroud"
                     android:drawablePadding="@dimen/margin_least"
                     android:drawableTop="@mipmap/icon_mine_order"
                     android:gravity="center"
                     android:paddingBottom="@dimen/margin_least"
                     android:paddingTop="@dimen/margin_least"
                     android:text="@string/myorder"
-                    android:textColor="@color/white"
+                    android:textColor="@color/font_dark"
                     android:textSize="@dimen/font_small" />
             </LinearLayout>
 
@@ -168,7 +160,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_normal"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -239,7 +230,7 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:background="@drawable/onclick_backgroud"
-                    android:drawableLeft="@mipmap/icon_association"
+                    android:drawableLeft="@mipmap/icon_mine_association"
                     android:drawablePadding="@dimen/margin_small"
                     android:gravity="center_vertical"
                     android:text="@string/myassn"
@@ -254,7 +245,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_normal"
             android:background="@color/white"
             android:orientation="vertical">
@@ -279,15 +269,12 @@
                     android:textColor="@color/font_dark"
                     android:textSize="@dimen/font_normal" />
 
+                <View
+                    style="@style/horizontalLine"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal" />
             </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:background="@color/white"
-            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/layout_share"

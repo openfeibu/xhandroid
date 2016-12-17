@@ -57,13 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            decorView.setSystemUiVisibility(option);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            android.view.WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-            layoutParams.flags = (android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | layoutParams.flags);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.black));
         }
     }
 

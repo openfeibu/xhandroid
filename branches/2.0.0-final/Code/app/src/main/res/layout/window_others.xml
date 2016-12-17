@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingTop="@dimen/status_bar_height"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,9 +13,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/margin_large_small"
             android:background="@drawable/onclick_backgroud"
-            android:src="@mipmap/icon_back"/>
+            android:paddingLeft="@dimen/margin_large_small"
+            android:src="@mipmap/icon_back" />
     </LinearLayout>
 
     <cn.flyexp.view.CircleImageView
@@ -26,48 +25,47 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_large"
-        android:src="@mipmap/icon_login_headpor"/>
+        android:src="@mipmap/icon_login_headpor" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        >
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tv_others_name"
             android:layout_marginBottom="@dimen/margin_very_least"
             android:layout_marginLeft="@dimen/margin_large_small"
-            android:textSize="@dimen/font_large"/>
+            android:text="@string/tv_others_name"
+            android:textSize="@dimen/font_large" />
 
         <!--没找到图片-->
         <ImageView
-            android:layout_toRightOf="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_below="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
             android:text="@string/school_name"
-            android:textSize="@dimen/font_small"/>
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_description"
         android:layout_width="match_parent"
         android:layout_height="@dimen/edit_height_small"
+        android:layout_margin="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_normal"
         android:background="@drawable/background_gray_round_border"
-        android:layout_margin="@dimen/margin_small"
+        android:hint="@string/hint_others_description"
         android:padding="@dimen/margin_small"
         android:textColor="@color/font_light"
-        android:textSize="@dimen/font_normal"
-        android:hint="@string/hint_others_description"/>
+        android:textSize="@dimen/font_normal" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -78,16 +76,16 @@
             android:layout_width="@dimen/margin_least"
             android:layout_height="@dimen/img_height_topic"
             android:layout_marginLeft="@dimen/margin_normal"
-            android:background="@color/red_btn_bg_color"/>
+            android:background="@color/red_btn_bg_color" />
 
         <TextView
-            android:layout_toRightOf="@+id/iv_others_topic"
             android:id="@+id/tv_others_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_very_least"
+            android:layout_toRightOf="@+id/iv_others_topic"
             android:text="@string/tv_others_topic"
-            android:textSize="@dimen/font_normal"/>
+            android:textSize="@dimen/font_normal" />
     </RelativeLayout>
 
     <TextView
@@ -96,6 +94,6 @@
         android:layout_marginLeft="@dimen/margin_very_large"
         android:layout_marginTop="@dimen/margin_very_very_large"
         android:text="@string/tv_others_topic_detail"
-        android:textSize="@dimen/font_most"/>
+        android:textSize="@dimen/font_most" />
 
 </LinearLayout>

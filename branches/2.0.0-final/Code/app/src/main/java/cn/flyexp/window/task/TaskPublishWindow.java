@@ -1,6 +1,7 @@
 package cn.flyexp.window.task;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,8 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -33,7 +36,6 @@ import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.task.TaskPublishPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.PatternUtil;
-import cn.flyexp.util.PopupUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.PasswordView;
 import cn.flyexp.window.BaseWindow;
@@ -56,8 +58,6 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
     TextView tv_limit;
     @InjectView(R.id.btn_publish)
     Button btnPublish;
-    @InjectView(R.id.tasklayout)
-    View taskLayout;
 
     private TaskPublishPresenter taskPublishPresenter;
     private SweetAlertDialog loadingDialog;
@@ -71,7 +71,7 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
     private View inputPayPwdLayout;
     private String paypwd;
     private AlertDialog inputPayPwdDialog;
-    private PopupUtil popupHelper;
+    private PopupWindow popupWindow;
 
     @Override
     protected int getLayoutId() {
@@ -108,14 +108,28 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
         tvBalance.setOnClickListener(paywayOnClick);
         popPicLayout.findViewById(R.id.tv_alipay).setOnClickListener(paywayOnClick);
         popPicLayout.findViewById(R.id.btn_cancel).setOnClickListener(paywayOnClick);
-        popupHelper = new PopupUtil(getContext(), new PopupUtil.Builder(popPicLayout).setAnimationStyle(R.style.popwin_anim_style).create(), true);
-        popupHelper.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+        popupWindow = new PopupWindow(popPicLayout,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupWindow.setTouchable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-
+                changeWindowAlpha(1f);
             }
         });
     }
+
+    private void changeWindowAlpha(float v) {
+        WindowManager.LayoutParams lp = ((Activity) getContext()).getWindow().getAttributes();
+        lp.alpha = v;
+        ((Activity) getContext()).getWindow().setAttributes(lp);
+    }
+
 
     private OnClickListener paywayOnClick = new OnClickListener() {
         @Override
@@ -129,17 +143,15 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
                     } else if (setPayPwd == 1) {
                         showInputPayPwd();
                     }
-                    popupHelper.dismiss();
                     break;
                 case R.id.tv_alipay:
                     taskPublishRequest.setPay_id(1);
                     taskPublishPresenter.requestTaskPublish(taskPublishRequest);
-                    popupHelper.dismiss();
                     break;
                 case R.id.btn_cancel:
-                    popupHelper.dismiss();
                     break;
             }
+            popupWindow.dismiss();
         }
     };
 
@@ -188,7 +200,8 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
         taskPublishRequest.setFee(fee);
         taskPublishRequest.setGoods_fee(0);
         taskPublishRequest.setPhone(phone);
-        popupHelper.showAtLocation(taskLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
+        changeWindowAlpha(0.7f);
     }
 
     private void showInputPayPwd() {

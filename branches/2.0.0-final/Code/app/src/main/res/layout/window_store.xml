@@ -3,30 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/status_bar_height">
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/white">
+        android:layout_height="match_parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/store"
-            android:textColor="@color/font_black"
-            android:textSize="@dimen/font_most" />
-
-        <View
-            style="@style/horizontalLine"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/btn_Ta_Topic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="btn"/>
 </LinearLayout>

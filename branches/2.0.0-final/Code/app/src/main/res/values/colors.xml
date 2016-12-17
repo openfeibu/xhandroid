@@ -14,13 +14,13 @@
     <color name="transp_white">#AAFFFFFF</color>
     <color name="light_blue">#5AC8FA</color>
     <color name="light_cyan">#6CDFC9</color>
-    <color name="light_yellow">#EFC142</color>
-    <color name="light_green">#67B489</color>
+    <color name="light_yellow">#E6CC72</color>
+    <color name="light_green">#94CDA5</color>
     <color name="dark_green">#5BB282</color>
     <color name="dark_blue">#23B7FA</color>
     <color name="transp_blue">#885AC8FA</color>
     <color name="transparent">#00000000</color>
-    <color name="light_red">#EF7272</color>
+    <color name="light_red">#F59B9B</color>
     <color name="dark_red">#DF5E5E</color>
     <color name="task_green">#80B995</color>
     <color name="task_blue">#87CBF6</color>

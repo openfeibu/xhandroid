@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/status_bar_height">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
+        android:layout_marginBottom="@dimen/margin_normal"
         android:background="@color/white">
 
         <ImageView
@@ -28,24 +28,40 @@
             android:textColor="@color/font_black"
             android:textSize="@dimen/font_most" />
 
+        <TextView
+            android:id="@+id/tv_statement"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/onclick_backgroud"
+            android:gravity="center"
+            android:paddingLeft="@dimen/margin_normal_small"
+            android:paddingRight="@dimen/margin_normal_small"
+            android:text="@string/statement"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_large" />
+
         <View
             style="@style/horizontalLine"
             android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/layout_detail"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mywallet_height"
-        android:background="@color/light_blue"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/margin_normal">
+        android:layout_height="@dimen/item_large_height"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@drawable/background_yellow_round">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal_least"
+            android:drawableLeft="@mipmap/icon_wallet_balance"
+            android:drawablePadding="@dimen/margin_normal_least"
             android:gravity="center"
-            android:text="@string/hint_money"
+            android:text="@string/wallet_balance"
             android:textColor="@color/white"
             android:textSize="@dimen/font_large" />
 
@@ -53,201 +69,85 @@
             android:id="@+id/tv_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_normal_least"
+            android:drawablePadding="@dimen/margin_normal_least"
             android:gravity="center"
-            android:text="0.00"
+            android:text="@string/format_money"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_large_small" />
-
-    </LinearLayout>
+            android:textSize="@dimen/font_large" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_withdrawal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_select_height"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:background="@drawable/btn_white"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal">
+        android:layout_height="@dimen/item_large_height"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@drawable/background_green_round">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal_least"
+            android:drawableLeft="@mipmap/icon_wallet_withdrawal"
+            android:drawablePadding="@dimen/margin_normal_least"
             android:gravity="center"
             android:text="@string/withdrawal"
-            android:textColor="@color/font_dark"
-            android:textSize="@dimen/font_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_fillinfo" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_detail"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/item_select_height"
-        android:layout_marginTop="@dimen/margin_least"
-        android:background="@drawable/btn_white"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="@string/wallet_detail"
-            android:textColor="@color/font_dark"
-            android:textSize="@dimen/font_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_fillinfo" />
-
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_payinfo"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_select_height"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:background="@drawable/btn_white"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal">
+        android:layout_height="@dimen/item_large_height"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@drawable/background_blue_round">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal_least"
+            android:drawableLeft="@mipmap/icon_wallet_zfb"
+            android:drawablePadding="@dimen/margin_normal_least"
             android:gravity="center"
-            android:text="@string/payaccount_info"
-            android:textColor="@color/font_dark"
-            android:textSize="@dimen/font_normal" />
+            android:text="@string/alipay"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large" />
 
-        <ImageView
+        <TextView
+            android:id="@+id/tv_payinfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_fillinfo" />
-
+            android:layout_marginRight="@dimen/margin_normal_least"
+            android:drawablePadding="@dimen/margin_normal_least"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_setpaypwd"
+        android:id="@+id/layout_paypwd"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_select_height"
-        android:layout_marginTop="@dimen/margin_least"
-        android:background="@drawable/btn_white"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal">
+        android:layout_height="@dimen/item_large_height"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@drawable/background_red_round">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="@string/set_paypwd"
-            android:textColor="@color/font_dark"
-            android:textSize="@dimen/font_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_fillinfo" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_changepwd"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/item_select_height"
-        android:layout_marginTop="@dimen/margin_least"
-        android:background="@drawable/btn_white"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal_least"
+            android:drawableLeft="@mipmap/icon_wallet_forgotpassword"
+            android:drawablePadding="@dimen/margin_normal_least"
             android:gravity="center"
-            android:text="@string/change_paypwd"
-            android:textColor="@color/font_dark"
-            android:textSize="@dimen/font_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_fillinfo" />
-
+            android:text="@string/paypwd"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large" />
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_resetpaypwd"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/item_select_height"
-        android:layout_marginTop="@dimen/margin_least"
-        android:background="@drawable/btn_white"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="@string/reset_paypwd"
-            android:textColor="@color/font_dark"
-            android:textSize="@dimen/font_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_fillinfo" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_statement"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/item_select_height"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:background="@drawable/btn_white"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="@string/wallet_statement"
-            android:textColor="@color/font_dark"
-            android:textSize="@dimen/font_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_fillinfo" />
-
-    </RelativeLayout>
-
 </LinearLayout>

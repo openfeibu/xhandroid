@@ -21,12 +21,6 @@ import java.util.List;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
-import cn.finalteam.rxgalleryfinal.bean.ImageCropBean;
-import cn.finalteam.rxgalleryfinal.bean.MediaBean;
-import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
-import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
-import cn.finalteam.rxgalleryfinal.rxbus.event.ImageMultipleResultEvent;
 import cn.flyexp.R;
 import cn.flyexp.adapter.TopicPicAdapter;
 import cn.flyexp.callback.topic.TopicPublishCallback;

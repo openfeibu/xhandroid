@@ -24,6 +24,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
     private int currItemCount;
     private boolean once = true;
     private boolean isDown;
+    private boolean isShowEnd;
 
     public LoadMoreRecyclerView(Context context) {
         super(context, null);
@@ -99,6 +100,10 @@ public class LoadMoreRecyclerView extends RecyclerView {
         return last;
     }
 
+    public void setShowEnd(boolean isShowEnd) {
+        this.isShowEnd = isShowEnd;
+    }
+
 
     public interface LoadMoreLinstener {
         void onLoadMore();
@@ -123,7 +128,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
     }
 
     private void loadMoreEnd() {
-        if (loadingMoreFooter != null) {
+        if (loadingMoreFooter != null && isShowEnd) {
             loadingMoreFooter.showEnd();
         }
         canloadMore = false;

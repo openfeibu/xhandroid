@@ -24,7 +24,7 @@ public class LogUtil {
         if (mes == null) {
             e(LogUtil.class.getSimpleName(), "mes null");
         } else {
-            e("error", mes);
+            e("xiaohui", mes);
         }
     }
 

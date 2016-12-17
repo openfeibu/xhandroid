@@ -1,6 +1,7 @@
 package cn.flyexp.window.user;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,23 +14,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
-import cn.finalteam.rxgalleryfinal.bean.ImageCropBean;
-import cn.finalteam.rxgalleryfinal.bean.MediaBean;
-import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
-import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
-import cn.finalteam.rxgalleryfinal.rxbus.event.ImageMultipleResultEvent;
-import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import cn.flyexp.R;
 import cn.flyexp.callback.user.RegisterCallback;
 import cn.flyexp.entity.ImgUrlResponse;
 import cn.flyexp.entity.RegisterRequest;
 import cn.flyexp.entity.TokenResponse;
 import cn.flyexp.entity.WebBean;
+import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.util.EncodeUtil;
 import cn.flyexp.util.PatternUtil;
@@ -39,7 +36,7 @@ import cn.flyexp.window.BaseWindow;
 /**
  * Created by tanxinye on 2016/12/2.
  */
-public class RegisterWindow extends BaseWindow implements TextWatcher {
+public class RegisterWindow extends BaseWindow implements NotifyManager.Notify, TextWatcher {
 
     @InjectView(R.id.img_avatar)
     ImageView imgAvatar;
@@ -68,6 +65,7 @@ public class RegisterWindow extends BaseWindow implements TextWatcher {
 
     public RegisterWindow() {
         initView();
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_GALLERY, this);
     }
 
     private void initView() {
@@ -117,14 +115,9 @@ public class RegisterWindow extends BaseWindow implements TextWatcher {
     }
 
     private void openGallery() {
-        RxGalleryFinal.with(getContext()).image().radio().imageLoader(ImageLoaderType.GLIDE).subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
-            @Override
-            protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
-                ImageCropBean result = imageRadioResultEvent.getResult();
-                imgPath = result.getOriginalPath();
-                Glide.with(getContext()).load(imgPath).diskCacheStrategy(DiskCacheStrategy.NONE).into(imgAvatar);
-            }
-        }).openGallery();
+        Bundle bundle = new Bundle();
+        bundle.putInt("max", 1);
+        openWindow(WindowIDDefine.WINDOW_GALLERY, bundle);
     }
 
     private void openWebWindow(WebBean webBean) {
@@ -192,6 +185,16 @@ public class RegisterWindow extends BaseWindow implements TextWatcher {
             btnNext.setEnabled(false);
         } else {
             btnNext.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void onNotify(Message mes) {
+        if (mes.what == NotifyIDDefine.NOTIFY_GALLERY) {
+            Bundle bundle = mes.getData();
+            ArrayList<String> images = bundle.getStringArrayList("images");
+            imgPath = images.get(0);
+            Glide.with(getContext()).load(imgPath).diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(imgAvatar);
         }
     }
 }

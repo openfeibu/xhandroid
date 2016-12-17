@@ -13,6 +13,7 @@
     <dimen name="margin_most">64dp</dimen>
     <dimen name="margin_large">32dp</dimen>
     <dimen name="margin_normal">12dp</dimen>
+    <dimen name="margin_normal_least">16dp</dimen>
     <dimen name="margin_normal_small">20dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_least">5dp</dimen>
@@ -21,7 +22,6 @@
     <dimen name="button_height">45dp</dimen>
     <dimen name="tool_bar_height">48dp</dimen>
     <dimen name="tool_bar_height_max">73dp</dimen>
-    <dimen name="status_bar_height">0dp</dimen>
     <dimen name="item_select_height">48dp</dimen>
     <dimen name="btn_radius">4dp</dimen>
     <dimen name="btn_login_radius">22dp</dimen>
@@ -36,7 +36,7 @@
     <dimen name="mywallet_height">100dp</dimen>
     <dimen name="edit_height_large">120dp</dimen>
     <dimen name="assn_btn_width">120dp</dimen>
-    <dimen name="assnacti_img_height">150dp</dimen>
+    <dimen name="assnacti_img_height">225dp</dimen>
     <dimen name="assnacti_imgtv_height">75dp</dimen>
     <dimen name="assnacti_state_height">45dp</dimen>
     <dimen name="assn_detail_img_text">60dp</dimen>
@@ -71,4 +71,6 @@
     <dimen name="img_height_topic">17dp</dimen>
     <dimen name="margin_very_large">102dp</dimen>
     <dimen name="margin_very_very_large">134dp</dimen>
+    <dimen name="item_large_height">65dp</dimen>
+    <dimen name="refresh_header_height">60dp</dimen>
 </resources>

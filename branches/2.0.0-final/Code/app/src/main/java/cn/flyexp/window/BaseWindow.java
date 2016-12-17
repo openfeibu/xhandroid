@@ -2,7 +2,10 @@ package cn.flyexp.window;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -14,6 +17,7 @@ import cn.flyexp.framework.ControllerManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowManager;
+import cn.flyexp.util.ScreenHelper;
 import cn.flyexp.view.SwipeBackLayout;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -40,8 +44,17 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
 
     public BaseWindow(Bundle bundle) {
         super(MainActivity.getContext());
-        inflate(getContext(), getLayoutId(), this);
+        ViewGroup rootView = (ViewGroup) inflate(getContext(), getLayoutId(), this);
         ButterKnife.inject(this);
+
+//        View childView = rootView.getChildAt(0);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            childView.setPadding(0, 0, 0, 0);
+//        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            childView.setPadding(0, ScreenHelper.dip2px(getContext(), 25), 0, 0);
+//        } else {
+//            childView.setPadding(0, 0, 0, 0);
+//        }
     }
 
     protected abstract int getLayoutId();
@@ -114,6 +127,7 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
     /**
      * 滑动返回
      * 不需要滑动返回需重写
+     *
      * @return
      */
     @Override

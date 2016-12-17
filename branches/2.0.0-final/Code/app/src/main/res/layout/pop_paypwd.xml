@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_change"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_select_height"
+        android:background="@drawable/onclick_backgroud"
+        android:gravity="center"
+        android:text="@string/change_paypwd"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_large" />
+
+    <View style="@style/horizontalLine" />
+
+    <TextView
+        android:id="@+id/tv_reset"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_select_height"
+        android:background="@drawable/onclick_backgroud"
+        android:gravity="center"
+        android:text="@string/reset_paypwd"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_large" />
+</LinearLayout>

@@ -97,8 +97,6 @@ public class WindowIDDefine {
 
     public static int WINDOW_WALLET_BINDPAYPWD = generateMessageId();
 
-    public static int WINDOW_WALLET_PAYACCOUNT = generateMessageId();
-
     public static int WINDOW_WALLET_WITHDRAWAL = generateMessageId();
 
     public static int WINDOW_WALLET_DETAIL = generateMessageId();

@@ -61,13 +61,13 @@ public class AssnActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.tvViewNum.setText(String.format(context.getResources().getString(R.string.assnactiv_viewnum), responseData.getView_num()));
         viewHolder.tvDate.setText(DateUtil.dateFormat(responseData.getEnd_time(), "MM-dd"));
         if (DateUtil.date2Long(responseData.getStart_time()) > new Date().getTime()) {
-            viewHolder.imgState.setImageResource(R.mipmap.icon_activity_waiting);
+            viewHolder.imgState.setImageResource(R.mipmap.icon_activities_notstarted);
             viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.light_blue));
         } else if (DateUtil.date2Long(responseData.getEnd_time()) < new Date().getTime()) {
-            viewHolder.imgState.setImageResource(R.mipmap.icon_activity_end);
+            viewHolder.imgState.setImageResource(R.mipmap.icon_activities_end);
             viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.font_light));
         } else {
-            viewHolder.imgState.setImageResource(R.mipmap.icon_activity_ongoing);
+            viewHolder.imgState.setImageResource(R.mipmap.icon_activities_ongoing);
             viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.light_red));
         }
         Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgAvatar);

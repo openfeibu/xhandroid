@@ -1,6 +1,7 @@
 package cn.flyexp.window.main;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +33,10 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.main.HomePresenter;
 import cn.flyexp.util.ScreenHelper;
 import cn.flyexp.view.DividerItemDecoration;
+import cn.flyexp.view.RefreshLayout;
 import cn.flyexp.window.BaseWindow;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by tanxinye on 2016/10/22.
@@ -49,6 +53,8 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     TextView tvRecommendTask;
     @InjectView(R.id.tv_assn_acti)
     TextView tvAssnActi;
+    @InjectView(R.id.layout_refresh)
+    RefreshLayout refreshLayout;
 
     private ArrayList<String> imgUrls = new ArrayList<>();
     private ArrayList<AdResponse.AdResponseData> adResponseDatas = new ArrayList<>();
@@ -129,6 +135,14 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
         rvAssnActi.addItemDecoration(new DividerItemDecoration(getContext()));
         rvAssnActi.setHasFixedSize(true);
         rvAssnActi.setNestedScrollingEnabled(false);
+
+        refreshLayout.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                homePresenter.requestRecommendTask();
+            }
+
+        });
     }
 
     public class NetworkImageHolderView implements Holder<String> {
@@ -143,7 +157,7 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
 
         @Override
         public void UpdateUI(Context context, int position, String data) {
-            Glide.with(context).load(data).diskCacheStrategy(DiskCacheStrategy.RESULT).into(imageView);
+            Glide.with(context).load(data).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
         }
     }
 
@@ -190,7 +204,24 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     }
 
     @Override
+    public void requestFailure() {
+        super.requestFailure();
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.refreshComplete();
+        }
+    }
+
+    @Override
+    public void requestFinish() {
+        super.requestFinish();
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.refreshComplete();
+        }
+    }
+
+    @Override
     public void responseAd(AdResponse response) {
+        adResponseDatas.clear();
         adResponseDatas.addAll(response.getData());
         for (int i = 0; i < adResponseDatas.size(); i++) {
             imgUrls.add(adResponseDatas.get(i).getAd_image_url());
@@ -205,7 +236,7 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
         if (response.getData().isEmpty()) {
             tvRecommendTask.setVisibility(GONE);
             rvRecommendTask.setVisibility(GONE);
-        }else{
+        } else {
             tvRecommendTask.setVisibility(VISIBLE);
             rvRecommendTask.setVisibility(VISIBLE);
             recommendTaskDatas.addAll(response.getData());

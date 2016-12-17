@@ -28,12 +28,6 @@ import java.util.List;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
-import cn.finalteam.rxgalleryfinal.bean.ImageCropBean;
-import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
-import cn.finalteam.rxgalleryfinal.imageloader.rotate.RotateTransformation;
-import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
-import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import cn.flyexp.R;
 import cn.flyexp.callback.assn.AssnActiPublishCallback;
 import cn.flyexp.entity.AssnActiPublishRequest;

@@ -89,16 +89,16 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private Drawable tranfStateDrawable(String status) {
-        Drawable drawable = context.getResources().getDrawable(R.mipmap.icon_back);
+        Drawable drawable = context.getResources().getDrawable(R.mipmap.icon_task_end);
         if (TextUtils.isEmpty(status)) {
             return drawable;
         }
         if (status.equals("new")) {
-            drawable = context.getResources().getDrawable(R.mipmap.icon_back);
+            drawable = context.getResources().getDrawable(R.mipmap.icon_task_notstarted);
         } else if (status.equals("accepted")) {
-            drawable = context.getResources().getDrawable(R.mipmap.icon_back);
+            drawable = context.getResources().getDrawable(R.mipmap.icon_task_ongoing);
         } else {
-            drawable = context.getResources().getDrawable(R.mipmap.icon_back);
+            drawable = context.getResources().getDrawable(R.mipmap.icon_task_end);
         }
         return drawable;
     }

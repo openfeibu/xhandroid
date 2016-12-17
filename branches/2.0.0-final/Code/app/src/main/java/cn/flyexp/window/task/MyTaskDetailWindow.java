@@ -1,7 +1,8 @@
 package cn.flyexp.window.task;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -55,8 +57,6 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     TextView tvDestination;
     @InjectView(R.id.tv_description)
     TextView tvDescription;
-    @InjectView(R.id.tasklayout)
-    View taskLayout;
     @InjectView(R.id.btn_task)
     Button btnTask;
     @InjectView(R.id.img_share)
@@ -66,7 +66,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
 
     private MyTaskResponse.MyTaskResponseData data;
     private MyTaskDetailPresenter myTaskDetailPresenter;
-    private PopupWindow picPopupWindow;
+    private PopupWindow popupWindow;
     private String currState;
     private boolean isTask;
     private SweetAlertDialog loadingDialog;
@@ -118,19 +118,32 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
         popShareLayout.findViewById(R.id.tv_qq).setOnClickListener(shareOnClickListener);
         popShareLayout.findViewById(R.id.tv_wxf).setOnClickListener(shareOnClickListener);
         popShareLayout.findViewById(R.id.tv_wxq).setOnClickListener(shareOnClickListener);
-        picPopupWindow = new PopupWindow(popShareLayout, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        picPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        picPopupWindow.setFocusable(true);
-        picPopupWindow.setOutsideTouchable(true);
-        picPopupWindow.setAnimationStyle(R.style.popwin_anim_style);
+        popupWindow = new PopupWindow(popShareLayout,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupWindow.setTouchable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                changeWindowAlpha(1f);
+            }
+        });
+    }
 
+
+    private void changeWindowAlpha(float v) {
+        WindowManager.LayoutParams lp = ((Activity) getContext()).getWindow().getAttributes();
+        lp.alpha = v;
+        ((Activity) getContext()).getWindow().setAttributes(lp);
     }
 
     private OnClickListener shareOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            picPopupWindow.dismiss();
+            popupWindow.dismiss();
             switch (view.getId()) {
                 case R.id.tv_qq:
                     ShareHelper.shareQQ(getContext(), getResources().getString(R.string.share_task_title),
@@ -187,7 +200,8 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                 hideWindow(true);
                 break;
             case R.id.img_share:
-                picPopupWindow.showAtLocation(taskLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
+                changeWindowAlpha(0.7f);
                 break;
             case R.id.tv_report:
                 Bundle bundle = new Bundle();

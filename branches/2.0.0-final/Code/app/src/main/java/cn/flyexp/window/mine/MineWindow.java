@@ -59,7 +59,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
         }
     }
 
-    @OnClick({R.id.tv_changecampus, R.id.img_message, R.id.layout_setting, R.id.layout_mywallet,
+    @OnClick({R.id.tv_changecampus, R.id.tv_message, R.id.layout_setting, R.id.layout_mywallet,
             R.id.layout_myassn, R.id.layout_share, R.id.layout_myintergal, R.id.layout_myinfo, R.id.tv_mytopic,
             R.id.tv_mytask, R.id.tv_myorder, R.id.layout_storecollection, R.id.layout_certifition})
     void onClick(View view) {
@@ -67,7 +67,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
             case R.id.tv_changecampus:
                 showToast(R.string.comming_soon);
                 break;
-            case R.id.img_message:
+            case R.id.tv_message:
                 openWindow(WindowIDDefine.WINDOW_MESSAGE);
                 break;
             case R.id.layout_myinfo:

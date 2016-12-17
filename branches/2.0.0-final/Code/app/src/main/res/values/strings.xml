@@ -107,7 +107,7 @@
     <string name="h5pay_network_error">网络连接出错</string>
     <string name="h5pay_unknow">未知错误</string>
     <string name="mywallet">我的钱包</string>
-    <string name="hint_money">账户余额（元）：</string>
+    <string name="hint_balance_money">账户余额（元）：</string>
     <string name="withdrawal">提现</string>
     <string name="wallet_detail">钱包明细</string>
     <string name="payaccount_info">账户信息</string>
@@ -128,7 +128,7 @@
     <string name="hint_newpaypwd">新支付密码</string>
     <string name="reset">重设</string>
     <string name="hint_again_input">再次输入</string>
-    <string name="hint_paypwd">支付密码</string>
+    <string name="paypwd">支付密码</string>
     <string name="hint_oldpaypwd">旧支付密码</string>
     <string name="alipay">支付宝</string>
     <string name="change_payaccount">更换支付宝帐号</string>
@@ -150,7 +150,6 @@
     <string name="hint_input_paypwd">请输入支付密码</string>
     <string name="binding">绑定中</string>
     <string name="changing">更换中</string>
-    <string name="payaccount">账户:%s</string>
     <string name="twotimes_input_error">两次输入不一致</string>
     <string name="loading_end_text">到底啦~</string>
     <string name="servicefee">服务费：%s</string>
@@ -209,12 +208,12 @@
     <string name="hint_mine_name">名字读取中...</string>
     <string name="hint_loading">...</string>
     <string name="store_collection">店铺收藏</string>
-    <string name="mytopic">我的校汇圈</string>
+    <string name="mytopic">我的圈圈</string>
     <string name="mytask">我的任务</string>
     <string name="myorder">我的订单</string>
     <string name="hint_change_campus">陆续开通，敬请期待！</string>
     <string name="comming_soon">敬请期待</string>
-    <string name="message">纸条</string>
+    <string name="message">消息</string>
     <string name="mytask_receive">我的接单</string>
     <string name="mytask_send">我的发单</string>
     <string name="hint_task_money">￥%s</string>
@@ -317,8 +316,8 @@
     <string name="profile">介绍</string>
     <string name="task_all">全部</string>
     <string name="task_campus">任务</string>
-    <string name="task_alumnus">校友</string>
-    <string name="task_business">商家</string>
+    <string name="task_alumnus">校友任务</string>
+    <string name="task_business">店铺任务</string>
     <string name="hint_register_next">点击上面“下一步”</string>
     <string name="hint_register_next2">即表示你同意《</string>
     <string name="services_protocols">服务协议</string>
@@ -331,22 +330,24 @@
     <string name="hint_upload_avatar">请上传头像</string>
     <string name="format_task_address">送达地点：%s</string>
     <string name="recommend_task">推荐任务</string>
-
-    <!---->
     <string name="hint_others_description">主人很懒，什么都没留下~</string>
     <string name="tv_others_topic">Ta的话题</string>
     <string name="tv_others_topic_detail">Ta还没发过话题哦~</string>
     <string name="tv_others_name">小黛儿</string>
     <string name="school_name">广东农工商职业技术学院</string>
-
-    <array name="guide_color">
-        <item>#5AC8FA</item>
-        <item>@color/dark_blue</item>
-        <item>@color/white</item>
-    </array>
     <string name="complete">完成</string>
     <string name="gallery_all_images">所有图片</string>
     <string name="photograph">拍照</string>
     <string name="gallery_title">图片</string>
     <string name="gallery_device_camera_unable">无法打开相机</string>
+    <string name="wallet_balance">余额</string>
+    <string name="format_money">%s元</string>
+    <string name="statement">说明</string>
+    <string name="save_pic">保存图片</string>
+    <string name="save_success">保存成功</string>
+    <string name="save_failure">保存失败</string>
+    <string name="refresh_down">下拉刷新</string>
+    <string name="refresh_release">松开刷新</string>
+    <string name="refresh_doing">刷新中</string>
+    <string name="refresh_complete">刷新完成</string>
 </resources>

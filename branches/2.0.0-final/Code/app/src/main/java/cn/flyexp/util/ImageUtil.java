@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.finalteam.rxgalleryfinal.utils.FilenameUtils;
 import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.entity.BucketBean;
@@ -33,7 +32,7 @@ public class ImageUtil {
     public static ArrayList<BucketBean> getAllImageBucket() {
         ArrayList<BucketBean> list = new ArrayList<>();
         BucketBean allBucketBean = new BucketBean();
-        allBucketBean.setBucketName(MainActivity.getContext().getString(R.string.gallery_all_image));
+        allBucketBean.setBucketName(MainActivity.getContext().getString(R.string.gallery_all_images));
         allBucketBean.setBucketId(String.valueOf(Integer.MIN_VALUE));
         list.add(allBucketBean);
 

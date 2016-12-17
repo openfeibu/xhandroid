@@ -17,6 +17,7 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.mine.SettingPresenter;
 import cn.flyexp.util.DataCleanHelper;
 import cn.flyexp.util.DialogHelper;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.window.BaseWindow;
 import cn.pedant.SweetAlert.SweetAlertDialog;

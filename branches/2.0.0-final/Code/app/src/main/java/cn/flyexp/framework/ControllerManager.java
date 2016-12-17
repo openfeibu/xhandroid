@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.os.Message;
 
 import cn.flyexp.window.assn.AssnActiDetailWindow;
-import cn.flyexp.window.assn.TAssnActiDetailWindow;
 import cn.flyexp.window.assn.AssnActiPublishWindow;
 import cn.flyexp.window.assn.AssnDetailWindow;
 import cn.flyexp.window.assn.AssnExamineDetailWindow;
@@ -46,7 +45,6 @@ import cn.flyexp.window.user.ResetPwdWindow;
 import cn.flyexp.window.wallet.BindAlipayWindow;
 import cn.flyexp.window.wallet.ChangePayAccountWindow;
 import cn.flyexp.window.wallet.ChangePayPwdWindow;
-import cn.flyexp.window.wallet.PayAccountWindow;
 import cn.flyexp.window.wallet.ResetPayPwdWindow;
 import cn.flyexp.window.wallet.SetPayPwdWindow;
 import cn.flyexp.window.wallet.WalletDetailWindow;
@@ -137,8 +135,6 @@ public class ControllerManager {
                 new ChangePayPwdWindow().showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_WALLET_SETPAYPWD) {
                 new SetPayPwdWindow().showWindow(true);
-            } else if (msg.what == WindowIDDefine.WINDOW_WALLET_PAYACCOUNT) {
-                new PayAccountWindow().showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_WALLET_CHANGEPAYACCOUNT) {
                 new ChangePayAccountWindow().showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_ASSNACTI_DETAIL) {

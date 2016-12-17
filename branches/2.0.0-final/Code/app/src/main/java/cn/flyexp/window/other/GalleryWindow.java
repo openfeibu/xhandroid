@@ -119,6 +119,7 @@ public class GalleryWindow extends BaseWindow implements NotifyManager.Notify, G
         rvGallery.setAdapter(galleryAdapter);
         rvGallery.setLayoutManager(new GridLayoutManager(getContext(), 4));
         rvGallery.setHasFixedSize(true);
+        rvGallery.setShowEnd(false);
         rvGallery.setLoadMoreLinstener(new LoadMoreRecyclerView.LoadMoreLinstener() {
             @Override
             public void onLoadMore() {
