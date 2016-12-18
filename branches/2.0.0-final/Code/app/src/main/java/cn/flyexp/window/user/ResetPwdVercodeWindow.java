@@ -15,7 +15,7 @@ import cn.flyexp.callback.user.ResetPwdVercodeCallback;
 import cn.flyexp.entity.ResetPwdRequest;
 import cn.flyexp.entity.ResetPwdResponse;
 import cn.flyexp.entity.SmsCodeRequest;
-import cn.flyexp.presenter.user.ResetPwdPresenter;
+import cn.flyexp.presenter.user.ResetPwdVercodePresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.view.VerCodeView;
 import cn.flyexp.window.BaseWindow;
@@ -38,7 +38,7 @@ public class ResetPwdVercodeWindow extends BaseWindow implements TextWatcher, Re
     VerCodeView viewVerCode;
 
     private String moblieNo;
-    private ResetPwdPresenter resetPwdPresenter;
+    private ResetPwdVercodePresenter resetPwdPresenter;
     private ResetPwdRequest resetPwdRequest;
     private SweetAlertDialog loadingDialog;
     private String verCode;
@@ -51,7 +51,7 @@ public class ResetPwdVercodeWindow extends BaseWindow implements TextWatcher, Re
     public ResetPwdVercodeWindow(Bundle bundle) {
         resetPwdRequest = (ResetPwdRequest) bundle.getSerializable("resetPwdRequest");
         moblieNo = resetPwdRequest.getMobile_no();
-        resetPwdPresenter = new ResetPwdPresenter(this);
+        resetPwdPresenter = new ResetPwdVercodePresenter(this);
         initView();
         readySmscode();
     }

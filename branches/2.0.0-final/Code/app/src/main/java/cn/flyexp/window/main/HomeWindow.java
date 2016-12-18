@@ -104,6 +104,7 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
                 openWindow(WindowIDDefine.WINDOW_WEBVIEW, bundle);
             }
         });
+        banner.setPageIndicator(new int[]{R.mipmap.icon_carousel_black,R.mipmap.icon_carousel_white});
 
         recommendTaskAdapter = new RecommendTaskAdapter(getContext(), recommendTaskDatas);
         recommendTaskAdapter.setOnItemClickLinstener(new RecommendTaskAdapter.OnItemClickLinstener() {

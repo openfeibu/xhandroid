@@ -15,11 +15,11 @@ import okhttp3.MultipartBody;
 /**
  * Created by tanxinye on 2016/12/2.
  */
-public class RegisterPresenter extends BasePresenter implements RegisterVercodeCallback.RequestCallback {
+public class RegisterVercodePresenter extends BasePresenter implements RegisterVercodeCallback.RequestCallback {
 
     private RegisterVercodeCallback.ResponseCallback callback;
 
-    public RegisterPresenter(RegisterVercodeCallback.ResponseCallback callback) {
+    public RegisterVercodePresenter(RegisterVercodeCallback.ResponseCallback callback) {
         super(callback);
         this.callback = callback;
     }

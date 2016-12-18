@@ -20,7 +20,7 @@ import cn.flyexp.entity.RegisterRequest;
 import cn.flyexp.entity.SmsCodeRequest;
 import cn.flyexp.entity.TokenResponse;
 import cn.flyexp.framework.NotifyIDDefine;
-import cn.flyexp.presenter.user.RegisterPresenter;
+import cn.flyexp.presenter.user.RegisterVercodePresenter;
 import cn.flyexp.util.BitmapUtil;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.SharePresUtil;
@@ -47,7 +47,7 @@ public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, Re
     VerCodeView viewVerCode;
 
     private String moblieNo;
-    private RegisterPresenter registerPresenter;
+    private RegisterVercodePresenter registerPresenter;
     private RegisterRequest registerRequest;
     private SweetAlertDialog loadingDialog;
     private String verCode;
@@ -62,7 +62,7 @@ public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, Re
         registerRequest = (RegisterRequest) bundle.getSerializable("registerRequest");
         imgpath = bundle.getString("imgpath");
         moblieNo = registerRequest.getMobile_no();
-        registerPresenter = new RegisterPresenter(this);
+        registerPresenter = new RegisterVercodePresenter(this);
         initView();
         readySmscode();
     }

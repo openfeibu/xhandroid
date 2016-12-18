@@ -13,11 +13,11 @@ import cn.flyexp.presenter.BasePresenter;
 /**
  * Created by tanxinye on 2016/10/24.
  */
-public class ResetPwdPresenter extends BasePresenter implements ResetPwdVercodeCallback.RequestCallback {
+public class ResetPwdVercodePresenter extends BasePresenter implements ResetPwdVercodeCallback.RequestCallback {
 
     private ResetPwdVercodeCallback.ResponseCallback callback;
 
-    public ResetPwdPresenter(ResetPwdVercodeCallback.ResponseCallback callback) {
+    public ResetPwdVercodePresenter(ResetPwdVercodeCallback.ResponseCallback callback) {
         super(callback);
         this.callback = callback;
     }

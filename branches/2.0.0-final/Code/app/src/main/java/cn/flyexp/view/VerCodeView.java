@@ -35,7 +35,7 @@ public class VerCodeView extends EditText {
         int height = getHeight();
         Paint rectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         rectPaint.setStrokeWidth(1f);
-        rectPaint.setColor(getResources().getColor(R.color.light_gray));
+        rectPaint.setColor(getResources().getColor(R.color.app_bg));
         rectPaint.setStyle(Paint.Style.STROKE);
         Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextAlign(Paint.Align.CENTER);
