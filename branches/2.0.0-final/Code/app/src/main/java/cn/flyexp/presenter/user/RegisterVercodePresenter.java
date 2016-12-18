@@ -69,6 +69,11 @@ public class RegisterVercodePresenter extends BasePresenter implements RegisterV
 
             @Override
             public void onSuccess(BaseResponse response) {
+                if(response.getCode()== ResponseCode.RESPONSE_200){
+                    callback.responseSmscodeSuccess();
+                }else {
+                    callback.responseSmscodeFailure();
+                }
             }
 
         });

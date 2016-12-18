@@ -2,6 +2,7 @@ package cn.flyexp.callback.user;
 
 import cn.flyexp.callback.BaseRequestCallback;
 import cn.flyexp.callback.BaseResponseCallback;
+import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.ImgUrlResponse;
 import cn.flyexp.entity.RegisterRequest;
 import cn.flyexp.entity.SmsCodeRequest;
@@ -25,5 +26,9 @@ public interface RegisterVercodeCallback {
         void responseRegister(TokenResponse response);
 
         void responseUploadAvatar(ImgUrlResponse response);
+
+        void responseSmscodeSuccess();
+
+        void responseSmscodeFailure();
     }
 }

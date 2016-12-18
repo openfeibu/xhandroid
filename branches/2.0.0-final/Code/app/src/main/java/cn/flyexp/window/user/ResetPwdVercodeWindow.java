@@ -83,7 +83,7 @@ public class ResetPwdVercodeWindow extends BaseWindow implements TextWatcher, Re
         }.start();
     }
 
-    @OnClick({R.id.img_back, R.id.tv_renewget,R.id.btn_finish})
+    @OnClick({R.id.img_back, R.id.tv_renewget, R.id.btn_finish})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -116,6 +116,16 @@ public class ResetPwdVercodeWindow extends BaseWindow implements TextWatcher, Re
     public void responseResetPwd(ResetPwdResponse response) {
         showToast(R.string.reset_success);
         hideWindow(true);
+    }
+
+    @Override
+    public void responseVercodeSuccess() {
+        showToast(R.string.send_sms_code_success);
+    }
+
+    @Override
+    public void responseVercodeFailure() {
+        showToast(R.string.send_sms_code_failure);
     }
 
     @Override

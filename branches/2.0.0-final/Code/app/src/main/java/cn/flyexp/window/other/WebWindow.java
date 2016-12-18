@@ -139,6 +139,9 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
+                if (webView == null) {
+                    return;
+                }
                 if (newProgress == 100) {
                     progressBar.setVisibility(View.GONE);
                 } else {
@@ -148,6 +151,7 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
                     progressBar.setProgress(newProgress);
                 }
             }
+
         });
         webView.setWebViewClient(new WebViewClient() {
             @Override

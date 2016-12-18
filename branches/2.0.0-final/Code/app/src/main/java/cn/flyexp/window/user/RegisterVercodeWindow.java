@@ -1,10 +1,12 @@
 package cn.flyexp.window.user;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -52,6 +54,7 @@ public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, Re
     private SweetAlertDialog loadingDialog;
     private String verCode;
     private String imgpath;
+    private CountDownTimer downTimer;
 
     @Override
     protected int getLayoutId() {
@@ -65,6 +68,12 @@ public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, Re
         registerPresenter = new RegisterVercodePresenter(this);
         initView();
         readySmscode();
+        openKeybroad();
+    }
+
+    private void openKeybroad() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(viewVerCode, InputMethodManager.SHOW_FORCED);
     }
 
     private void initView() {
@@ -79,7 +88,10 @@ public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, Re
     }
 
     private void countDown() {
-        new CountDownTimer(30000, 1000) {
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
+        downTimer = new CountDownTimer(30000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -91,7 +103,16 @@ public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, Re
                 tvCountDown.setVisibility(GONE);
                 renewGetLayout.setVisibility(VISIBLE);
             }
-        }.start();
+        };
+        downTimer.start();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
     }
 
     @OnClick({R.id.img_back, R.id.tv_renewget, R.id.btn_finish})
@@ -141,6 +162,16 @@ public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, Re
     public void responseUploadAvatar(ImgUrlResponse response) {
         registerRequest.setAvatar_url(response.getUrl());
         registerPresenter.requestRegister(registerRequest);
+    }
+
+    @Override
+    public void responseSmscodeSuccess() {
+        showToast(R.string.send_sms_code_success);
+    }
+
+    @Override
+    public void responseSmscodeFailure() {
+        showToast(R.string.send_sms_code_failure);
     }
 
     @Override

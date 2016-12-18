@@ -1,13 +1,11 @@
 package cn.flyexp.window.main;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.adapter.AssnActivityAdapter;
 import cn.flyexp.adapter.RecommendTaskAdapter;
@@ -31,12 +28,8 @@ import cn.flyexp.entity.TaskResponse;
 import cn.flyexp.entity.WebBean;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.main.HomePresenter;
-import cn.flyexp.util.ScreenHelper;
 import cn.flyexp.view.DividerItemDecoration;
-import cn.flyexp.view.RefreshLayout;
 import cn.flyexp.window.BaseWindow;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by tanxinye on 2016/10/22.
@@ -49,10 +42,10 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     RecyclerView rvRecommendTask;
     @InjectView(R.id.rv_assn_acti)
     RecyclerView rvAssnActi;
-    @InjectView(R.id.tv_recommend_task)
-    TextView tvRecommendTask;
-    @InjectView(R.id.tv_assn_acti)
-    TextView tvAssnActi;
+    @InjectView(R.id.layout_recommend_task)
+    View layoutRecommendTask;
+    @InjectView(R.id.layout_assn_acti)
+    View layoutAssnActi;
 
     private ArrayList<String> imgUrls = new ArrayList<>();
     private ArrayList<AdResponse.AdResponseData> adResponseDatas = new ArrayList<>();
@@ -104,7 +97,7 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
                 openWindow(WindowIDDefine.WINDOW_WEBVIEW, bundle);
             }
         });
-        banner.setPageIndicator(new int[]{R.mipmap.icon_carousel_black,R.mipmap.icon_carousel_white});
+        banner.setPageIndicator(new int[]{R.mipmap.icon_carousel_white,R.mipmap.icon_carousel_black});
 
         recommendTaskAdapter = new RecommendTaskAdapter(getContext(), recommendTaskDatas);
         recommendTaskAdapter.setOnItemClickLinstener(new RecommendTaskAdapter.OnItemClickLinstener() {
@@ -220,10 +213,10 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     public void responseRecommendTask(TaskResponse response) {
         recommendTaskDatas.clear();
         if (response.getData().isEmpty()) {
-            tvRecommendTask.setVisibility(GONE);
+            layoutRecommendTask.setVisibility(GONE);
             rvRecommendTask.setVisibility(GONE);
         } else {
-            tvRecommendTask.setVisibility(VISIBLE);
+            layoutRecommendTask.setVisibility(VISIBLE);
             rvRecommendTask.setVisibility(VISIBLE);
             recommendTaskDatas.addAll(response.getData());
             recommendTaskAdapter.notifyDataSetChanged();
@@ -234,10 +227,10 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     public void responseHotActivity(AssnActivityResponse response) {
         hotActiDatas.clear();
         if (response.getData().isEmpty()) {
-            tvAssnActi.setVisibility(GONE);
+            layoutAssnActi.setVisibility(GONE);
             rvAssnActi.setVisibility(GONE);
         } else {
-            tvAssnActi.setVisibility(VISIBLE);
+            layoutAssnActi.setVisibility(VISIBLE);
             rvAssnActi.setVisibility(VISIBLE);
             hotActiDatas.addAll(response.getData());
             assnActivityAdapter.notifyDataSetChanged();

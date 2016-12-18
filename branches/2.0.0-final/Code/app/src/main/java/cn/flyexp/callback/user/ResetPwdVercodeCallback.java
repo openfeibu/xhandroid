@@ -2,6 +2,8 @@ package cn.flyexp.callback.user;
 
 import cn.flyexp.callback.BaseRequestCallback;
 import cn.flyexp.callback.BaseResponseCallback;
+import cn.flyexp.entity.BaseRequest;
+import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.ResetPwdRequest;
 import cn.flyexp.entity.ResetPwdResponse;
 import cn.flyexp.entity.SmsCodeRequest;
@@ -19,6 +21,10 @@ public interface ResetPwdVercodeCallback {
 
     interface ResponseCallback extends BaseResponseCallback {
         void responseResetPwd(ResetPwdResponse response);
+
+        void responseVercodeSuccess();
+
+        void responseVercodeFailure();
     }
 
 }

@@ -2,6 +2,7 @@ package cn.flyexp.window.other;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -142,6 +143,7 @@ public class GalleryWindow extends BaseWindow implements NotifyManager.Notify, G
             }
         });
         rvBuckets = new RecyclerView(getContext());
+        rvBuckets.setBackgroundColor(Color.WHITE);
         rvBuckets.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
                 ScreenHelper.dip2px(getContext(), 400)));
         rvBuckets.setAdapter(bucketsAdapter);

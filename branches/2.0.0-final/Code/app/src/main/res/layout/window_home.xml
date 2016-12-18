@@ -72,16 +72,28 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_recommend_task"
+            <LinearLayout
+                android:id="@+id/layout_recommend_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_least"
-                android:text="@string/recommend_task"
-                android:textColor="@color/font_black"
-                android:textSize="@dimen/font_normal"
-                android:visibility="gone" />
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="@dimen/sign_width"
+                    android:layout_height="@dimen/sign_height"
+                    android:background="@color/light_red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_least"
+                    android:text="@string/recommend_task"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/font_normal" />
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_recommend_task"
@@ -90,16 +102,28 @@
                 android:layout_margin="@dimen/margin_normal"
                 android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tv_assn_acti"
+            <LinearLayout
+                android:id="@+id/layout_assn_acti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_least"
-                android:text="@string/assn_activity"
-                android:textColor="@color/font_black"
-                android:textSize="@dimen/font_normal"
-                android:visibility="gone" />
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="@dimen/sign_width"
+                    android:layout_height="@dimen/sign_height"
+                    android:background="@color/light_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_least"
+                    android:text="@string/assn_activity"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/font_normal" />
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_assn_acti"

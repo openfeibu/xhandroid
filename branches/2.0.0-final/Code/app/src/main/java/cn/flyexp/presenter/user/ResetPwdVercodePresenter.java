@@ -51,7 +51,11 @@ public class ResetPwdVercodePresenter extends BasePresenter implements ResetPwdV
         execute(ApiManager.getUserService().resetPwdVercodeRequest(request), BaseResponse.class, new ObservableCallback<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse response) {
-
+                if(response.getCode() == ResponseCode.RESPONSE_200){
+                    callback.responseVercodeSuccess();
+                }else{
+                    callback.responseVercodeFailure();
+                }
             }
         });
     }

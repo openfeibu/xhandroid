@@ -55,7 +55,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/topic_gray"
+                    android:background="@color/app_bg"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/margin_small"
                     android:paddingLeft="@dimen/margin_normal"
@@ -137,7 +137,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/topic_gray"
+                    android:background="@color/app_bg"
                     android:padding="@dimen/margin_normal"
                     android:text="@string/topic_all_comment"
                     android:textColor="@color/font_dark"

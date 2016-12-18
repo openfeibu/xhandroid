@@ -62,15 +62,21 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        hideKeybroad();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        InputMethodManager inputmanger = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputmanger.hideSoftInputFromWindow(getWindowToken(), 0);
+        hideKeybroad();
         ButterKnife.reset(this);
     }
+
+    private void hideKeybroad() {
+        InputMethodManager inputmanger = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputmanger.hideSoftInputFromWindow(getWindowToken(), 0);
+    }
+
 
     public void onRenew() {
     }

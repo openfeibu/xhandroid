@@ -95,14 +95,14 @@ public class RegisterWindow extends BaseWindow implements NotifyManager.Notify, 
             case R.id.tv_services_protocols:
                 WebBean protocolsBean = new WebBean();
                 protocolsBean.setRequest(true);
-                protocolsBean.setTitle(getResources().getString(R.string.user_agreement));
+                protocolsBean.setTitle(getResources().getString(R.string.services_protocols));
                 protocolsBean.setName("userAgreement");
                 openWebWindow(protocolsBean);
                 break;
             case R.id.tv_privacy_policy:
                 WebBean policyBean = new WebBean();
                 policyBean.setRequest(true);
-                policyBean.setTitle(getResources().getString(R.string.user_agreement));
+                policyBean.setTitle(getResources().getString(R.string.privacy_policy));
                 policyBean.setName("privacyPolicy");
                 openWebWindow(policyBean);
                 break;
@@ -192,4 +192,5 @@ public class RegisterWindow extends BaseWindow implements NotifyManager.Notify, 
             Glide.with(getContext()).load(imgPath).diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(imgAvatar);
         }
     }
+
 }

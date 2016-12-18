@@ -354,4 +354,7 @@
     <string name="topic_all_comment">全部评论</string>
     <string name="add_commment">添加评论</string>
     <string name="comment_publish">发表评论</string>
+    <string name="assn_notice">社团公告</string>
+    <string name="send_sms_code_success">短信发送成功</string>
+    <string name="send_sms_code_failure">短信发送失败</string>
 </resources>

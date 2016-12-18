@@ -45,6 +45,11 @@ public class StoreWindow extends BaseWindow implements WebCallback.ResponseCallb
         readyWebUrl();
     }
 
+    @Override
+    public void onRenew() {
+        readyWebUrl();
+    }
+
     private void initView() {
         webView.addJavascriptInterface(new JavaScriptInterface(), "feibu");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -113,7 +118,7 @@ public class StoreWindow extends BaseWindow implements WebCallback.ResponseCallb
 
     @Override
     public void responseWebUrl(WebUrlResponse response) {
-        response.getUrl();
+       webView.loadUrl(response.getUrl());
     }
 
     @Override
