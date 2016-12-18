@@ -10,6 +10,17 @@ import java.util.ArrayList;
  */
 public class TaskResponse extends BaseResponse {
 
+    @SerializedName("type")
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @SerializedName("data")
     private ArrayList<TaskResponseData> data;
 
@@ -42,8 +53,18 @@ public class TaskResponse extends BaseResponse {
         private String openid;
         @SerializedName("share_url")
         private String share_url;
+        @SerializedName("type")
+        private String type;
         @SerializedName("time")
         private TimeData time;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public TimeData getTime() {
             return time;

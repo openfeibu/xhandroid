@@ -53,8 +53,6 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     TextView tvRecommendTask;
     @InjectView(R.id.tv_assn_acti)
     TextView tvAssnActi;
-    @InjectView(R.id.layout_refresh)
-    RefreshLayout refreshLayout;
 
     private ArrayList<String> imgUrls = new ArrayList<>();
     private ArrayList<AdResponse.AdResponseData> adResponseDatas = new ArrayList<>();
@@ -136,13 +134,6 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
         rvAssnActi.setHasFixedSize(true);
         rvAssnActi.setNestedScrollingEnabled(false);
 
-        refreshLayout.setPtrHandler(new PtrDefaultHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                homePresenter.requestRecommendTask();
-            }
-
-        });
     }
 
     public class NetworkImageHolderView implements Holder<String> {
@@ -206,17 +197,11 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     @Override
     public void requestFailure() {
         super.requestFailure();
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.refreshComplete();
-        }
     }
 
     @Override
     public void requestFinish() {
         super.requestFinish();
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.refreshComplete();
-        }
     }
 
     @Override

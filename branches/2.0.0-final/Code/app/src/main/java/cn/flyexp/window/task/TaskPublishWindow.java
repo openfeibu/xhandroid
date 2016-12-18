@@ -130,7 +130,6 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
         ((Activity) getContext()).getWindow().setAttributes(lp);
     }
 
-
     private OnClickListener paywayOnClick = new OnClickListener() {
         @Override
         public void onClick(View view) {

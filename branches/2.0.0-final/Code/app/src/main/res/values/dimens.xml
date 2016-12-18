@@ -28,7 +28,7 @@
     <dimen name="btn_height">45dp</dimen>
     <dimen name="edit_height_normal">80dp</dimen>
     <dimen name="login_head_pic">120dp</dimen>
-    <dimen name="item_assnlist_height">86dp</dimen>
+    <dimen name="item_assnlist_height">100dp</dimen>
     <dimen name="avatar_big">50dp</dimen>
     <dimen name="avatar_large">75dp</dimen>
     <dimen name="img_width">100dp</dimen>
@@ -73,4 +73,6 @@
     <dimen name="margin_very_very_large">134dp</dimen>
     <dimen name="item_large_height">65dp</dimen>
     <dimen name="refresh_header_height">60dp</dimen>
+    <dimen name="topic_img_size">90dp</dimen>
+    <dimen name="item_topic_comment_height">75dp</dimen>
 </resources>

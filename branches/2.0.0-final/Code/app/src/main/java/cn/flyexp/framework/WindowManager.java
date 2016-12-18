@@ -29,6 +29,7 @@ public class WindowManager {
     private ViewGroup container;
     private Stack<BaseWindow> windowStack = new Stack<BaseWindow>();
     private static WindowManager windowManager;
+    private long lastTime;
 
     private WindowManager(Activity activity) {
         this.activity = activity;
@@ -111,12 +112,18 @@ public class WindowManager {
 
     public void exitApp() {
         activity.finish();
+        System.exit(0);
     }
 
     public void onBackPressed() {
         if (windowStack.peek() != null && !windowStack.peek().onBackPressed()) {
             if (windowStack.size() == 1) {
-                activity.moveTaskToBack(true);
+                if (System.currentTimeMillis() - lastTime > 1000) {
+                    lastTime = System.currentTimeMillis();
+                    Toast.makeText(activity, R.string.hint_exit_app, Toast.LENGTH_SHORT).show();
+                } else {
+                    exitApp();
+                }
             } else {
                 popWindow(true);
             }

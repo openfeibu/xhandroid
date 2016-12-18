@@ -11,7 +11,7 @@ import okhttp3.MultipartBody;
 /**
  * Created by tanxinye on 2016/12/2.
  */
-public interface RegisterCallback {
+public interface RegisterVercodeCallback {
 
     interface RequestCallback extends BaseRequestCallback {
         void requestRegister(RegisterRequest request);

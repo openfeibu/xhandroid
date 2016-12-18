@@ -2,7 +2,7 @@ package cn.flyexp.presenter.user;
 
 import cn.flyexp.R;
 import cn.flyexp.api.ApiManager;
-import cn.flyexp.callback.user.ResetPwdCallback;
+import cn.flyexp.callback.user.ResetPwdVercodeCallback;
 import cn.flyexp.constants.ResponseCode;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.ResetPwdRequest;
@@ -13,11 +13,11 @@ import cn.flyexp.presenter.BasePresenter;
 /**
  * Created by tanxinye on 2016/10/24.
  */
-public class ResetPwdPresenter extends BasePresenter implements ResetPwdCallback.RequestCallback {
+public class ResetPwdPresenter extends BasePresenter implements ResetPwdVercodeCallback.RequestCallback {
 
-    private ResetPwdCallback.ResponseCallback callback;
+    private ResetPwdVercodeCallback.ResponseCallback callback;
 
-    public ResetPwdPresenter(ResetPwdCallback.ResponseCallback callback) {
+    public ResetPwdPresenter(ResetPwdVercodeCallback.ResponseCallback callback) {
         super(callback);
         this.callback = callback;
     }

@@ -21,11 +21,10 @@ import cn.flyexp.util.ScreenHelper;
 /**
  * Created by tanxinye on 2016/11/14.
  */
-public class TopicPicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TopicPicAdapter extends RecyclerView.Adapter<TopicPicAdapter.PicViewHolder> {
 
     private Context context;
     private ArrayList<String> datas;
-    private boolean isLocal;
     private OnItemClickLinstener onItemClickLinstener;
 
     public void setOnItemClickLinstener(OnItemClickLinstener onItemClickLinstener) {
@@ -41,35 +40,14 @@ public class TopicPicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.datas = datas;
     }
 
-    public TopicPicAdapter(Context context, ArrayList<String> datas, boolean isLocal) {
-        this.context = context;
-        this.datas = datas;
-        this.isLocal = isLocal;
-    }
-
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TopicPicAdapter.PicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new PicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_image, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        PicViewHolder viewHolder = (PicViewHolder) holder;
-        int width = ScreenHelper.dip2px(context, 100);
-        int height = ScreenHelper.dip2px(context, 100);
-        if (!isLocal) {
-            if (datas.size() == 1) {
-                width = ScreenHelper.dip2px(context, 336);
-                height = ScreenHelper.dip2px(context, 190);
-            } else if (datas.size() == 2 || datas.size() == 4) {
-                width = ScreenHelper.dip2px(context, 100);
-                height = ScreenHelper.dip2px(context, 100);
-            }
-        }
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
-        params.setMargins(0, 0, ScreenHelper.dip2px(context, 6), ScreenHelper.dip2px(context, 6));
-        viewHolder.imgPhoto.setLayoutParams(params);
-        Glide.with(context).load(datas.get(position)).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgPhoto);
+    public void onBindViewHolder(TopicPicAdapter.PicViewHolder holder, final int position) {
+        Glide.with(context).load(datas.get(position)).diskCacheStrategy(DiskCacheStrategy.RESULT).centerCrop().into(holder.imgPhoto);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +63,7 @@ public class TopicPicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return datas.size();
     }
 
-    public class PicViewHolder extends RecyclerView.ViewHolder {
+    protected class PicViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.img_photo)
         ImageView imgPhoto;

@@ -4,6 +4,7 @@ import cn.flyexp.api.ApiManager;
 import cn.flyexp.callback.task.TaskCallback;
 import cn.flyexp.constants.ResponseCode;
 import cn.flyexp.entity.PageRequest;
+import cn.flyexp.entity.TaskRequest;
 import cn.flyexp.entity.TaskResponse;
 import cn.flyexp.presenter.BasePresenter;
 import cn.flyexp.util.GsonUtil;
@@ -21,7 +22,7 @@ public class TaskPresenter extends BasePresenter implements TaskCallback.Request
     }
 
     @Override
-    public void requestTaskList(PageRequest request) {
+    public void requestTaskList(TaskRequest request) {
         String data = GsonUtil.getInstance().encodeJson(request);
         execute(ApiManager.getTaskService().taskListRequest(data), TaskResponse.class, new ObservableCallback<TaskResponse>() {
             @Override

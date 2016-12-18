@@ -23,12 +23,15 @@ import butterknife.OnClick;
 import cn.flyexp.R;
 import cn.flyexp.adapter.TaskAdapter;
 import cn.flyexp.callback.task.TaskCallback;
+import cn.flyexp.constants.Constants;
 import cn.flyexp.entity.PageRequest;
+import cn.flyexp.entity.TaskRequest;
 import cn.flyexp.entity.TaskResponse;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.task.TaskPresenter;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.LoadMoreRecyclerView;
 import cn.flyexp.view.RefreshLayout;
@@ -50,6 +53,7 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
             getContext().getResources().getString(R.string.task_alumnus), getContext().getResources().getString(R.string.task_business)};
     private TaskPresenter taskPresenter;
     private TaskView[] taskViews = new TaskView[3];
+    private String[] type = new String[]{Constants.TASK_TYPE_ALL, Constants.TASK_TYPE_PERSONAL, Constants.TASK_TYPE_BUSINESS};
 
     @Override
     protected int getLayoutId() {
@@ -64,28 +68,28 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
 
     @Override
     public void onStart() {
-        readyTask();
-    }
-
-    @Override
-    public void onRenew() {
-//        readyTask();
+        readyTask(0);
+        readyTask(1);
+        readyTask(2);
     }
 
     private void initView() {
-//        taskAdapter = new TaskAdapter(getContext(), datas);
-//        taskAdapter.setOnItemClickLinstener(new TaskAdapter.OnItemClickLinstener() {
-//            @Override
-//            public void onItemClickLinstener(View view, int position) {
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("taskdetail", datas.get(position));
-//                openWindow(WindowIDDefine.WINDOW_TASK_DETAIL, bundle);
-//            }
-//        });
         for (int i = 0; i < 3; i++) {
+            final int finalI = i;
             final TaskView taskView = new TaskView();
             ArrayList<TaskResponse.TaskResponseData> datas = new ArrayList<>();
-            TaskAdapter taskAdapter = new TaskAdapter(getContext(), datas);
+            final TaskAdapter taskAdapter = new TaskAdapter(getContext(), datas);
+            taskAdapter.setOnItemClickLinstener(new TaskAdapter.OnItemClickLinstener() {
+                @Override
+                public void onItemClickLinstener(View view, int position) {
+                    TaskResponse.TaskResponseData data = taskView.getDatas().get(position);
+                    if (TextUtils.equals(data.getStatus(), "new")) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("taskdetail", taskView.getDatas().get(position));
+                        openWindow(WindowIDDefine.WINDOW_TASK_DETAIL, bundle);
+                    }
+                }
+            });
             taskView.setDatas(datas);
             taskView.setTaskAdapter(taskAdapter);
             View layout = LayoutInflater.from(getContext()).inflate(R.layout.layout_task, null);
@@ -95,16 +99,20 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
             loadMoreRecyclerView.setLoadMoreLinstener(new LoadMoreRecyclerView.LoadMoreLinstener() {
                 @Override
                 public void onLoadMore() {
-
+                    taskView.setPage(taskView.getPage() + 1);
+                    taskView.setRefresh(false);
+                    readyTask(finalI);
                 }
             });
 
-            RefreshLayout refreshLayout = (RefreshLayout) layout.findViewById(R.id.layout_refresh);
-            refreshLayout.setPtrHandler(new PtrDefaultHandler() {
+            SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.layout_refresh);
+            refreshLayout.setColorSchemeColors(getResources().getColor(R.color.light_blue));
+            refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
-                public void onRefreshBegin(PtrFrameLayout frame) {
+                public void onRefresh() {
+                    taskView.setPage(1);
                     taskView.setRefresh(true);
-                    taskView.setPage(taskView.getPage() + 1);
+                    readyTask(finalI);
                 }
             });
             taskView.setRefreshLayout(refreshLayout);
@@ -143,8 +151,11 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
-    private void readyTask() {
-        taskPresenter.requestTaskList(new PageRequest(taskViews[0].getPage()));
+    private void readyTask(int index) {
+        TaskRequest taskRequest = new TaskRequest();
+        taskRequest.setPage(taskViews[index].getPage());
+        taskRequest.setType(taskViews[index].getType());
+        taskPresenter.requestTaskList(taskRequest);
     }
 
     @OnClick({R.id.img_publish})
@@ -156,15 +167,7 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
                     renewLogin();
                     return;
                 }
-                int auth = SharePresUtil.getInt(SharePresUtil.KEY_AUTH);
-                if (auth == 0) {
-                    showToast(R.string.go_auth);
-                    openWindow(WindowIDDefine.WINDOW_CERTIFITION);
-                } else if (auth == 2) {
-                    showToast(R.string.authing);
-                } else if (auth == 1) {
-                    openWindow(WindowIDDefine.WINDOW_TASK_PUBLISH);
-                }
+                openWindow(WindowIDDefine.WINDOW_TASK_PUBLISH);
                 break;
         }
     }
@@ -184,27 +187,49 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
 
     @Override
     public void responseTaskList(TaskResponse response) {
-        taskViews[0].getDatas().addAll(response.getData());
-        taskViews[0].getTaskAdapter().notifyDataSetChanged();
+        LogUtil.e("response task lists");
+        for (int i = 0; i < 3; i++) {
+            LogUtil.e("taskViews page", taskViews[i].getPage() + "");
+            if (TextUtils.equals(response.getType(), type[i])) {
+                if (taskViews[i].isRefresh()) {
+                    taskViews[i].getDatas().clear();
+                    taskViews[i].getRefreshLayout().setRefreshing(false);
+                }
+                taskViews[i].getDatas().addAll(response.getData());
+                taskViews[i].getTaskAdapter().notifyDataSetChanged();
+                return;
+            }
+        }
     }
 
     @Override
     public void onNotify(Message mes) {
         if (mes.what == NotifyIDDefine.NOTIFY_TASK_REFRESH) {
-            readyTask();
+            readyTask(0);
+            readyTask(1);
+            readyTask(2);
         }
     }
 
 
     class TaskView {
 
+        private String type;
         private boolean isRefresh;
         private int page = 1;
         private View layout;
         private LoadMoreRecyclerView recyclerView;
-        private RefreshLayout refreshLayout;
+        private SwipeRefreshLayout refreshLayout;
         private ArrayList<TaskResponse.TaskResponseData> datas;
         private TaskAdapter taskAdapter;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public ArrayList<TaskResponse.TaskResponseData> getDatas() {
             return datas;
@@ -234,11 +259,11 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
             this.recyclerView = recyclerView;
         }
 
-        public RefreshLayout getRefreshLayout() {
+        public SwipeRefreshLayout getRefreshLayout() {
             return refreshLayout;
         }
 
-        public void setRefreshLayout(RefreshLayout refreshLayout) {
+        public void setRefreshLayout(SwipeRefreshLayout refreshLayout) {
             this.refreshLayout = refreshLayout;
         }
 

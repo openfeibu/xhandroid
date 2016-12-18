@@ -3,9 +3,12 @@ package cn.flyexp.window.user;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -63,6 +66,15 @@ public class LoginWindow extends BaseWindow implements TextWatcher, LoginCallbac
         loginDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.logining));
         edtPhone.addTextChangedListener(this);
         edtPassword.addTextChangedListener(this);
+        edtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    readyLogin();
+                }
+                return false;
+            }
+        });
     }
 
     private void readDefault() {

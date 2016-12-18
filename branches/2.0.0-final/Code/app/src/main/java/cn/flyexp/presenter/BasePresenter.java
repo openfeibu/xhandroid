@@ -44,7 +44,7 @@ public class BasePresenter implements BaseRequestCallback {
             @Override
             public void onError(Throwable e) {
                 callback.requestFailure();
-                LogUtil.e("onError Exception" + getClass().getSimpleName(), e.getClass().getSimpleName());
+                LogUtil.e("Presenter onError" + getClass().getSimpleName(), e.getClass().getSimpleName());
             }
 
             @Override

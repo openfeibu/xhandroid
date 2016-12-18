@@ -8,6 +8,8 @@
     <color name="font_light">#AAAAAA</color>
     <color name="font_dark">#666666</color>
     <color name="font_black">#28282E</color>
+    <color name="topic_gray">#F5F5F5</color>
+    <color name="font_topic">#333333</color>
     <color name="black">#000000</color>
     <color name="transp_gray">#88555555</color>
     <color name="white">#FFFFFF</color>

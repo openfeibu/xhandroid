@@ -26,6 +26,6 @@
     </style>
 
     <style name="clickItem">
-        <item name="android:background">@drawable/onclick_backgroud</item>
+        <item name="android:background">@drawable/onclick_background</item>
     </style>
 </resources>

@@ -82,7 +82,7 @@ public class TopicPublishWindow extends BaseWindow implements NotifyManager.Noti
     }
 
     private void initView() {
-        topicPicAdapter = new TopicPicAdapter(getContext(), imgPaths, true);
+        topicPicAdapter = new TopicPicAdapter(getContext(), imgPaths);
         topicPicAdapter.setOnItemClickLinstener(new TopicPicAdapter.OnItemClickLinstener() {
             @Override
             public void onItemClickLinstener(int position) {

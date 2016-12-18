@@ -9,21 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
-import cn.flyexp.callback.user.RegisterCallback;
-import cn.flyexp.entity.ImgUrlResponse;
 import cn.flyexp.entity.RegisterRequest;
-import cn.flyexp.entity.TokenResponse;
 import cn.flyexp.entity.WebBean;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;

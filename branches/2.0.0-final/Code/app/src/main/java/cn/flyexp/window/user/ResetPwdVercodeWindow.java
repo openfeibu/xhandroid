@@ -11,7 +11,7 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
-import cn.flyexp.callback.user.ResetPwdCallback;
+import cn.flyexp.callback.user.ResetPwdVercodeCallback;
 import cn.flyexp.entity.ResetPwdRequest;
 import cn.flyexp.entity.ResetPwdResponse;
 import cn.flyexp.entity.SmsCodeRequest;
@@ -24,7 +24,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * Created by tanxinye on 2016/12/2.
  */
-public class ResetPwdVercodeWindow extends BaseWindow implements TextWatcher, ResetPwdCallback.ResponseCallback {
+public class ResetPwdVercodeWindow extends BaseWindow implements TextWatcher, ResetPwdVercodeCallback.ResponseCallback {
 
     @InjectView(R.id.btn_finish)
     Button btnFinish;

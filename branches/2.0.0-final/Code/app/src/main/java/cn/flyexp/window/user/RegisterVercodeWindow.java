@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
-import cn.flyexp.callback.user.RegisterCallback;
+import cn.flyexp.callback.user.RegisterVercodeCallback;
 import cn.flyexp.entity.ImgUrlResponse;
 import cn.flyexp.entity.RegisterRequest;
 import cn.flyexp.entity.SmsCodeRequest;
@@ -33,7 +33,7 @@ import okhttp3.MultipartBody;
 /**
  * Created by tanxinye on 2016/12/2.
  */
-public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, RegisterCallback.ResponseCallback {
+public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, RegisterVercodeCallback.ResponseCallback {
 
     @InjectView(R.id.btn_finish)
     Button btnFinish;

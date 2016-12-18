@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:background="@drawable/onclick_backgroud"
+        android:background="@drawable/onclick_background"
         android:padding="@dimen/margin_normal_small"
         android:src="@mipmap/icon_login_close" />
 

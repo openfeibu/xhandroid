@@ -298,7 +298,7 @@
     <string name="hint_select_pic">请选择图片</string>
     <string name="abide">同意遵守</string>
     <string name="topic_like_format">赞 %s</string>
-    <string name="topic_like">点赞</string>
+    <string name="topic_like">喜欢</string>
     <string name="topic_comment">评论</string>
     <string name="hint_topic_comment">评论一下</string>
     <string name="format_topic_comment">回复 : %s</string>
@@ -350,4 +350,8 @@
     <string name="refresh_release">松开刷新</string>
     <string name="refresh_doing">刷新中</string>
     <string name="refresh_complete">刷新完成</string>
+    <string name="format_topic_detail">阅读%1$s · 评论%2$s · 喜欢%3$s</string>
+    <string name="topic_all_comment">全部评论</string>
+    <string name="add_commment">添加评论</string>
+    <string name="comment_publish">发表评论</string>
 </resources>

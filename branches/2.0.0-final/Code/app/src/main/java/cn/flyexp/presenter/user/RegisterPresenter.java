@@ -1,8 +1,7 @@
 package cn.flyexp.presenter.user;
 
 import cn.flyexp.api.ApiManager;
-import cn.flyexp.callback.BaseResponseCallback;
-import cn.flyexp.callback.user.RegisterCallback;
+import cn.flyexp.callback.user.RegisterVercodeCallback;
 import cn.flyexp.constants.ResponseCode;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.ImgUrlResponse;
@@ -10,18 +9,17 @@ import cn.flyexp.entity.RegisterRequest;
 import cn.flyexp.entity.SmsCodeRequest;
 import cn.flyexp.entity.TokenResponse;
 import cn.flyexp.presenter.BasePresenter;
-import cn.flyexp.util.EncodeUtil;
 import cn.flyexp.util.GsonUtil;
 import okhttp3.MultipartBody;
 
 /**
  * Created by tanxinye on 2016/12/2.
  */
-public class RegisterPresenter extends BasePresenter implements RegisterCallback.RequestCallback {
+public class RegisterPresenter extends BasePresenter implements RegisterVercodeCallback.RequestCallback {
 
-    private RegisterCallback.ResponseCallback callback;
+    private RegisterVercodeCallback.ResponseCallback callback;
 
-    public RegisterPresenter(RegisterCallback.ResponseCallback callback) {
+    public RegisterPresenter(RegisterVercodeCallback.ResponseCallback callback) {
         super(callback);
         this.callback = callback;
     }

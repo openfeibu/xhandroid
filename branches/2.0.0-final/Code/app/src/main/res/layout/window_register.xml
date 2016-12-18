@@ -14,7 +14,7 @@
             android:id="@+id/img_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/onclick_backgroud"
+            android:background="@drawable/onclick_background"
             android:paddingLeft="@dimen/margin_normal_small"
             android:paddingRight="@dimen/margin_normal_small"
             android:src="@mipmap/icon_back" />
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="@string/hint_nickname"
-                android:maxEms="16"
+                android:maxEms="12"
                 android:padding="@dimen/margin_least"
                 android:singleLine="true"
                 android:textColor="@color/font_light"

@@ -4,7 +4,9 @@
     android:layout_height="@dimen/assn_acti_item_height"
     android:background="@color/white"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/margin_normal"
+    android:paddingRight="@dimen/margin_normal">
 
     <LinearLayout
         android:layout_width="wrap_content"

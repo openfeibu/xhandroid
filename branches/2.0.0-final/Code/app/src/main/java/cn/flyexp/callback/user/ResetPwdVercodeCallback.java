@@ -9,7 +9,7 @@ import cn.flyexp.entity.SmsCodeRequest;
 /**
  * Created by tanxinye on 2016/10/24.
  */
-public interface ResetPwdCallback {
+public interface ResetPwdVercodeCallback {
 
     interface RequestCallback extends BaseRequestCallback {
         void requestResetPwd(ResetPwdRequest request);

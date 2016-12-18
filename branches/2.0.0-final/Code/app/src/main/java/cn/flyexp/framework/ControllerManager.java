@@ -33,6 +33,7 @@ import cn.flyexp.window.task.TaskDetailWindow;
 import cn.flyexp.window.task.TaskPublishWindow;
 import cn.flyexp.window.task.TaskReportWindow;
 import cn.flyexp.window.topic.MyTopicWindow;
+import cn.flyexp.window.topic.TopicDetailWindow;
 import cn.flyexp.window.topic.TopicPublishWindow;
 import cn.flyexp.window.user.CertificationWindow;
 import cn.flyexp.window.user.LoginWindow;
@@ -187,6 +188,8 @@ public class ControllerManager {
                 new MyInfoEditWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_GALLERY) {
                 new GalleryWindow(msg.getData()).showWindow(true);
+            } else if (msg.what == WindowIDDefine.WINDOW_TOPIC_DETAIL) {
+                new TopicDetailWindow(msg.getData()).showWindow(true);
             }
         }
     }

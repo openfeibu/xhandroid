@@ -71,7 +71,7 @@ public class TaskDetailWindow extends BaseWindow implements TaskDetailCallback.R
 
     private void initView() {
         tvNickname.setText(String.format(getResources().getString(R.string.task_sender), data.getNickname()));
-        tvFee.setText(String.format(getResources().getString(R.string.hint_task_money), data.getFee()));
+        tvFee.setText(String.format(getResources().getString(R.string.hint_task_money), String.valueOf(data.getFee())));
         tvDestination.setText(data.getDestination());
         tvDescription.setText(data.getDescription());
         tvState.setText(tranfStateText(data.getStatus()));

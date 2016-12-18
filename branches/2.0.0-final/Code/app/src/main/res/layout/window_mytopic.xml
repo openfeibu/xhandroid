@@ -24,7 +24,7 @@
                 android:id="@+id/img_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@drawable/onclick_backgroud"
+                android:background="@drawable/onclick_background"
                 android:paddingLeft="@dimen/margin_normal_small"
                 android:paddingRight="@dimen/margin_normal_small"
                 android:src="@mipmap/icon_back" />
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/onclick_backgroud"
+                android:background="@drawable/onclick_background"
                 android:paddingLeft="@dimen/margin_normal_small"
                 android:paddingRight="@dimen/margin_normal_small"
                 android:src="@mipmap/icon_release" />

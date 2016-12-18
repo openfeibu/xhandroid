@@ -12,5 +12,9 @@ public class Constants {
     public static final String LOCAL = "local";
     public static final String NET = "net";
 
+    public static final String TASK_TYPE_ALL = "all";
+    public static final String TASK_TYPE_PERSONAL = "personal";
+    public static final String TASK_TYPE_BUSINESS = "business";
+
     public static final int CAMERA_RESULT = 0x1;
 }

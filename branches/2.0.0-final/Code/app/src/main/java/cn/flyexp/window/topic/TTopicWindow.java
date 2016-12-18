@@ -337,7 +337,8 @@ public class TTopicWindow extends BaseWindow implements NotifyManager.Notify, To
                 if (TextUtils.isEmpty(token)) {
                     renewLogin();
                 } else {
-                    openWindow(WindowIDDefine.WINDOW_TOPIC_PUBLISH);
+//                    openWindow(WindowIDDefine.WINDOW_TOPIC_PUBLISH);
+                    openWindow(WindowIDDefine.WINDOW_TOPIC_DETAIL);
                 }
                 break;
             case R.id.img_newmsg:
