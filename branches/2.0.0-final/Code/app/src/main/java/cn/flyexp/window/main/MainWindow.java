@@ -23,6 +23,7 @@ import cn.flyexp.window.mine.MineWindow;
 import cn.flyexp.window.store.StoreWindow;
 import cn.flyexp.window.task.TaskWindow;
 import cn.flyexp.window.topic.TTopicWindow;
+import cn.flyexp.window.topic.TopicWindow;
 
 /**
  * Created by tanxinye on 2016/10/22.
@@ -65,7 +66,7 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
 
         views[0] = new HomeWindow();
         views[1] = new TaskWindow();
-        views[2] = new TTopicWindow();
+        views[2] = new TopicWindow();
         views[3] = new StoreWindow();
         views[4] = new MineWindow();
         switchWindow(0);

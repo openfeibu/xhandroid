@@ -2,7 +2,6 @@ package cn.flyexp.presenter.topic;
 
 import cn.flyexp.api.ApiManager;
 import cn.flyexp.callback.topic.MyTopicCallback;
-import cn.flyexp.callback.topic.TopicCallback;
 import cn.flyexp.constants.ResponseCode;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.CommentRequest;
@@ -14,7 +13,6 @@ import cn.flyexp.entity.TopicListRequest;
 import cn.flyexp.entity.TopicListResponse;
 import cn.flyexp.presenter.BasePresenter;
 import cn.flyexp.util.GsonUtil;
-import cn.flyexp.util.LogUtil;
 
 /**
  * Created by tanxinye on 2016/11/21.

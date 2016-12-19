@@ -26,7 +26,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
 import cn.flyexp.adapter.TTopicAdapter;
-import cn.flyexp.callback.topic.TopicCallback;
+import cn.flyexp.callback.topic.TTopicCallback;
 import cn.flyexp.constants.Constants;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.CommentRequest;
@@ -40,7 +40,7 @@ import cn.flyexp.entity.TopicResponseData;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
-import cn.flyexp.presenter.topic.TopicPresenter;
+import cn.flyexp.presenter.topic.TTopicPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.PopupUtil;
 import cn.flyexp.util.SharePresUtil;
@@ -51,7 +51,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * Created by tanxinye on 2016/10/22.
  */
-public class TTopicWindow extends BaseWindow implements NotifyManager.Notify, TopicCallback.ResponseCallback {
+public class TTopicWindow extends BaseWindow implements NotifyManager.Notify, TTopicCallback.ResponseCallback {
 
     @InjectView(R.id.vp_topic)
     ViewPager vpTopic;
@@ -62,7 +62,7 @@ public class TTopicWindow extends BaseWindow implements NotifyManager.Notify, To
 
     private int page = 1;
     private ArrayList<TopicResponseData> datas = new ArrayList<>();
-    private TopicPresenter topicPresenter;
+    private TTopicPresenter topicPresenter;
     private TTopicAdapter topicAdapter;
     private View topicInputLayout;
     private PopupUtil popupHelper;
@@ -85,7 +85,7 @@ public class TTopicWindow extends BaseWindow implements NotifyManager.Notify, To
     }
 
     public TTopicWindow() {
-        topicPresenter = new TopicPresenter(this);
+        topicPresenter = new TTopicPresenter(this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC, this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC_PUSH, this);
         topicInputLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_topic_input, null);

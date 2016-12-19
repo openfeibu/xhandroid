@@ -57,7 +57,7 @@ public class TTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TopicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_topic, parent, false));
+        return new TopicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_ttopic, parent, false));
     }
 
     @Override
