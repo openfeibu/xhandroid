@@ -11,10 +11,10 @@ import cn.flyexp.window.assn.AssnDetailWindow;
 import cn.flyexp.window.assn.AssnExamineDetailWindow;
 import cn.flyexp.window.assn.AssnExamineListWindow;
 import cn.flyexp.window.assn.AssnJoinWindow;
+import cn.flyexp.window.assn.AssnMemberWindow;
 import cn.flyexp.window.assn.AssnNoticePublishWindow;
 import cn.flyexp.window.assn.AssnWindow;
-import cn.flyexp.window.assn.MyAssnActivityWindow;
-import cn.flyexp.window.assn.TMyAssnDetailWindow;
+import cn.flyexp.window.assn.MyAssnDetailWindow;
 import cn.flyexp.window.assn.MyAssnWindow;
 import cn.flyexp.window.main.MainWindow;
 import cn.flyexp.window.mine.AboutWindow;
@@ -147,9 +147,7 @@ public class ControllerManager {
             } else if (msg.what == WindowIDDefine.WINDOW_MYASSN) {
                 new MyAssnWindow().showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_MYASSN_DETAIL) {
-                new TMyAssnDetailWindow(msg.getData()).showWindow(true);
-            } else if (msg.what == WindowIDDefine.WINDOW_MYASSN_ACTIVITY) {
-                new MyAssnActivityWindow(msg.getData()).showWindow(true);
+                new MyAssnDetailWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_ASSN_EXAMINE_LIST) {
                 new AssnExamineListWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_ASSN_EXAMINE_DETAIL) {
@@ -190,6 +188,8 @@ public class ControllerManager {
                 new GalleryWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_TOPIC_DETAIL) {
                 new TopicDetailWindow(msg.getData()).showWindow(true);
+            } else if (msg.what == WindowIDDefine.WINDOW_ASSN_MEMBER) {
+                new AssnMemberWindow(msg.getData()).showWindow(true);
             }
         }
     }

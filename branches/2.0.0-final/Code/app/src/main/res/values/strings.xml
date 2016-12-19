@@ -159,7 +159,6 @@
     <string name="assnacti_place">地点：%s</string>
     <string name="assnactiv_end_time">结束时间：%s</string>
     <string name="assnactiv_viewnum">浏览：%s</string>
-    <string name="assnlist_detail">%1$s人活跃 · %2$s个活动 · #%3$s#</string>
     <string name="hint_myassn">你造吗？\n 没有社团的大学不是完整的大学! \n快选择你钟意的组织，涌入他们的怀抱吧！</string>
     <string name="hint_btn_myassn">校园社团</string>
     <string name="assn">社团</string>
@@ -214,6 +213,7 @@
     <string name="hint_change_campus">陆续开通，敬请期待！</string>
     <string name="comming_soon">敬请期待</string>
     <string name="message">消息</string>
+    <string name="assnlist_detail">%1$s人活跃 · %2$s个活动 · #%3$s#</string>
     <string name="mytask_receive">我的接单</string>
     <string name="mytask_send">我的发单</string>
     <string name="hint_task_money">￥%s</string>
@@ -357,4 +357,5 @@
     <string name="assn_notice">社团公告</string>
     <string name="send_sms_code_success">短信发送成功</string>
     <string name="send_sms_code_failure">短信发送失败</string>
+    <string name="has_exmine">有审核</string>
 </resources>

@@ -34,7 +34,7 @@
                 android:layout_alignParentRight="true"
                 android:paddingLeft="@dimen/margin_normal"
                 android:paddingRight="@dimen/margin_normal"
-                android:src="@mipmap/icon_newmsg" />
+                android:src="@mipmap/icon_publish" />
 
             <View
                 style="@style/horizontalLine"

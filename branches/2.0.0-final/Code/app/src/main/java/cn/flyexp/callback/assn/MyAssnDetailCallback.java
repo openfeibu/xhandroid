@@ -2,6 +2,7 @@ package cn.flyexp.callback.assn;
 
 import cn.flyexp.callback.BaseRequestCallback;
 import cn.flyexp.callback.BaseResponseCallback;
+import cn.flyexp.entity.AssnActivityResponse;
 import cn.flyexp.entity.AssnDetailRequest;
 import cn.flyexp.entity.AssnDetailResponse;
 import cn.flyexp.entity.AssnMemberListResponse;
@@ -10,6 +11,7 @@ import cn.flyexp.entity.AssnQuitRequest;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.DelelteMemberRequest;
 import cn.flyexp.entity.MemberManageRequest;
+import cn.flyexp.entity.MyAssnActivityRequest;
 
 /**
  * Created by tanxinye on 2016/11/3.
@@ -21,11 +23,9 @@ public interface MyAssnDetailCallback {
 
         void requestAssnMemberList(AssnMemberListRequest request);
 
-        void requestDeleteMember(DelelteMemberRequest request);
-
-        void requestMemberManage(MemberManageRequest request);
-
         void requestAssnQuit(AssnQuitRequest request);
+
+        void requestMyAssnActivity(MyAssnActivityRequest request);
     }
 
     interface ResponseCallback extends BaseResponseCallback {
@@ -33,11 +33,9 @@ public interface MyAssnDetailCallback {
 
         void responseAssnMemberList(AssnMemberListResponse response);
 
-        void responseDeleteMember(BaseResponse response);
-
-        void responseMemberManage(BaseResponse response);
-
         void responseAssnQuit(BaseResponse response);
+
+        void responseMyAssnActivity(AssnActivityResponse response);
     }
 
 }

@@ -1,53 +1,29 @@
 package cn.flyexp.presenter.assn;
 
 import cn.flyexp.api.ApiManager;
-import cn.flyexp.callback.assn.MyAssnDetailCallback;
+import cn.flyexp.callback.BaseResponseCallback;
+import cn.flyexp.callback.assn.AssnMemberCallback;
 import cn.flyexp.constants.ResponseCode;
-import cn.flyexp.entity.AssnActivityResponse;
-import cn.flyexp.entity.AssnDetailRequest;
-import cn.flyexp.entity.AssnDetailResponse;
 import cn.flyexp.entity.AssnMemberListRequest;
 import cn.flyexp.entity.AssnMemberListResponse;
-import cn.flyexp.entity.AssnQuitRequest;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.DelelteMemberRequest;
 import cn.flyexp.entity.MemberManageRequest;
-import cn.flyexp.entity.MyAssnActivityRequest;
 import cn.flyexp.presenter.BasePresenter;
 import cn.flyexp.util.GsonUtil;
 
 /**
- * Created by tanxinye on 2016/11/3.
+ * Created by tanxinye on 2016/12/19.
  */
-public class MyAssnDetailPresenter extends BasePresenter implements MyAssnDetailCallback.RequestCallback {
+public class AssnMemberPresenter extends BasePresenter implements AssnMemberCallback.RequestCallback {
 
-    private MyAssnDetailCallback.ResponseCallback callback;
+    private AssnMemberCallback.ResponseCallback callback;
 
-    public MyAssnDetailPresenter(MyAssnDetailCallback.ResponseCallback callback) {
+    public AssnMemberPresenter(AssnMemberCallback.ResponseCallback callback) {
         super(callback);
         this.callback = callback;
     }
 
-    @Override
-    public void requestMyAssnDetail(AssnDetailRequest request) {
-        String data = GsonUtil.getInstance().encodeJson(request);
-        execute(ApiManager.getAssnService().assnDetailRequest(data), AssnDetailResponse.class, new ObservableCallback<AssnDetailResponse>() {
-            @Override
-            public void onSuccess(AssnDetailResponse response) {
-                switch (response.getCode()) {
-                    case ResponseCode.RESPONSE_200:
-                        callback.responseMyAssnDetail(response);
-                        break;
-                    case ResponseCode.RESPONSE_2001:
-                        callback.renewLogin();
-                        break;
-                    case ResponseCode.RESPONSE_110:
-                        callback.showDetail(response.getDetail());
-                        break;
-                }
-            }
-        });
-    }
 
     @Override
     public void requestAssnMemberList(AssnMemberListRequest request) {
@@ -70,16 +46,15 @@ public class MyAssnDetailPresenter extends BasePresenter implements MyAssnDetail
         });
     }
 
-
     @Override
-    public void requestAssnQuit(AssnQuitRequest request) {
+    public void requestDeleteMember(DelelteMemberRequest request) {
         String data = GsonUtil.getInstance().encodeJson(request);
-        execute(ApiManager.getAssnService().assnQuitRequest(data), BaseResponse.class, new ObservableCallback<BaseResponse>() {
+        execute(ApiManager.getAssnService().deleteMemberRequest(data), BaseResponse.class, new ObservableCallback<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse response) {
                 switch (response.getCode()) {
                     case ResponseCode.RESPONSE_200:
-                        callback.responseAssnQuit(response);
+                        callback.responseDeleteMember(response);
                         break;
                     case ResponseCode.RESPONSE_2001:
                         callback.renewLogin();
@@ -93,14 +68,14 @@ public class MyAssnDetailPresenter extends BasePresenter implements MyAssnDetail
     }
 
     @Override
-    public void requestMyAssnActivity(MyAssnActivityRequest request) {
+    public void requestMemberManage(MemberManageRequest request) {
         String data = GsonUtil.getInstance().encodeJson(request);
-        execute(ApiManager.getAssnService().myAssnActivityRequest(data), AssnActivityResponse.class, new ObservableCallback<AssnActivityResponse>() {
+        execute(ApiManager.getAssnService().memberManageRequest(data), BaseResponse.class, new ObservableCallback<BaseResponse>() {
             @Override
-            public void onSuccess(AssnActivityResponse response) {
+            public void onSuccess(BaseResponse response) {
                 switch (response.getCode()) {
                     case ResponseCode.RESPONSE_200:
-                        callback.responseMyAssnActivity(response);
+                        callback.responseMemberManage(response);
                         break;
                     case ResponseCode.RESPONSE_2001:
                         callback.renewLogin();

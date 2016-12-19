@@ -51,6 +51,8 @@ public class WindowIDDefine {
 
     public static int WINDOW_MYASSN_ACTIVITY = generateMessageId();
 
+    public static int WINDOW_ASSN_MEMBER = generateMessageId();
+
     public static int WINDOW_ASSNACTI_PUBLISH = generateMessageId();
 
     public static int WINDOW_ASSN_EXAMINE_LIST = generateMessageId();

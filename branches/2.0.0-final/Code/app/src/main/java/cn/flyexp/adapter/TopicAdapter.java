@@ -27,17 +27,15 @@ import cn.flyexp.view.CircleImageView;
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {
     private Context context;
     private ArrayList<TopicResponseData> datas;
-    private OnTopicClickListener onTopicClickListener;
+    private OnItemClickLinstener onItemClickLinstener;
 
-    public void setOnTopicClickListener(OnTopicClickListener onTopicClickListener) {
-        this.onTopicClickListener = onTopicClickListener;
+    public void setOnItemClickLinstener(OnItemClickLinstener onItemClickLinstener) {
+        this.onItemClickLinstener = onItemClickLinstener;
     }
 
-    public interface OnTopicClickListener {
-        void onLongClick();
+    public interface OnItemClickLinstener {
+        void onItemClickLinstener(View view, int position);
     }
-
-
 
     public TopicAdapter(Context context, ArrayList<TopicResponseData> datas) {
         this.context = context;
@@ -49,7 +47,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     }
 
     @Override
-    public void onBindViewHolder(TopicViewHolder holder, int position) {
+    public void onBindViewHolder(TopicViewHolder holder, final int position) {
         TopicViewHolder viewHolder = (TopicViewHolder)holder;
         final TopicResponseData responseData = datas.get(position);
         viewHolder.tvNickname.setText(responseData.getNickname());
@@ -65,13 +63,12 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         }
         Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgavatar);
 
-        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                if (onTopicClickListener != null) {
-                    onTopicClickListener.onLongClick();
+            public void onClick(View view) {
+                if (onItemClickLinstener != null) {
+                    onItemClickLinstener.onItemClickLinstener(view,position);
                 }
-                return false;
             }
         });
     }

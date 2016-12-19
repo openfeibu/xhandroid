@@ -1,5 +1,6 @@
 package cn.flyexp.window.topic;
 
+import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import cn.flyexp.entity.TopicListResponse;
 import cn.flyexp.entity.TopicResponseData;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
+import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.topic.TopicPresenter;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.LoadMoreRecyclerView;
@@ -25,7 +27,7 @@ import cn.flyexp.window.BaseWindow;
 /**
  * Created by tanxinye on 2016/12/16.
  */
-public class TopicWindow extends BaseWindow implements NotifyManager.Notify, TopicCallback.ResponseCallback{
+public class TopicWindow extends BaseWindow implements NotifyManager.Notify, TopicCallback.ResponseCallback {
 
     @InjectView(R.id.rv_topic)
     LoadMoreRecyclerView rvTopic;
@@ -34,7 +36,6 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     private TopicAdapter topicAdapter;
     private ArrayList<TopicResponseData> datas = new ArrayList<>();
     private View layoutTopic;
-    private LinearLayoutManager linearLayoutManager;
     private int page = 1;
 
     @Override
@@ -42,7 +43,7 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
         return R.layout.window_topic;
     }
 
-    public TopicWindow(){
+    public TopicWindow() {
         topicPresenter = new TopicPresenter(this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC, this);
         initView();
@@ -54,11 +55,13 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     }
 
     private void initView() {
-        topicAdapter = new TopicAdapter(getContext(),datas);
-        topicAdapter.setOnTopicClickListener(new TopicAdapter.OnTopicClickListener() {
+        topicAdapter = new TopicAdapter(getContext(), datas);
+        topicAdapter.setOnItemClickLinstener(new TopicAdapter.OnItemClickLinstener() {
             @Override
-            public void onLongClick() {
-
+            public void onItemClickLinstener(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("topicDetail", datas.get(position));
+                openWindow(WindowIDDefine.WINDOW_TOPIC_DETAIL, bundle);
             }
         });
         rvTopic.setAdapter(topicAdapter);
@@ -73,7 +76,7 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     }
 
     private void readyTopicList() {
-        Log.e("TAG","MY_ResponseTopList");
+        Log.e("TAG", "MY_ResponseTopList");
         String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
         TopicListRequest topicListRequest = new TopicListRequest();
         if (!TextUtils.isEmpty(token)) {

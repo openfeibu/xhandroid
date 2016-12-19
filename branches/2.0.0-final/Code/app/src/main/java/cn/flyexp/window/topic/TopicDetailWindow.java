@@ -68,6 +68,8 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
     LoadMoreRecyclerView rvComment;
     @InjectView(R.id.tv_like)
     TextView tvLike;
+    @InjectView(R.id.tv_delete)
+    TextView tvDelete;
 
     private TopicResponseData data;
     private TopicDetailPresenter topicDetailPresenter;
@@ -148,6 +150,13 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
                 toggleKeyboard();
             }
         });
+
+        String openId = SharePresUtil.getString(SharePresUtil.KEY_OPENID);
+        if (TextUtils.equals(data.getOpenid(), openId)) {
+            tvDelete.setVisibility(VISIBLE);
+        }else{
+            tvDelete.setVisibility(GONE);
+        }
     }
 
     public String[] splitImageUrl(String imgUrl) {
