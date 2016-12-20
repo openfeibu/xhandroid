@@ -63,9 +63,12 @@ public class TaskDetailWindow extends BaseWindow implements TaskDetailCallback.R
     }
 
     public TaskDetailWindow(Bundle bundle) {
-        data = (TaskResponse.TaskResponseData) bundle.getSerializable("taskdetail");
+        data = (TaskResponse.TaskResponseData) bundle.getSerializable("taskDetail");
+        if (data == null) {
+            showToast(R.string.data_unable);
+            return;
+        }
         taskDetailPresenter = new TaskDetailPresenter(this);
-
         initView();
     }
 

@@ -42,6 +42,6 @@ public interface TopicService {
     @GET("topic/getMyTopic/")
     Observable<EncodeData> myTopicListRequest(@Query("data") String data);
 
-    @GET("/topic/getTopicCommentsList/")
+    @GET("topic/getTopicCommentsList/")
     Observable<EncodeData> commentListRequest(@Query("data") String data);
 }

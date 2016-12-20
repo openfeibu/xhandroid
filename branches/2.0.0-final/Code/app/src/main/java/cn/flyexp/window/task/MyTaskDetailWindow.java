@@ -81,7 +81,11 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
 
     public MyTaskDetailWindow(Bundle bundle) {
         isTask = bundle.getBoolean("mytask");
-        data = (MyTaskResponse.MyTaskResponseData) bundle.getSerializable("mytaskDetail");
+        data = (MyTaskResponse.MyTaskResponseData) bundle.getSerializable("myTaskDetail");
+        if (data == null) {
+            showToast(R.string.data_unable);
+            return;
+        }
         myTaskDetailPresenter = new MyTaskDetailPresenter(this);
         loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.commiting));
         inputPayPwdLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_input_paypwd, null);

@@ -59,6 +59,17 @@ public class AssnActivityResponse extends BaseResponse {
         @SerializedName("img_url")
         private String img_url;
 
+        @SerializedName("level")
+        private int level;
+
+        public int getLevel() {
+            return level;
+        }
+
+        public void setLevel(int level) {
+            this.level = level;
+        }
+
         public int getActid() {
             return actid;
         }

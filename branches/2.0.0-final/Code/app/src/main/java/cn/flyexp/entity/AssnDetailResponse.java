@@ -64,6 +64,17 @@ public class AssnDetailResponse extends BaseResponse {
         @SerializedName("notice_created_at")
         private String notice_created_at;
 
+        @SerializedName("newMember")
+        private boolean newMember;
+
+        public boolean isNewMember() {
+            return newMember;
+        }
+
+        public void setNewMember(boolean newMember) {
+            this.newMember = newMember;
+        }
+
         public String getNotice_created_at() {
             return notice_created_at;
         }

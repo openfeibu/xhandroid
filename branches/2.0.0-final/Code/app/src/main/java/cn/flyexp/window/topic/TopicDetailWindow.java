@@ -96,8 +96,12 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
     }
 
     public TopicDetailWindow(Bundle bundle) {
-        topicDetailPresenter = new TopicDetailPresenter(this);
         data = (TopicResponseData) bundle.getSerializable("topicDetail");
+        if (data == null) {
+            showToast(R.string.data_unable);
+            return;
+        }
+        topicDetailPresenter = new TopicDetailPresenter(this);
         initView();
         readyCommentList();
     }

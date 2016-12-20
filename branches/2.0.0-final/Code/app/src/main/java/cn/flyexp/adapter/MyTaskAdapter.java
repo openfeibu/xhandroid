@@ -1,10 +1,14 @@
 package cn.flyexp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +26,7 @@ import cn.flyexp.view.CircleImageView;
 /**
  * Created by tanxinye on 2016/11/4.
  */
-public class MyTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyTaskAdapter extends RecyclerView.Adapter<MyTaskAdapter.MyTaskViewHolder> {
 
     private Context context;
     private ArrayList<MyTaskResponse.MyTaskResponseData> datas;
@@ -42,21 +46,21 @@ public class MyTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyTaskAdapter.MyTaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new MyTaskViewHolder(LayoutInflater.from(context).inflate(R.layout.item_task, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        MyTaskViewHolder viewHolder = (MyTaskViewHolder) holder;
+    public void onBindViewHolder(MyTaskAdapter.MyTaskViewHolder holder, final int position) {
         MyTaskResponse.MyTaskResponseData responseData = datas.get(position);
-        viewHolder.tvAddress.setText(responseData.getDestination());
-        viewHolder.tvContent.setText(responseData.getDescription());
-        viewHolder.tvNickName.setText(responseData.getNickname());
-        viewHolder.tvState.setText(tranfStateText(responseData.getStatus()));
-        viewHolder.tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData.getCreated_at())));
-//        viewHolder.tvMoney.setText(String.format(context.getResources().getString(R.string.hint_task_money), String.valueOf(responseData.getFee())));
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgAvatar);
+        holder.tvAddress.setText(responseData.getDestination());
+        holder.tvContent.setText(responseData.getDescription());
+        holder.tvNickName.setText(responseData.getNickname());
+        holder.tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData.getCreated_at())));
+        holder.tvMoney.setText(String.valueOf(responseData.getFee()));
+        holder.layoutState.setBackgroundColor(tranfStateColor(responseData.getStatus()));
+        holder.imgState.setImageDrawable(tranfStateDrawable(responseData.getStatus()));
+        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
         if (onItemClickLinstener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,30 +71,35 @@ public class MyTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private int tranfStateColor(String status) {
-        int color = 0;
+
+    private Drawable tranfStateDrawable(String status) {
+        Drawable drawable = context.getResources().getDrawable(R.mipmap.icon_task_end);
+        if (TextUtils.isEmpty(status)) {
+            return drawable;
+        }
         if (status.equals("new")) {
-            color = context.getResources().getColor(R.color.task_green);
+            drawable = context.getResources().getDrawable(R.mipmap.icon_task_notstarted);
         } else if (status.equals("accepted")) {
+            drawable = context.getResources().getDrawable(R.mipmap.icon_task_ongoing);
+        } else {
+            drawable = context.getResources().getDrawable(R.mipmap.icon_task_end);
+        }
+        return drawable;
+    }
+
+    private int tranfStateColor(String status) {
+        int color = Color.BLACK;
+        if (TextUtils.isEmpty(status)) {
+            return color;
+        }
+        if (status.equals("new")) {
             color = context.getResources().getColor(R.color.task_blue);
+        } else if (status.equals("accepted")) {
+            color = context.getResources().getColor(R.color.task_green);
         } else {
             color = context.getResources().getColor(R.color.task_gray);
         }
         return color;
-    }
-
-    private String tranfStateText(String status) {
-        String str = "";
-        if (status.equals("new")) {
-            str = context.getResources().getString(R.string.task_state_new);
-        } else if (status.equals("finish")) {
-            str = context.getResources().getString(R.string.task_state_finish);
-        } else if (status.equals("accepted")) {
-            str = context.getResources().getString(R.string.task_state_accepted);
-        } else if (status.equals("completed")) {
-            str = context.getResources().getString(R.string.task_state_completed);
-        }
-        return str;
     }
 
     @Override
@@ -98,14 +107,16 @@ public class MyTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return datas.size();
     }
 
-    public class MyTaskViewHolder extends RecyclerView.ViewHolder {
+    class MyTaskViewHolder extends RecyclerView.ViewHolder {
 
+        @InjectView(R.id.layout_state)
+        View layoutState;
         @InjectView(R.id.img_avatar)
         CircleImageView imgAvatar;
         @InjectView(R.id.tv_nickname)
         TextView tvNickName;
-        @InjectView(R.id.tv_state)
-        TextView tvState;
+        @InjectView(R.id.img_state)
+        ImageView imgState;
         @InjectView(R.id.tv_money)
         TextView tvMoney;
         @InjectView(R.id.tv_date)
@@ -117,7 +128,7 @@ public class MyTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public MyTaskViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this,itemView);
+            ButterKnife.inject(this, itemView);
         }
     }
 

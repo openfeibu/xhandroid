@@ -1,5 +1,6 @@
 package cn.flyexp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.WindowManager;
+import cn.flyexp.push.PushUtil;
 import cn.flyexp.push.XMPush;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
@@ -74,21 +76,9 @@ public class MainActivity extends AppCompatActivity {
         ControllerManager.getInstance().sendMessage(WindowIDDefine.WINDOW_SPLASH);
     }
 
-    public void getPushData() {
-        MiPushMessage message = (MiPushMessage) getIntent().getSerializableExtra(PushMessageHelper.KEY_MESSAGE);
-        if(message==null){
-            LogUtil.e("mes null");
-        }
-        if (message != null && !TextUtils.isEmpty(message.getContent())) {
-            String content = message.getContent();
-            LogUtil.e("mes activity", content);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        getPushData();
         WindowManager.getInstance(this).onResume();
     }
 

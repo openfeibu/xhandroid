@@ -90,9 +90,7 @@ public class AssnExamineListWindow extends BaseWindow implements AssnExamineList
 
     @Override
     public void responseAssnExamineList(AssnExamineListResponse response) {
-        if (response.getData().size() == 0) {
-            DialogHelper.showSingleDialog(getContext(), getResources().getString(R.string.assn_examine_none), null);
-        }
+        getNotifyManager().notify(NotifyIDDefine.NOTICE_MYASSN_DETAIL);
         datas.addAll(response.getData());
         assnExamineListAdapter.notifyDataSetChanged();
     }

@@ -58,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:text="222"
                 android:maxLength="30"
                 android:textColor="@color/font_black"
                 android:textSize="@dimen/font_normal" />
@@ -82,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
-            android:src="@mipmap/icon_mine_campustask" />
+            android:src="@mipmap/icon_task_end" />
 
         <RelativeLayout
             android:id="@+id/layout_state"

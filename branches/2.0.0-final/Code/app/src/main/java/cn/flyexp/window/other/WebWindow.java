@@ -63,10 +63,6 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
         initWebView();
         WebPresenter webPresenter = new WebPresenter(this);
         WebBean webBean = (WebBean) bundle.getSerializable("webbean");
-        String pushdata = bundle.getString("pushdata");
-//        if (pushdata != null && !TextUtils.isEmpty(pushdata)) {
-//            loadUrl(pushdata);
-//        } else
         if (webBean != null) {
             boolean isRequest = webBean.isRequest();
             tvTitle.setText(webBean.getTitle());

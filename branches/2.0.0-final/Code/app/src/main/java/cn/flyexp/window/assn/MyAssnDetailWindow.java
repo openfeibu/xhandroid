@@ -93,17 +93,16 @@ public class MyAssnDetailWindow extends BaseWindow implements NotifyManager.Noti
         initView();
         readyMyAssnDetail();
         readyAssnMemberList();
+        readyMyAssnActivity();
     }
 
     private void initView() {
         if (level == 0) {
             tvEdit.setVisibility(GONE);
             tvPublish.setVisibility(GONE);
-            tvExmine.setVisibility(GONE);
         } else {
             tvEdit.setVisibility(VISIBLE);
             tvPublish.setVisibility(VISIBLE);
-            tvExmine.setVisibility(VISIBLE);
         }
         avatarAdapter = new AvatarAdapter(getContext(), avatars);
         rvMember.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -174,7 +173,7 @@ public class MyAssnDetailWindow extends BaseWindow implements NotifyManager.Noti
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_exit, R.id.tv_exmine,R.id.layout_member, R.id.tv_edit, R.id.tv_publish})
+    @OnClick({R.id.img_back, R.id.img_exit, R.id.tv_exmine, R.id.layout_member, R.id.tv_edit, R.id.tv_publish})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -227,6 +226,11 @@ public class MyAssnDetailWindow extends BaseWindow implements NotifyManager.Noti
         tvNotice.setText(responseData.getNotice().trim());
         tvAssnName.setText(responseData.getAname());
         tvNum.setText(responseData.getMember_number() + "人");
+        if (response.getData().isNewMember()) {
+            tvExmine.setVisibility(VISIBLE);
+        } else {
+            tvExmine.setVisibility(GONE);
+        }
         Glide.with(getContext()).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(imgAvatar);
     }
 

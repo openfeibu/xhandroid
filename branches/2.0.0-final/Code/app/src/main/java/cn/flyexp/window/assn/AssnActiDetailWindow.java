@@ -17,7 +17,9 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
 import cn.flyexp.entity.AssnActivityResponse;
+import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.util.DateUtil;
+import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.window.BaseWindow;
 
 /**
@@ -25,8 +27,6 @@ import cn.flyexp.window.BaseWindow;
  */
 public class AssnActiDetailWindow extends BaseWindow {
 
-    @InjectView(R.id.ctl)
-    CollapsingToolbarLayout ctl;
     @InjectView(R.id.img_bg)
     ImageView imgBg;
     @InjectView(R.id.tv_content)
@@ -39,9 +39,9 @@ public class AssnActiDetailWindow extends BaseWindow {
     TextView tvAssnName;
     @InjectView(R.id.tv_viewnum)
     TextView tvViewNum;
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
-
+    @InjectView(R.id.tv_title)
+    TextView tvTitle;
+    private AssnActivityResponse.AssnActivityResponseData data;
 
     @Override
     protected int getLayoutId() {
@@ -49,12 +49,12 @@ public class AssnActiDetailWindow extends BaseWindow {
     }
 
     public AssnActiDetailWindow(Bundle bundle) {
-        AssnActivityResponse.AssnActivityResponseData data = (AssnActivityResponse.AssnActivityResponseData) bundle.getSerializable("assnacti");
-        initView(data);
+        data = (AssnActivityResponse.AssnActivityResponseData) bundle.getSerializable("assnacti");
+        initView();
     }
 
-    private void initView(AssnActivityResponse.AssnActivityResponseData data) {
-        ctl.setTitle(data.getTitle().trim());
+    private void initView() {
+        tvTitle.setText(data.getTitle().trim());
         tvContent.setText(data.getContent().trim());
         tvAssnName.setText(data.getAname());
         tvPlace.setText(String.format(getResources().getString(R.string.assnacti_place), data.getPlace()));
@@ -67,16 +67,28 @@ public class AssnActiDetailWindow extends BaseWindow {
         } else {
             tvDate.setTextColor(getResources().getColor(R.color.light_red));
         }
-        if (!TextUtils.isEmpty(data.getImg_url())) {
-            imgBg.setVisibility(VISIBLE);
-            Glide.with(getContext()).load(data.getImg_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(imgBg);
-        }
-        toolbar.setNavigationIcon(R.mipmap.nav_back_nor);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Glide.with(getContext()).load(data.getImg_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(imgBg);
+    }
+
+    @OnClick({R.id.img_back, R.id.tv_assnname})
+    void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
                 hideWindow(true);
-            }
-        });
+                break;
+            case R.id.tv_assnname:
+                String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
+                int myLevel = data.getLevel();
+                Bundle bundle = new Bundle();
+                bundle.putInt("aid", data.getAid());
+                if (myLevel == -1 || TextUtils.isEmpty(token)) {
+                    bundle.putString("aname", data.getAname());
+                    openWindow(WindowIDDefine.WINDOW_ASSN_DETAIL, bundle);
+                } else {
+                    bundle.putInt("level", data.getLevel());
+                    openWindow(WindowIDDefine.WINDOW_MYASSN_DETAIL, bundle);
+                }
+                break;
+        }
     }
 }

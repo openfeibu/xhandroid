@@ -36,7 +36,7 @@
     <dimen name="mywallet_height">100dp</dimen>
     <dimen name="edit_height_large">120dp</dimen>
     <dimen name="assn_btn_width">120dp</dimen>
-    <dimen name="assnacti_img_height">225dp</dimen>
+    <dimen name="assnacti_img_height">200dp</dimen>
     <dimen name="assnacti_imgtv_height">75dp</dimen>
     <dimen name="assnacti_state_height">45dp</dimen>
     <dimen name="assn_detail_img_text">60dp</dimen>

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class PushOpenBean {
 
     private String open;
-    private ArrayList<String> data;
+    private String data;
 
     public String getOpen() {
         return open;
@@ -18,11 +18,11 @@ public class PushOpenBean {
         this.open = open;
     }
 
-    public ArrayList<String> getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(ArrayList<String> data) {
+    public void setData(String data) {
         this.data = data;
     }
 }

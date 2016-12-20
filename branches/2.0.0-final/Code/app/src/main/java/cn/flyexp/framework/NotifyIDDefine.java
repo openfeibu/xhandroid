@@ -55,6 +55,8 @@ public class NotifyIDDefine {
 
     public static int NOTICE_ASSN_EXAMINE_LIST = generateMessageId();
 
+    public static int NOTICE_ASSN_EXAMINE_NEW = generateMessageId();
+
     public static int NOTICE_SHARE = generateMessageId();
 
     public static int NOTICE_DELETE_PHOTO = generateMessageId();

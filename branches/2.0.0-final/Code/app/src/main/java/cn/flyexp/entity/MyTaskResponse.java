@@ -37,7 +37,7 @@ public class MyTaskResponse extends BaseResponse {
         @SerializedName("alt_phone")
         private String alt_phone;
         @SerializedName("fee")
-        private float fee;
+        private int fee;
         @SerializedName("phone")
         private String phone;
         @SerializedName("created_at")
@@ -179,11 +179,11 @@ public class MyTaskResponse extends BaseResponse {
             this.alt_phone = alt_phone;
         }
 
-        public float getFee() {
+        public int getFee() {
             return fee;
         }
 
-        public void setFee(float fee) {
+        public void setFee(int fee) {
             this.fee = fee;
         }
 

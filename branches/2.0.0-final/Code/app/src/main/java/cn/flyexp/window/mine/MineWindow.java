@@ -84,10 +84,18 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
                 openWindow(WindowIDDefine.WINDOW_MYTASK);
                 break;
             case R.id.tv_myorder:
-                showToast(R.string.comming_soon);
+                WebBean webBean = new WebBean();
+                webBean.setRequest(true);
+                webBean.setTitle(getResources().getString(R.string.myorder));
+                webBean.setName("myStoreOrder");
+                openWebWindow(webBean);
                 break;
             case R.id.layout_storecollection:
-                showToast(R.string.comming_soon);
+                WebBean webBean2 = new WebBean();
+                webBean2.setRequest(true);
+                webBean2.setTitle(getResources().getString(R.string.store_collection));
+                webBean2.setName("storeCollection");
+                openWebWindow(webBean2);
                 break;
             case R.id.layout_certifition:
                 openWindow(WindowIDDefine.WINDOW_CERTIFITION);
@@ -105,15 +113,19 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
                 openWindow(WindowIDDefine.WINDOW_SHARE);
                 break;
             case R.id.layout_myintergal:
-                WebBean webBean = new WebBean();
-                webBean.setRequest(true);
-                webBean.setTitle(getResources().getString(R.string.myintergal));
-                webBean.setName("integral");
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("webbean", webBean);
-                openWindow(WindowIDDefine.WINDOW_WEBVIEW, bundle);
+                WebBean webBean3 = new WebBean();
+                webBean3.setRequest(true);
+                webBean3.setTitle(getResources().getString(R.string.myintergal));
+                webBean3.setName("integral");
+                openWebWindow(webBean3);
                 break;
         }
+    }
+
+    private void openWebWindow(WebBean webBean) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("webbean", webBean);
+        openWindow(WindowIDDefine.WINDOW_WEBVIEW, bundle);
     }
 
     @Override

@@ -56,7 +56,7 @@ public class XMPushReceiver extends PushMessageReceiver {
     @Override
     public void onNotificationMessageClicked(Context context, MiPushMessage message) {
         if (!TextUtils.isEmpty(message.getContent())) {
-            PushUtil.openWindow(context,message.getContent());
+            PushUtil.openWindowFromPush(context,message.getContent());
         }
     }
 

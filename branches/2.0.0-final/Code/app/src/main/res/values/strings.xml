@@ -360,4 +360,5 @@
     <string name="has_exmine">有审核</string>
     <string name="hint_comment_null">评论不能为空</string>
     <string name="hint_comment_topic">发表下你的看法</string>
+    <string name="data_unable">数据出错</string>
 </resources>

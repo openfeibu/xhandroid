@@ -27,7 +27,7 @@ import cn.flyexp.view.CircleImageView;
 /**
  * Created by tanxinye on 2016/11/4.
  */
-public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private Context context;
     private ArrayList<TaskResponse.TaskResponseData> datas;
@@ -47,22 +47,21 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyTaskViewHolder(LayoutInflater.from(context).inflate(R.layout.item_task, parent, false));
+    public TaskAdapter.TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new TaskViewHolder(LayoutInflater.from(context).inflate(R.layout.item_task, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        MyTaskViewHolder viewHolder = (MyTaskViewHolder) holder;
+    public void onBindViewHolder(TaskAdapter.TaskViewHolder holder, final int position) {
         TaskResponse.TaskResponseData responseData = datas.get(position);
-        viewHolder.tvAddress.setText(String.format(context.getString(R.string.format_task_address), responseData.getDestination()));
-        viewHolder.tvContent.setText(responseData.getDescription());
-        viewHolder.tvNickName.setText(responseData.getNickname());
-        viewHolder.tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData.getCreated_at())));
-        viewHolder.tvMoney.setText(String.valueOf(responseData.getFee()));
-        viewHolder.layoutState.setBackgroundColor(tranfStateColor(responseData.getStatus()));
-        viewHolder.imgState.setImageDrawable(tranfStateDrawable(responseData.getStatus()));
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgAvatar);
+        holder.tvAddress.setText(String.format(context.getString(R.string.format_task_address), responseData.getDestination()));
+        holder.tvContent.setText(responseData.getDescription());
+        holder.tvNickName.setText(responseData.getNickname());
+        holder.tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData.getCreated_at())));
+        holder.tvMoney.setText(String.valueOf(responseData.getFee()));
+        holder.layoutState.setBackgroundColor(tranfStateColor(responseData.getStatus()));
+        holder.imgState.setImageDrawable(tranfStateDrawable(responseData.getStatus()));
+        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
         if (onItemClickLinstener != null && responseData.getStatus().equals("new")) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,7 +107,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return datas.size();
     }
 
-    public class MyTaskViewHolder extends RecyclerView.ViewHolder {
+    class TaskViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.layout_state)
         View layoutState;
@@ -127,7 +126,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @InjectView(R.id.tv_address)
         TextView tvAddress;
 
-        public MyTaskViewHolder(View itemView) {
+        public TaskViewHolder(View itemView) {
             super(itemView);
             ButterKnife.inject(this, itemView);
         }

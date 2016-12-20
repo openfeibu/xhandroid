@@ -1,5 +1,6 @@
 package cn.flyexp.window.main;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
@@ -8,15 +9,21 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.xiaomi.mipush.sdk.MiPushMessage;
+import com.xiaomi.mipush.sdk.PushMessageHelper;
+
 import java.util.List;
 
 import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
 import cn.flyexp.R;
+import cn.flyexp.framework.ControllerManager;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
+import cn.flyexp.push.PushUtil;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.window.BaseWindow;
 import cn.flyexp.window.mine.MineWindow;
@@ -72,15 +79,7 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
     }
 
     private void loadPushData() {
-        int windowId = SharePresUtil.getInt(SharePresUtil.KEY_WINDOW_ID);
-        String data = SharePresUtil.getString(SharePresUtil.KEY_PUSH_DATA);
-        if (!(windowId == 0 && TextUtils.isEmpty(data))) {
-            Bundle bundle = new Bundle();
-            bundle.putString("pushdata", data);
-            SharePresUtil.putInt(SharePresUtil.KEY_WINDOW_ID, 0);
-            SharePresUtil.putString(SharePresUtil.KEY_PUSH_DATA, "");
-            openWindow(windowId, bundle);
-        }
+        getPushData();
     }
 
     private void switchWindow(int index) {
@@ -104,20 +103,12 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
                 ((BaseWindow) views[index]).onStop();
             }
         }
-        if (index == 0) {
-            setStatusBarColor(true);
-        } else {
-            setStatusBarColor(false);
-        }
         //缓加载
         if (!vis[index]) {
             ((BaseWindow) views[index]).onStart();
             vis[index] = true;
         }
         lastIndex = index;
-    }
-
-    protected void setStatusBarColor(boolean isTran) {
     }
 
     @OnClick({R.id.tv_home, R.id.tv_task, R.id.tv_topic, R.id.tv_store, R.id.tv_mine})
@@ -154,6 +145,16 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
     @Override
     public void onResume() {
         ((BaseWindow) views[0]).onResume();
+    }
+
+    public void getPushData() {
+        Bundle bundle = ((Activity) getContext()).getIntent().getBundleExtra("pushBundle");
+        int windowId = ((Activity) getContext()).getIntent().getIntExtra("windowId", -1);
+        if (windowId != -1 && bundle != null) {
+            ControllerManager.getInstance().sendMessage(windowId, bundle);
+            ((Activity) getContext()).getIntent().putExtra("pushBundle", new Bundle());
+            ((Activity) getContext()).getIntent().putExtra("windowId", -1);
+        }
     }
 
     @Override

@@ -77,6 +77,7 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
         for (int i = 0; i < 3; i++) {
             final int finalI = i;
             final TaskView taskView = new TaskView();
+            taskView.setType(type[i]);
             ArrayList<TaskResponse.TaskResponseData> datas = new ArrayList<>();
             final TaskAdapter taskAdapter = new TaskAdapter(getContext(), datas);
             taskAdapter.setOnItemClickLinstener(new TaskAdapter.OnItemClickLinstener() {
@@ -85,7 +86,7 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
                     TaskResponse.TaskResponseData data = taskView.getDatas().get(position);
                     if (TextUtils.equals(data.getStatus(), "new")) {
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("taskdetail", taskView.getDatas().get(position));
+                        bundle.putSerializable("taskDetail", taskView.getDatas().get(position));
                         openWindow(WindowIDDefine.WINDOW_TASK_DETAIL, bundle);
                     }
                 }
