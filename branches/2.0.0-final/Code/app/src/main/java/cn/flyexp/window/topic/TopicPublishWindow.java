@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -115,6 +116,7 @@ public class TopicPublishWindow extends BaseWindow implements NotifyManager.Noti
                 Bundle bundle = new Bundle();
                 bundle.putInt("max", 9);
                 openWindow(WindowIDDefine.WINDOW_GALLERY, bundle);
+                Log.e("TAG","SUCCESS");
                 break;
         }
     }

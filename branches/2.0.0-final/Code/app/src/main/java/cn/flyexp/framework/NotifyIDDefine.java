@@ -64,4 +64,7 @@ public class NotifyIDDefine {
     public static int NOTIFY_GALLERY = generateMessageId();
 
     public static int NOTIFY_CAMERA_RESULT = generateMessageId();
+
+    public static int NOTIFY_EDIT_RESULT = generateMessageId();
+
 }

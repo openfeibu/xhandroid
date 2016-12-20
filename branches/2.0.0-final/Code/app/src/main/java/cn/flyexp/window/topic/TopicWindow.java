@@ -2,14 +2,18 @@ package cn.flyexp.window.topic;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.ArrayList;
 
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.flyexp.R;
 import cn.flyexp.adapter.TopicAdapter;
 import cn.flyexp.callback.topic.TopicCallback;
@@ -37,6 +41,9 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     private ArrayList<TopicResponseData> datas = new ArrayList<>();
     private View layoutTopic;
     private int page = 1;
+    private SwipeRefreshLayout refreshLayout;
+    private boolean isRefresh;
+    private boolean isRequesting;
 
     @Override
     protected int getLayoutId() {
@@ -73,10 +80,21 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
                 readyTopicList();
             }
         });
+
+
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.layout_refresh);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.light_blue));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page = 1;
+                isRefresh = true;
+                readyTopicList();
+            }
+        });
     }
 
     private void readyTopicList() {
-        Log.e("TAG", "MY_ResponseTopList");
         String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
         TopicListRequest topicListRequest = new TopicListRequest();
         if (!TextUtils.isEmpty(token)) {
@@ -88,7 +106,10 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
 
     @Override
     public void responseTopicList(TopicListResponse response) {
-
+        if(isRefresh) {
+            datas.clear();
+            isRefresh = false;
+        }
         datas.addAll(response.getData());
         topicAdapter.notifyDataSetChanged();
     }
@@ -96,5 +117,22 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     @Override
     public void onNotify(Message mes) {
 
+    }
+
+    @Override
+    public void requestFinish() {
+        isRequesting = false;
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+    }
+
+    @OnClick({R.id.img_publish})
+    void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_publish:
+                openWindow(WindowIDDefine.WINDOW_TOPIC_PUBLISH);
+                break;
+        }
     }
 }

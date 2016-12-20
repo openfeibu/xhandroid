@@ -42,9 +42,16 @@
         </RelativeLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <cn.flyexp.view.LoadMoreRecyclerView
-        android:id="@+id/rv_topic"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_marginTop="@dimen/tool_bar_height"
+        android:id="@+id/layout_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="match_parent">
+
+        <cn.flyexp.view.LoadMoreRecyclerView
+            android:id="@+id/rv_topic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>

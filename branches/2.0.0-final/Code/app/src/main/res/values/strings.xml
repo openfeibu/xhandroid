@@ -358,6 +358,10 @@
     <string name="send_sms_code_success">短信发送成功</string>
     <string name="send_sms_code_failure">短信发送失败</string>
     <string name="has_exmine">有审核</string>
+    <string name="myinfo_head">头像</string>
+    <string name="myinfo_intro">简介</string>
+    <string name="gender_man">男</string>
+    <string name="gender_women">女</string>
     <string name="hint_comment_null">评论不能为空</string>
     <string name="hint_comment_topic">发表下你的看法</string>
     <string name="data_unable">数据出错</string>

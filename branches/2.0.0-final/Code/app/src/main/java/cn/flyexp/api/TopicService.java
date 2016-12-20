@@ -24,7 +24,7 @@ public interface TopicService {
     @POST("topic/thumbUp/")
     Observable<EncodeData> thumbUpRequest(@Body ThumbUpRequest request);
 
-    @GET("topic/getTopicList/")
+    @GET("topic/getTopics/")
     Observable<EncodeData> topicListRequest(@Query("data") String data);
 
     @POST("topic/createTopic")

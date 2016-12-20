@@ -28,14 +28,32 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     private Context context;
     private ArrayList<TopicResponseData> datas;
     private OnItemClickLinstener onItemClickLinstener;
+    private OnTopicClickListener onTopicClickListener;
 
     public void setOnItemClickLinstener(OnItemClickLinstener onItemClickLinstener) {
         this.onItemClickLinstener = onItemClickLinstener;
     }
 
+    public void setOnTopicClickListener(OnTopicClickListener onTopicClickListener) {
+        this.onTopicClickListener = onTopicClickListener;
+    }
     public interface OnItemClickLinstener {
         void onItemClickLinstener(View view, int position);
     }
+
+
+    public interface OnTopicClickListener {
+        void onLikeClick(int position);
+
+        void onCommentClick(int position, int cpos, int commentid, String nickname, String openid);
+
+        void onPicClick(int position, int picPosition);
+
+        void onDeleteTopicClick(int position);
+
+        void onLongClick();
+    }
+
 
     public TopicAdapter(Context context, ArrayList<TopicResponseData> datas) {
         this.context = context;
@@ -72,8 +90,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
             }
         });
     }
-
-
 
     @Override
     public int getItemCount() {

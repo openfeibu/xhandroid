@@ -112,4 +112,6 @@ public class WindowIDDefine {
     public static int WINDOW_GALLERY = generateMessageId();
 
     public static int WINDOW_TOPIC_DETAIL = generateMessageId();
+
+    public static int WINDOW_MYINFO_EDIT_NICKNAME = generateMessageId();
 }

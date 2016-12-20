@@ -10,34 +10,38 @@ import java.util.ArrayList;
  */
 public class TopicResponseData implements Serializable {
 
-    @SerializedName("tid")
-    private int tid;
-    @SerializedName("type")
-    private String type;
-    @SerializedName("content")
-    private String content;
-    @SerializedName("img")
-    private String img;
-    @SerializedName("thumb")
-    private String thumb;
-    @SerializedName("view_num")
-    private int view_num;
-    @SerializedName("comment_num")
-    private int comment_num;
-    @SerializedName("favourites_count")
-    private int favourites_count;
-    @SerializedName("created_at")
-    private String created_at;
-    @SerializedName("openid")
-    private String openid;
     @SerializedName("nickname")
     private String nickname;
     @SerializedName("avatar_url")
     private String avatar_url;
+    @SerializedName("content")
+    private String content;
+    @SerializedName("img")
+    private String img;
+    @SerializedName("view_num")
+    private int view_num;
+    @SerializedName("comment_num")
+    private int comment_num;
     @SerializedName("favorited")
     private int favorited;
+    @SerializedName("favourites_count")
+    private int favourites_count;
+    @SerializedName("created_at")
+    private String created_at;
+    @SerializedName("is_top")
+    private int is_top;
+    @SerializedName("openid")
+    private String openid;
+    @SerializedName("tid")
+    private int tid;
+
     @SerializedName("comment")
     private ArrayList<CommentResponseData> comment;
+
+    public ArrayList<CommentResponseData> getComment() {
+        return comment;
+    }
+
 
     public int getTid() {
         return tid;
@@ -47,12 +51,33 @@ public class TopicResponseData implements Serializable {
         this.tid = tid;
     }
 
-    public String getType() {
-        return type;
+    public void setComment(ArrayList<CommentResponseData> comment) {
+        this.comment = comment;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar_url() {
+        return avatar_url;
+    }
+
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
 
     public String getContent() {
@@ -71,20 +96,20 @@ public class TopicResponseData implements Serializable {
         this.img = img;
     }
 
-    public String getThumb() {
-        return thumb;
-    }
-
-    public void setThumb(String thumb) {
-        this.thumb = thumb;
-    }
-
     public int getView_num() {
         return view_num;
     }
 
     public void setView_num(int view_num) {
         this.view_num = view_num;
+    }
+
+    public int getFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(int favorited) {
+        this.favorited = favorited;
     }
 
     public int getComment_num() {
@@ -111,47 +136,15 @@ public class TopicResponseData implements Serializable {
         this.created_at = created_at;
     }
 
-    public String getOpenid() {
-        return openid;
+    public int getIs_top() {
+        return is_top;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
+    public void setIs_top(int is_top) {
+        this.is_top = is_top;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getAvatar_url() {
-        return avatar_url;
-    }
-
-    public void setAvatar_url(String avatar_url) {
-        this.avatar_url = avatar_url;
-    }
-
-    public int getFavorited() {
-        return favorited;
-    }
-
-    public void setFavorited(int favorited) {
-        this.favorited = favorited;
-    }
-
-    public ArrayList<CommentResponseData> getComment() {
-        return comment;
-    }
-
-    public void setComment(ArrayList<CommentResponseData> comment) {
-        this.comment = comment;
-    }
-
-    public class CommentResponseData implements Serializable {
+    public class CommentResponseData implements Serializable{
         @SerializedName("uid")
         private int uid;
         @SerializedName("tcid")
@@ -183,20 +176,20 @@ public class TopicResponseData implements Serializable {
             this.uid = uid;
         }
 
-        public int getTcid() {
-            return tcid;
-        }
-
-        public void setTcid(int tcid) {
-            this.tcid = tcid;
-        }
-
         public String getOpenid() {
             return openid;
         }
 
         public void setOpenid(String openid) {
             this.openid = openid;
+        }
+
+        public int getTcid() {
+            return tcid;
+        }
+
+        public void setTcid(int tcid) {
+            this.tcid = tcid;
         }
 
         public String getNickname() {

@@ -28,7 +28,7 @@
             android:textSize="@dimen/font_most" />
 
         <TextView
-            android:id="@+id/tv_publish"
+            android:id="@+id/tv_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -81,128 +81,6 @@
                 android:textColor="@color/font_light"
                 android:textColorHint="@color/font_light"
                 android:textSize="@dimen/font_small" />
-
-            <View
-                style="@style/horizontalLine"
-                android:layout_marginTop="@dimen/margin_least" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/margin_small"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal"
-        android:paddingTop="@dimen/margin_small">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/gender"
-            android:textColor="@color/font_light"
-            android:textSize="@dimen/font_normal" />
-
-
-        <ImageView
-            android:id="@+id/img_man"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:src="@mipmap/icon_mysex_man" />
-
-        <ImageView
-            android:id="@+id/img_woman"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0.2"
-            android:src="@mipmap/icon_mysex_woman" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/margin_small"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal"
-        android:paddingTop="@dimen/margin_small">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/profile"
-            android:textColor="@color/font_light"
-            android:textSize="@dimen/font_normal" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/edt_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:maxEms="20"
-                android:padding="@dimen/margin_least"
-                android:singleLine="true"
-                android:textColor="@color/font_dark"
-                android:textColorHint="@color/font_light"
-                android:textSize="@dimen/font_normal" />
-
-            <View
-                style="@style/horizontalLine"
-                android:layout_marginTop="@dimen/margin_least" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/margin_small"
-        android:paddingLeft="@dimen/margin_normal"
-        android:paddingRight="@dimen/margin_normal"
-        android:paddingTop="@dimen/margin_small">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/hint_address"
-            android:textColor="@color/font_light"
-            android:textSize="@dimen/font_normal" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/edt_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:maxEms="10"
-                android:padding="@dimen/margin_least"
-                android:singleLine="true"
-                android:textColor="@color/font_dark"
-                android:textColorHint="@color/font_light"
-                android:textSize="@dimen/font_normal" />
 
             <View
                 style="@style/horizontalLine"

@@ -1,9 +1,11 @@
 package cn.flyexp.window.user;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.ChangeMyInfoRequest;
 import cn.flyexp.entity.MyInfoResponse;
 import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.presenter.user.MyInfoEditPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.SharePresUtil;
@@ -26,20 +29,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * Created by tanxinye on 2016/11/23.
  */
-public class MyInfoEditWindow extends BaseWindow implements TextWatcher, MyInfoEditCallback.ResponseCallback {
+public class MyInfoEditWindow extends BaseWindow implements NotifyManager.Notify,TextWatcher, MyInfoEditCallback.ResponseCallback {
 
     @InjectView(R.id.tv_save)
     TextView tvSave;
     @InjectView(R.id.edt_nickname)
     EditText edtNickname;
-    @InjectView(R.id.edt_profile)
-    EditText edtProfile;
-    @InjectView(R.id.edt_address)
-    EditText edtAddress;
-    @InjectView(R.id.img_man)
-    ImageView imgMan;
-    @InjectView(R.id.img_woman)
-    ImageView imgWoman;
 
     private MyInfoResponse.MyInfoResponseData data;
     private String nickName;
@@ -55,51 +50,32 @@ public class MyInfoEditWindow extends BaseWindow implements TextWatcher, MyInfoE
     }
 
     public MyInfoEditWindow(Bundle bundle) {
-        data = (MyInfoResponse.MyInfoResponseData) bundle.getSerializable("myinfo");
+        String value = bundle.getString("value");
+        String key =   bundle.getString("key");
+        int length = bundle.getInt("length");
+        Log.e("TAG","KEY" + key + "" + value);
         myInfoEditPresenter = new MyInfoEditPresenter(this);
-        loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.loading));
+
         initView();
     }
 
     private void initView() {
-        if (data.getGender() == 1) {
-            imgWoman.setAlpha(0.5f);
-            imgMan.setAlpha(1f);
-            gender = 1;
-        } else if (data.getGender() == 2) {
-            imgWoman.setAlpha(1f);
-            imgMan.setAlpha(0.5f);
-            gender = 2;
-        }
-        edtNickname.setText(data.getNickname());
-        edtProfile.setText(data.getIntroduction());
-        edtAddress.setText(data.getAddress());
-
         edtNickname.addTextChangedListener(this);
-        edtProfile.addTextChangedListener(this);
-        edtAddress.addTextChangedListener(this);
     }
 
-    @OnClick({R.id.img_back, R.id.img_man, R.id.img_woman, R.id.tv_save})
+    @OnClick({R.id.img_back,R.id.tv_save})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 hideWindow(true);
                 break;
-            case R.id.img_man:
-                imgWoman.setAlpha(0.5f);
-                imgMan.setAlpha(1f);
-                gender = 1;
-                checkEnabled();
-                break;
-            case R.id.img_woman:
-                imgWoman.setAlpha(1f);
-                imgMan.setAlpha(0.5f);
-                gender = 2;
-                checkEnabled();
-                break;
             case R.id.tv_save:
-                readyChangeMyInfo();
+                Bundle bundle = new Bundle();
+                bundle.putString("value",nickName);
+                Message msg = Message.obtain();
+                msg.what = NotifyIDDefine.NOTIFY_EDIT_RESULT;
+                msg.setData(bundle);
+                getNotifyManager().notify(msg);
                 break;
         }
     }
@@ -149,8 +125,8 @@ public class MyInfoEditWindow extends BaseWindow implements TextWatcher, MyInfoE
     @Override
     public void afterTextChanged(Editable editable) {
         nickName = edtNickname.getText().toString().trim();
-        profile = edtProfile.getText().toString().trim();
-        address = edtAddress.getText().toString().trim();
+//        profile = edtProfile.getText().toString().trim();
+//        address = edtAddress.getText().toString().trim();
         checkEnabled();
     }
 
@@ -170,5 +146,12 @@ public class MyInfoEditWindow extends BaseWindow implements TextWatcher, MyInfoE
                 tvSave.setAlpha(1);
             }
         }
+    }
+
+    @Override
+    public void onNotify(Message mes) {
+        Bundle data = mes.getData();
+        String value =   data.getString("value");
+        Log.e("TAG", value);
     }
 }
