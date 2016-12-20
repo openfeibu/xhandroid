@@ -29,8 +29,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class AssnDetailWindow extends BaseWindow implements AssnDetailCallback.ResponseCallback {
 
-    @InjectView(R.id.img_bg)
-    ImageView imgBg;
     @InjectView(R.id.img_avatar)
     CircleImageView imgAvatar;
     @InjectView(R.id.tv_title)
@@ -106,7 +104,6 @@ public class AssnDetailWindow extends BaseWindow implements AssnDetailCallback.R
         tvIntro.setText(responseData.getIntroduction());
         tvDetail.setText(String.format(getResources().getString(R.string.assnlist_detail), responseData.getMember_number(), responseData.getActivity_count(), responseData.getLabel()));
         Glide.with(getContext()).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(imgAvatar);
-        Glide.with(getContext()).load(responseData.getBackground_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(imgBg);
         if (responseData.getUid() == 0) {
             btnJoin.setVisibility(VISIBLE);
         }

@@ -16,7 +16,9 @@
             android:layout_margin="@dimen/margin_normal"
             android:background="@drawable/background_white_round_border"
             android:gravity="left|top"
-            android:padding="@dimen/margin_small" />
+            android:padding="@dimen/margin_small"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_small" />
 
         <TextView
             android:id="@+id/tv_publish"

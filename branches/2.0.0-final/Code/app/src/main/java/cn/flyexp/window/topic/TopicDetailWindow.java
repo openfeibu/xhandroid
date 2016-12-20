@@ -3,6 +3,7 @@ package cn.flyexp.window.topic;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -31,6 +33,7 @@ import cn.flyexp.adapter.TopicPicAdapter;
 import cn.flyexp.callback.topic.TopicDetailCallback;
 import cn.flyexp.constants.Constants;
 import cn.flyexp.entity.BaseResponse;
+import cn.flyexp.entity.CommentListRequest;
 import cn.flyexp.entity.CommentRequest;
 import cn.flyexp.entity.CommentResponse;
 import cn.flyexp.entity.DeleteCommentRequest;
@@ -40,12 +43,13 @@ import cn.flyexp.entity.TopicResponseData;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.topic.TopicDetailPresenter;
 import cn.flyexp.util.DateUtil;
-import cn.flyexp.util.LogUtil;
+import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.CircleImageView;
 import cn.flyexp.view.DividerItemDecoration;
 import cn.flyexp.view.LoadMoreRecyclerView;
 import cn.flyexp.window.BaseWindow;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by tanxinye on 2016/12/18.
@@ -77,6 +81,14 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
     private EditText edtComment;
     private ArrayList<String> imgs = new ArrayList<>();
     private ArrayList<TopicResponseData.CommentResponseData> comments = new ArrayList<>();
+    private TopicCommentAdapter topicCommentAdapter;
+    private boolean isRefresh;
+    private int commentPage = 1;
+    private SweetAlertDialog dialog;
+    private int tcid;
+    private Drawable[] likeDrawable = new Drawable[]{getResources().getDrawable(R.mipmap.icon_top_like_nor),
+            getResources().getDrawable(R.mipmap.icon_top_like_sel)};
+    private String comment;
 
     @Override
     protected int getLayoutId() {
@@ -87,6 +99,7 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         topicDetailPresenter = new TopicDetailPresenter(this);
         data = (TopicResponseData) bundle.getSerializable("topicDetail");
         initView();
+        readyCommentList();
     }
 
     private void initView() {
@@ -99,7 +112,11 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         Glide.with(getContext()).load(data.getAvatar_url())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imgAvatar);
 
-        imgs.addAll(Arrays.asList(splitImageUrl(data.getImg())));
+        if (TextUtils.isEmpty(data.getImg())) {
+            rvTopicPic.setVisibility(GONE);
+        } else {
+            imgs.addAll(Arrays.asList(splitImageUrl(data.getImg())));
+        }
         TopicPicAdapter topicPicAdapter = new TopicPicAdapter(getContext(), imgs);
         topicPicAdapter.setOnItemClickLinstener(new TopicPicAdapter.OnItemClickLinstener() {
             @Override
@@ -116,11 +133,26 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         rvTopicPic.setAdapter(topicPicAdapter);
         rvTopicPic.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        TopicCommentAdapter topicCommentAdapter = new TopicCommentAdapter(getContext(), comments);
+        topicCommentAdapter = new TopicCommentAdapter(getContext(), comments);
         topicCommentAdapter.setOnItemClickLinstener(new TopicCommentAdapter.OnItemClickLinstener() {
             @Override
             public void onItemClickLinstener(View view, int position) {
+                tcid = comments.get(position).getTcid();
+                edtComment.setText("");
+                edtComment.setHint("评论@" + comments.get(position).getNickname());
+                showCommentPublish();
+            }
 
+            @Override
+            public void onDelete(final int position) {
+                DialogHelper.showSelectDialog(getContext(), getResources().getString(R.string.hint_delete_comment), getResources().getString(R.string.comfirm), new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        tcid = comments.get(position).getTcid();
+                        readyDeleteComment();
+                        dismissProgressDialog(sweetAlertDialog);
+                    }
+                });
             }
         });
         rvComment.setAdapter(topicCommentAdapter);
@@ -129,12 +161,26 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         rvComment.setLoadMoreLinstener(new LoadMoreRecyclerView.LoadMoreLinstener() {
             @Override
             public void onLoadMore() {
-
+                commentPage++;
+                readyCommentList();
             }
         });
 
         View popLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_topic_comment, null);
         edtComment = (EditText) popLayout.findViewById(R.id.edt_comment);
+        popLayout.findViewById(R.id.tv_publish).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comment = edtComment.getText().toString().trim();
+                if (TextUtils.isEmpty(comment)) {
+                    showToast(R.string.hint_comment_null);
+                } else {
+                    readyComment();
+                }
+                toggleKeyboard();
+                popupWindow.dismiss();
+            }
+        });
 
         popupWindow = new PopupWindow(popLayout,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -151,10 +197,16 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
             }
         });
 
+        likeDrawable[0].setBounds(0, 0, likeDrawable[0].getMinimumWidth(), likeDrawable[0].getMinimumHeight());
+        likeDrawable[1].setBounds(0, 0, likeDrawable[1].getMinimumWidth(), likeDrawable[1].getMinimumHeight());
+        updateLike(data.getFavorited() == 1);
+
+        dialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.commiting));
+
         String openId = SharePresUtil.getString(SharePresUtil.KEY_OPENID);
         if (TextUtils.equals(data.getOpenid(), openId)) {
             tvDelete.setVisibility(VISIBLE);
-        }else{
+        } else {
             tvDelete.setVisibility(GONE);
         }
     }
@@ -168,21 +220,44 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    @OnClick({R.id.img_back, R.id.layout_comment, R.id.layout_like})
+    private void updateLike(boolean isLike) {
+        if (isLike) {
+            tvLike.setCompoundDrawables(likeDrawable[1], null, null, null);
+        } else {
+            tvLike.setCompoundDrawables(likeDrawable[0], null, null, null);
+        }
+    }
+
+    @OnClick({R.id.img_back, R.id.tv_delete, R.id.layout_comment, R.id.layout_like})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 hideWindow(true);
                 break;
             case R.id.layout_comment:
-                popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
-                changeWindowAlpha(0.7f);
-                toggleKeyboard();
+                tcid = 0;
+                showCommentPublish();
                 break;
             case R.id.layout_like:
                 readyTopicLike();
                 break;
+            case R.id.tv_delete:
+                DialogHelper.showSelectDialog(getContext(), getResources().getString(R.string.hint_delete_topic), getResources().getString(R.string.comfirm), new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        readyDeleteTopic();
+                        dismissProgressDialog(sweetAlertDialog);
+                    }
+                });
+                break;
         }
+    }
+
+    private void showCommentPublish() {
+        edtComment.setHint(getResources().getString(R.string.hint_comment_topic));
+        popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
+        changeWindowAlpha(0.7f);
+        toggleKeyboard();
     }
 
     private void changeWindowAlpha(float v) {
@@ -198,8 +273,8 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         } else {
             DeleteCommentRequest deleteCommentRequest = new DeleteCommentRequest();
             deleteCommentRequest.setToken(token);
-//            deleteCommentRequest.setTopic_id(datas.get(currPosition).getTid());
-//            deleteCommentRequest.setComment_id(tcid);
+            deleteCommentRequest.setTopic_id(data.getTid());
+            deleteCommentRequest.setComment_id(tcid);
             topicDetailPresenter.requestDeleteComment(deleteCommentRequest);
         }
     }
@@ -228,6 +303,19 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         }
     }
 
+    private void readyCommentList() {
+        String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
+        if (TextUtils.isEmpty(token)) {
+            renewLogin();
+        } else {
+            CommentListRequest commentListRequest = new CommentListRequest();
+            commentListRequest.setToken(token);
+            commentListRequest.setTopic_id(data.getTid());
+            commentListRequest.setPage(commentPage);
+            topicDetailPresenter.requestCommentList(commentListRequest);
+        }
+    }
+
     private void readyComment() {
         String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
         if (TextUtils.isEmpty(token)) {
@@ -235,30 +323,58 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         } else {
             CommentRequest commentRequest = new CommentRequest();
             commentRequest.setToken(token);
-//            commentRequest.setTopic_comment(comment);
-//            commentRequest.setTopic_id(datas.get(currPosition).getTid());
-//            commentRequest.setComment_id(data);
-//            topicPresenter.requestComment(commentRequest);
+            commentRequest.setTopic_comment(comment);
+            commentRequest.setTopic_id(data.getTid());
+            commentRequest.setComment_id(tcid);
+            topicDetailPresenter.requestComment(commentRequest);
+            dialog.show();
         }
     }
 
     @Override
-    public void responseComment(CommentResponse response) {
+    public void requestFailure() {
+        dismissProgressDialog(dialog);
+    }
 
+    @Override
+    public void requestFinish() {
+        dismissProgressDialog(dialog);
+    }
+
+    @Override
+    public void responseCommentList(CommentResponse response) {
+        if (isRefresh) {
+            comments.clear();
+        }
+        comments.addAll(response.getData());
+        topicCommentAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void responseComment(CommentResponse response) {
+        isRefresh = true;
+        edtComment.setText("");
+        if (isRefresh) {
+            comments.clear();
+        }
+        Collections.reverse(response.getData());
+        comments.addAll(response.getData());
+        topicCommentAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void responseThumbUp(BaseResponse response) {
-
+        data.setFavorited(data.getFavorited() == 1 ? 0 : 1);
+        updateLike(data.getFavorited() == 1);
     }
 
     @Override
     public void responseDeleteComment(BaseResponse response) {
-
+        topicCommentAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void responseDeleteTopic(BaseResponse response) {
-
+        hideWindow(true);
     }
 }

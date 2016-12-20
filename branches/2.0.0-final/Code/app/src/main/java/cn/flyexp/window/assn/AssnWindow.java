@@ -107,11 +107,11 @@ public class AssnWindow extends BaseWindow implements AssnListCallback.ResponseC
         assnListAdapter.setOnItemClickLinstener(new AssnListAdapter.OnItemClickLinstener() {
             @Override
             public void onItemClickLinstener(View view, int position) {
-                int uid = assnListDatas.get(position).getUid();
                 String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
+                int myLevel = assnListDatas.get(position).getMylevel();
                 Bundle bundle = new Bundle();
                 bundle.putInt("aid", assnListDatas.get(position).getAid());
-                if (uid == 0 || TextUtils.isEmpty(token)) {
+                if (myLevel == -1 || TextUtils.isEmpty(token)) {
                     bundle.putString("aname", assnListDatas.get(position).getAname());
                     openWindow(WindowIDDefine.WINDOW_ASSN_DETAIL, bundle);
                 } else {

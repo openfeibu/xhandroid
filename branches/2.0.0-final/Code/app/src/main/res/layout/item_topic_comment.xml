@@ -38,6 +38,15 @@
                 android:layout_marginLeft="@dimen/margin_least"
                 android:textColor="@color/font_light"
                 android:textSize="@dimen/font_normal" />
+
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:layout_marginLeft="@dimen/margin_least"
+                android:textColor="@color/light_blue"
+                android:textSize="@dimen/font_normal" />
         </LinearLayout>
 
         <TextView

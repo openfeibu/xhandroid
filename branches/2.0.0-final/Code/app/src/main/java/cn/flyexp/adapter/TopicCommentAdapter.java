@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import butterknife.InjectView;
 import cn.flyexp.R;
 import cn.flyexp.entity.TopicResponseData;
 import cn.flyexp.util.DateUtil;
+import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.CircleImageView;
 
 /**
@@ -37,6 +39,8 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
 
     public interface OnItemClickLinstener {
         void onItemClickLinstener(View view, int position);
+
+        void onDelete(int position);
     }
 
 
@@ -66,6 +70,20 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
         holder.tvNickName.setText(data.getNickname());
         holder.tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(data.getCreated_at())));
         Glide.with(context).load(data.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.imgAvatar);
+        String openId = SharePresUtil.getString(SharePresUtil.KEY_OPENID);
+        if (TextUtils.equals(data.getOpenid(), openId)) {
+            holder.tvDelete.setVisibility(View.VISIBLE);
+            holder.tvDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onItemClickLinstener != null) {
+                        onItemClickLinstener.onDelete(position);
+                    }
+                }
+            });
+        } else {
+            holder.tvDelete.setVisibility(View.GONE);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +109,8 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
         TextView tvDate;
         @InjectView(R.id.tv_comment)
         TextView tvComment;
+        @InjectView(R.id.tv_delete)
+        TextView tvDelete;
 
         public TopicCommentViewHolder(View itemView) {
             super(itemView);

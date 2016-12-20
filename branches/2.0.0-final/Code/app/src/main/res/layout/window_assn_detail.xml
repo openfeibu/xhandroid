@@ -33,58 +33,49 @@
             android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/assnacti_img_height">
+        android:layout_height="wrap_content"
+        android:background="@color/app_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_normal">
 
-        <ImageView
-            android:id="@+id/img_bg"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/assnacti_img_height"
-            android:background="@color/app_bg" />
+
+        <cn.flyexp.view.CircleImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="@dimen/avatar_big"
+            android:layout_height="@dimen/avatar_big"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/assn_detail_img_text"
-            android:layout_alignParentBottom="true"
-            android:background="@color/transp_gray"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:orientation="vertical">
 
-            <cn.flyexp.view.CircleImageView
-                android:id="@+id/img_avatar"
-                android:layout_width="@dimen/avatar_big"
-                android:layout_height="@dimen/avatar_big"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:layout_marginLeft="@dimen/margin_normal"
-                android:layout_marginRight="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_small" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_assnname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_normal"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/margin_small"
+                android:textColor="@color/white"
+                android:textSize="@dimen/margin_normal" />
 
-                <TextView
-                    android:id="@+id/tv_assnname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/margin_normal" />
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small" />
 
-                <TextView
-                    android:id="@+id/tv_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_small" />
-
-            </LinearLayout>
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_intro"

@@ -4,12 +4,14 @@ import cn.flyexp.api.ApiManager;
 import cn.flyexp.callback.topic.TopicDetailCallback;
 import cn.flyexp.constants.ResponseCode;
 import cn.flyexp.entity.BaseResponse;
+import cn.flyexp.entity.CommentListRequest;
 import cn.flyexp.entity.CommentRequest;
 import cn.flyexp.entity.CommentResponse;
 import cn.flyexp.entity.DeleteCommentRequest;
 import cn.flyexp.entity.DeleteTopicRequest;
 import cn.flyexp.entity.ThumbUpRequest;
 import cn.flyexp.presenter.BasePresenter;
+import cn.flyexp.util.GsonUtil;
 
 /**
  * Created by tanxinye on 2016/10/27.
@@ -21,6 +23,28 @@ public class TopicDetailPresenter extends BasePresenter implements TopicDetailCa
     public TopicDetailPresenter(TopicDetailCallback.ResponseCallback callback) {
         super(callback);
         this.callback = callback;
+    }
+
+    @Override
+    public void requestCommentList(CommentListRequest request) {
+        String data = GsonUtil.getInstance().encodeJson(request);
+        execute(ApiManager.getTopicService().commentListRequest(data), CommentResponse.class, new ObservableCallback<CommentResponse>() {
+            @Override
+            public void onSuccess(CommentResponse response) {
+                switch (response.getCode()) {
+                    case ResponseCode.RESPONSE_200:
+                        callback.responseCommentList(response);
+                        break;
+                    case ResponseCode.RESPONSE_2001:
+                        callback.renewLogin();
+                        break;
+                    case ResponseCode.RESPONSE_110:
+                        callback.showDetail(response.getDetail());
+                        break;
+                }
+            }
+
+        });
     }
 
     @Override
