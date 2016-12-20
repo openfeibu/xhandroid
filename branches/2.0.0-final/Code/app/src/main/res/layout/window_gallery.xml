@@ -27,18 +27,15 @@
             android:textColor="@color/font_black"
             android:textSize="@dimen/font_most" />
 
-        <TextView
-            android:id="@+id/tv_photograph"
+        <ImageView
+            android:id="@+id/img_photograph"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@drawable/onclick_background"
-            android:gravity="center"
             android:paddingLeft="@dimen/margin_normal_small"
             android:paddingRight="@dimen/margin_normal_small"
-            android:text="@string/photograph"
-            android:textColor="@color/font_black"
-            android:textSize="@dimen/font_large" />
+            android:src="@mipmap/icon_photos_camera" />
 
         <View
             style="@style/horizontalLine"
@@ -64,6 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/onclick_background"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableRight="@mipmap/icon_photo_chose"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_normal_small"
             android:paddingRight="@dimen/margin_normal_small"

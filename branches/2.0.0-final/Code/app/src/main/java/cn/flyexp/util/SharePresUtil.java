@@ -24,9 +24,12 @@ public class SharePresUtil {
     public static final String KEY_PUSH_TYPE = "push_type";
     public static final String KEY_BALANCE = "balance";
     public static final String KEY_ALIPAYNAME = "alipay_name";
+    public static final String KEY_COLLEGE = "college";
     public static final String KEY_SETPAYACCOUNT = "set_payaccount";
     public static final String KEY_SETPAYPWD = "set_paypwd";
     public static final String KEY_AUTH = "auth";
+    public static final String KEY_LAST_TIME_UPDATE = "lastTimeUpdate";
+    public static final String KEY_NICK_NAME = "nickname";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_OPENID = "openid";
@@ -76,6 +79,14 @@ public class SharePresUtil {
 
     public static void putFloat(String key, float value) {
         PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putFloat(key, value).commit();
+    }
+
+    public static long getLong(String key) {
+        return PreferenceManager.getDefaultSharedPreferences(getContext()).getLong(key, -1);
+    }
+
+    public static void putLong(String key, long value) {
+        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putLong(key, value).commit();
     }
 
 }

@@ -44,6 +44,7 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.topic.TopicDetailPresenter;
 import cn.flyexp.util.DateUtil;
 import cn.flyexp.util.DialogHelper;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.CircleImageView;
 import cn.flyexp.view.DividerItemDecoration;
@@ -89,6 +90,7 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
     private Drawable[] likeDrawable = new Drawable[]{getResources().getDrawable(R.mipmap.icon_top_like_nor),
             getResources().getDrawable(R.mipmap.icon_top_like_sel)};
     private String comment;
+    private int deletePosition;
 
     @Override
     protected int getLayoutId() {
@@ -148,13 +150,15 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
             }
 
             @Override
-            public void onDelete(final int position) {
+            public void onDelete(int position) {
+                deletePosition = position;
                 DialogHelper.showSelectDialog(getContext(), getResources().getString(R.string.hint_delete_comment), getResources().getString(R.string.comfirm), new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        tcid = comments.get(position).getTcid();
+                        tcid = comments.get(deletePosition).getTcid();
                         readyDeleteComment();
                         dismissProgressDialog(sweetAlertDialog);
+                        dialog.show();
                     }
                 });
             }
@@ -240,6 +244,7 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
                 break;
             case R.id.layout_comment:
                 tcid = 0;
+                edtComment.setHint(getResources().getString(R.string.hint_comment_topic));
                 showCommentPublish();
                 break;
             case R.id.layout_like:
@@ -258,7 +263,6 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
     }
 
     private void showCommentPublish() {
-        edtComment.setHint(getResources().getString(R.string.hint_comment_topic));
         popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
         changeWindowAlpha(0.7f);
         toggleKeyboard();
@@ -325,6 +329,7 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         if (TextUtils.isEmpty(token)) {
             renewLogin();
         } else {
+            LogUtil.e("comment" + comment);
             CommentRequest commentRequest = new CommentRequest();
             commentRequest.setToken(token);
             commentRequest.setTopic_comment(comment);
@@ -374,6 +379,7 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
 
     @Override
     public void responseDeleteComment(BaseResponse response) {
+        comments.remove(deletePosition);
         topicCommentAdapter.notifyDataSetChanged();
     }
 

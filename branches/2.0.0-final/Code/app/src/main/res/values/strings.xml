@@ -57,7 +57,7 @@
     <string name="faq">常见问题</string>
     <string name="feedback">意见反馈</string>
     <string name="about_xiaohui">关于校汇</string>
-    <string name="logout">点我注销</string>
+    <string name="logout">注销</string>
     <string name="verison_name">当前版本v%s</string>
     <string name="check_update">检查更新</string>
     <string name="user_agreement">用户服务协议</string>
@@ -216,7 +216,7 @@
     <string name="assnlist_detail">%1$s人活跃 · %2$s个活动 · #%3$s#</string>
     <string name="mytask_receive">我的接单</string>
     <string name="mytask_send">我的发单</string>
-    <string name="hint_task_money">￥%s</string>
+    <string name="format_task_money">￥%s元</string>
     <string name="task_state_new">未接单</string>
     <string name="task_state_finish">待结算</string>
     <string name="task_state_cancel">已取消</string>
@@ -257,14 +257,14 @@
     <string name="cancel_task">取消任务</string>
     <string name="finish_task">完成任务</string>
     <string name="complete_task">结算任务</string>
-    <string name="hint_task_detail_statement">完成任务后，收取赏金的2%作为平台服务费</string>
-    <string name="hint_task_detail_statement_more">更多详情，请看</string>
+    <string name="hint_task_detail_statement">注：每完成一次任务后，平台会收取赏金总额的2%作为平台服务费</string>
+    <string name="hint_task_detail_statement_more">更多详情请查看</string>
     <string name="task_detail_statement"><u>任务声明</u></string>
     <string name="share_task_title">校汇校园任务</string>
     <string name="hint_claim_task">接受任务之后必须完成哦</string>
     <string name="hint_claim_task_confirm">乐意接受</string>
     <string name="hint_claim_task_cancel">残忍拒绝</string>
-    <string name="contact_ta">联系Ta</string>
+    <string name="contact_ta">联系TA</string>
     <string name="accpet_task_success">接单成功</string>
     <string name="hint_mytask">任务空空如也\n前往任务列表看看吧</string>
     <string name="go">前往</string>
@@ -361,4 +361,9 @@
     <string name="hint_comment_null">评论不能为空</string>
     <string name="hint_comment_topic">发表下你的看法</string>
     <string name="data_unable">数据出错</string>
+    <string name="format_curr_version">当前版本v%s</string>
+    <string name="hint_change_pwd_success">修改密码成功</string>
+    <string name="format_destination">送达地点：%s</string>
+    <string name="hint_good_share">好东西就是要分享~</string>
+    <string name="format_picbrowser">图片预览(%1$s/%2$s)</string>
 </resources>

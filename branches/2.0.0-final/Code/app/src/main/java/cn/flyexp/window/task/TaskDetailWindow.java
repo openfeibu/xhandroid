@@ -1,18 +1,25 @@
 package cn.flyexp.window.task;
 
 import android.app.Activity;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -26,9 +33,9 @@ import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.task.TaskDetailPresenter;
 import cn.flyexp.util.DialogHelper;
-import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.ShareHelper;
 import cn.flyexp.util.SharePresUtil;
+import cn.flyexp.view.CircleImageView;
 import cn.flyexp.window.BaseWindow;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -37,23 +44,22 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class TaskDetailWindow extends BaseWindow implements TaskDetailCallback.ResponseCallback {
 
+    @InjectView(R.id.img_avatar)
+    CircleImageView imgAvatar;
     @InjectView(R.id.tv_nickname)
     TextView tvNickname;
-    @InjectView(R.id.tv_state)
-    TextView tvState;
     @InjectView(R.id.tv_fee)
     TextView tvFee;
+    @InjectView(R.id.img_state)
+    ImageView imgState;
     @InjectView(R.id.tv_destination)
     TextView tvDestination;
     @InjectView(R.id.tv_description)
     TextView tvDescription;
-    @InjectView(R.id.tasklayout)
-    View taskLayout;
     @InjectView(R.id.btn_claim)
     Button btnClaim;
 
     private TaskResponse.TaskResponseData data;
-    private PopupWindow picPopupWindow;
     private TaskDetailPresenter taskDetailPresenter;
     private PopupWindow popupWindow;
 
@@ -73,11 +79,19 @@ public class TaskDetailWindow extends BaseWindow implements TaskDetailCallback.R
     }
 
     private void initView() {
-        tvNickname.setText(String.format(getResources().getString(R.string.task_sender), data.getNickname()));
-        tvFee.setText(String.format(getResources().getString(R.string.hint_task_money), String.valueOf(data.getFee())));
-        tvDestination.setText(data.getDestination());
-        tvDescription.setText(data.getDescription());
-        tvState.setText(tranfStateText(data.getStatus()));
+        tvNickname.setText(data.getNickname());
+        SpannableStringBuilder feeStr = new SpannableStringBuilder("赏金： "
+                + String.format(getResources().getString(R.string.format_task_money),
+                String.valueOf(data.getFee())));
+        feeStr.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.font_dark)),
+                0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvFee.setText(feeStr);
+        imgState.setImageDrawable(tranfStateDrawable(data.getStatus()));
+        tvDestination.setText(String.format(getResources().getString(R.string.format_destination),
+                String.valueOf(data.getDestination().trim())));
+        tvDescription.setText(data.getDescription().trim());
+        Glide.with(getContext()).load(data.getAvatar_url())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imgAvatar);
 
         View popShareLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_share, null);
         popShareLayout.findViewById(R.id.tv_qq).setOnClickListener(shareOnClickListener);
@@ -100,6 +114,26 @@ public class TaskDetailWindow extends BaseWindow implements TaskDetailCallback.R
         toggleHideButton();
     }
 
+
+    private Drawable tranfStateDrawable(String status) {
+        Drawable drawable = getResources().getDrawable(R.mipmap.icon_task_end);
+        if (TextUtils.isEmpty(status)) {
+            return drawable;
+        }
+        if (TextUtils.equals(status, "new")) {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_notstarted);
+        } else if (TextUtils.equals(status, "accepted")) {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_ongoing);
+        } else if (TextUtils.equals(status, "completed")) {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_end);
+        } else if (TextUtils.equals(status, "finish")) {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_bechecked);
+        } else {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_end);
+        }
+        return drawable;
+    }
+
     private void changeWindowAlpha(float v) {
         WindowManager.LayoutParams lp = ((Activity) getContext()).getWindow().getAttributes();
         lp.alpha = v;
@@ -120,27 +154,10 @@ public class TaskDetailWindow extends BaseWindow implements TaskDetailCallback.R
         }
     }
 
-    private String tranfStateText(String status) {
-        if (TextUtils.isEmpty(status)) {
-            return getResources().getString(R.string.dialog_backfire);
-        }
-        String str = "";
-        if (status.equals("new")) {
-            str = getResources().getString(R.string.task_state_new);
-        } else if (status.equals("finish")) {
-            str = getResources().getString(R.string.task_state_finish);
-        } else if (status.equals("accepted")) {
-            str = getResources().getString(R.string.task_state_accepted);
-        } else if (status.equals("completed")) {
-            str = getResources().getString(R.string.task_state_completed);
-        }
-        return str;
-    }
-
     private OnClickListener shareOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            picPopupWindow.dismiss();
+            popupWindow.dismiss();
             switch (view.getId()) {
                 case R.id.tv_qq:
                     ShareHelper.shareQQ(getContext(), getResources().getString(R.string.share_task_title),
@@ -165,8 +182,8 @@ public class TaskDetailWindow extends BaseWindow implements TaskDetailCallback.R
                 hideWindow(true);
                 break;
             case R.id.img_share:
-                picPopupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
-
+                popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
+                changeWindowAlpha(0.7f);
                 break;
             case R.id.tv_report:
                 Bundle bundle = new Bundle();

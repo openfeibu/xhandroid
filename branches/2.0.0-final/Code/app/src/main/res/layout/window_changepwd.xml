@@ -33,7 +33,7 @@
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/et_oldpwd"
+        android:id="@+id/edt_oldpwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_normal"
@@ -59,7 +59,7 @@
         android:layout_marginTop="@dimen/margin_small" />
 
     <EditText
-        android:id="@+id/et_newpwd"
+        android:id="@+id/edt_newpwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_normal"

@@ -47,7 +47,7 @@
     <dimen name="banner_height">200dp</dimen>
     <dimen name="task_state_height">65dp</dimen>
     <dimen name="assn_acti_publish_input_minwidth">100dp</dimen>
-    <dimen name="task_detail_height">70dp</dimen>
+    <dimen name="task_detail_height">56dp</dimen>
     <dimen name="margin_step">36dp</dimen>
     <dimen name="stpe_item_width">70dp</dimen>
     <dimen name="webview_progressbar_height">2dp</dimen>

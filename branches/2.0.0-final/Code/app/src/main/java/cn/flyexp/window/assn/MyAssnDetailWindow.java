@@ -226,7 +226,7 @@ public class MyAssnDetailWindow extends BaseWindow implements NotifyManager.Noti
         tvNotice.setText(responseData.getNotice().trim());
         tvAssnName.setText(responseData.getAname());
         tvNum.setText(responseData.getMember_number() + "人");
-        if (response.getData().isNewMember()) {
+        if (response.getData().getNewMember() == 1) {
             tvExmine.setVisibility(VISIBLE);
         } else {
             tvExmine.setVisibility(GONE);

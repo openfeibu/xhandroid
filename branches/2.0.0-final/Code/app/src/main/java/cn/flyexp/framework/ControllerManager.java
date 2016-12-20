@@ -36,6 +36,7 @@ import cn.flyexp.window.topic.MyTopicWindow;
 import cn.flyexp.window.topic.TopicDetailWindow;
 import cn.flyexp.window.topic.TopicPublishWindow;
 import cn.flyexp.window.user.CertificationWindow;
+import cn.flyexp.window.user.ChangePwdWindow;
 import cn.flyexp.window.user.LoginWindow;
 import cn.flyexp.window.user.RegisterVercodeWindow;
 import cn.flyexp.window.user.RegisterWindow;
@@ -190,6 +191,8 @@ public class ControllerManager {
                 new TopicDetailWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_ASSN_MEMBER) {
                 new AssnMemberWindow(msg.getData()).showWindow(true);
+            } else if (msg.what == WindowIDDefine.WINDOW_CHANGEPWD) {
+                new ChangePwdWindow().showWindow(true);
             }
         }
     }

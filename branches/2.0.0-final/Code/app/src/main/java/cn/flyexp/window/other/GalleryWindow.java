@@ -165,7 +165,7 @@ public class GalleryWindow extends BaseWindow implements NotifyManager.Notify, G
         });
     }
 
-    @OnClick({R.id.img_back, R.id.tv_complete, R.id.tv_bucket, R.id.tv_photograph})
+    @OnClick({R.id.img_back, R.id.tv_complete, R.id.tv_bucket, R.id.img_photograph})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -184,7 +184,7 @@ public class GalleryWindow extends BaseWindow implements NotifyManager.Notify, G
                 picPopupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
                 changeWindowAlpha(0.7f);
                 break;
-            case R.id.tv_photograph:
+            case R.id.img_photograph:
                 PermissionHandler.PermissionCallback permissionCallback = new PermissionHandler.PermissionCallback() {
                     public void onSuccess() {
                         openCamera();

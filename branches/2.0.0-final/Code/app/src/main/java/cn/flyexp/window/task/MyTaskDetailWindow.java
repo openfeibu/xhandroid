@@ -80,12 +80,12 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     }
 
     public MyTaskDetailWindow(Bundle bundle) {
-        isTask = bundle.getBoolean("mytask");
         data = (MyTaskResponse.MyTaskResponseData) bundle.getSerializable("myTaskDetail");
         if (data == null) {
             showToast(R.string.data_unable);
             return;
         }
+        isTask = TextUtils.equals(data.getType(),"work");
         myTaskDetailPresenter = new MyTaskDetailPresenter(this);
         loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.commiting));
         inputPayPwdLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_input_paypwd, null);
@@ -96,7 +96,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     private void initView() {
         hideViewByStatus(data.getStatus());
         tvNickname.setText(String.format(getResources().getString(R.string.task_sender), data.getNickname()));
-        tvFee.setText(String.format(getResources().getString(R.string.hint_task_money), data.getFee()));
+        tvFee.setText(String.format(getResources().getString(R.string.format_task_money), data.getFee()));
         tvDestination.setText(data.getDestination());
         tvDescription.setText(data.getDescription());
         tvState.setText(currState);

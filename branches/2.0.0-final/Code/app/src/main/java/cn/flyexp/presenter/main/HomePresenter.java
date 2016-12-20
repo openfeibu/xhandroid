@@ -6,6 +6,8 @@ import cn.flyexp.constants.ResponseCode;
 import cn.flyexp.entity.AdResponse;
 import cn.flyexp.entity.AssnActivityResponse;
 import cn.flyexp.entity.TaskResponse;
+import cn.flyexp.entity.UpdateRequest;
+import cn.flyexp.entity.UpdateResponse;
 import cn.flyexp.presenter.BasePresenter;
 import cn.flyexp.util.GsonUtil;
 
@@ -19,6 +21,25 @@ public class HomePresenter extends BasePresenter implements HomeCallback.Request
     public HomePresenter(HomeCallback.ResponseCallback callback) {
         super(callback);
         this.callback = callback;
+    }
+
+    @Override
+    public void requestCheckUpdate(UpdateRequest request) {
+        String data = GsonUtil.getInstance().encodeJson(request);
+        execute(ApiManager.getOtherService().updateRequest(data), UpdateResponse.class, new ObservableCallback<UpdateResponse>() {
+            @Override
+            public void onSuccess(UpdateResponse response) {
+                switch (response.getCode()) {
+                    case ResponseCode.RESPONSE_200:
+                        callback.responseCheckUpdate(response);
+                        break;
+                    case ResponseCode.RESPONSE_110:
+                        callback.showDetail(response.getDetail());
+                        break;
+                }
+            }
+
+        });
     }
 
     @Override

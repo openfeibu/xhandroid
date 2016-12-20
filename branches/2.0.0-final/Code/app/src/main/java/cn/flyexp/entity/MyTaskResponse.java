@@ -48,6 +48,16 @@ public class MyTaskResponse extends BaseResponse {
         private String share_url;
         @SerializedName("time")
         private TimeData time;
+        @SerializedName("type")
+        private String type;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public TimeData getTime() {
             return time;

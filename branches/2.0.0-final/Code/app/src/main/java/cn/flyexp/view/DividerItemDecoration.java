@@ -23,7 +23,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public DividerItemDecoration(Context context) {
         itemSize = ScreenHelper.dip2px(context, 0.5f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(context.getResources().getColor(R.color.light_gray));
+        paint.setColor(context.getResources().getColor(R.color.line));
         paint.setStyle(Paint.Style.FILL);
     }
 

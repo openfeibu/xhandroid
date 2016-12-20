@@ -92,11 +92,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         if (TextUtils.isEmpty(status)) {
             return drawable;
         }
-        if (status.equals("new")) {
+        if (TextUtils.equals(status,"new")) {
             drawable = context.getResources().getDrawable(R.mipmap.icon_task_notstarted);
-        } else if (status.equals("accepted")) {
+        } else if (TextUtils.equals(status,"accepted")) {
             drawable = context.getResources().getDrawable(R.mipmap.icon_task_ongoing);
-        } else {
+        } else if(TextUtils.equals(status,"completed")){
+            drawable = context.getResources().getDrawable(R.mipmap.icon_task_end);
+        }else if(TextUtils.equals(status,"finish")){
+            drawable = context.getResources().getDrawable(R.mipmap.icon_task_bechecked);
+        }else{
             drawable = context.getResources().getDrawable(R.mipmap.icon_task_end);
         }
         return drawable;

@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#23B7FA</color>
     <color name="colorAccent">#5AC8FA</color>
     <color name="app_bg">#F5F5F5</color>
-    <color name="light_gray">#EEEEEE</color>
+    <color name="light_gray">#FAFAFA</color>
+    <color name="line">#DDDDDD</color>
     <color name="font_light">#AAAAAA</color>
     <color name="font_dark">#666666</color>
     <color name="font_black">#28282E</color>

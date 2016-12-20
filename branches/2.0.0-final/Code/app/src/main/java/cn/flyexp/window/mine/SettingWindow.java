@@ -50,7 +50,7 @@ public class SettingWindow extends BaseWindow implements SettingCallback.Respons
         }
     }
 
-    @OnClick({R.id.img_back, R.id.layout_about, R.id.layout_clear, R.id.layout_feedback, R.id.layout_faq, R.id.btn_logout})
+    @OnClick({R.id.img_back, R.id.layout_about, R.id.layout_clear,R.id.layout_changepwd, R.id.layout_feedback, R.id.layout_faq, R.id.btn_logout})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -58,6 +58,9 @@ public class SettingWindow extends BaseWindow implements SettingCallback.Respons
                 break;
             case R.id.layout_about:
                 openWindow(WindowIDDefine.WINDOW_ABOUT);
+                break;
+            case R.id.layout_changepwd:
+                openWindow(WindowIDDefine.WINDOW_CHANGEPWD);
                 break;
             case R.id.layout_clear:
                 DataCleanHelper.clearAllCache(getContext());

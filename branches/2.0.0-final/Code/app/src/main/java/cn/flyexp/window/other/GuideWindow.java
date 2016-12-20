@@ -31,9 +31,9 @@ public class GuideWindow extends BaseWindow {
     @InjectView(R.id.layout_info)
     View intoLayout;
 
-    private ViewGroup[] views = new ViewGroup[3];
+    private ViewGroup[] views = new ViewGroup[4];
     private ColorShades colorShades = new ColorShades();
-    private int[] guideColor = new int[3];
+//    private int[] guideColor = new int[4];
     private int lastPosition;
 
     @Override
@@ -42,12 +42,13 @@ public class GuideWindow extends BaseWindow {
     }
 
     public GuideWindow() {
-        guideColor[0] = getResources().getColor(R.color.light_blue);
-        guideColor[1] = getResources().getColor(R.color.light_cyan);
-        guideColor[2] = getResources().getColor(R.color.light_yellow);
+//        guideColor[0] = getResources().getColor(R.color.light_blue);
+//        guideColor[1] = getResources().getColor(R.color.light_cyan);
+//        guideColor[2] = getResources().getColor(R.color.light_yellow);
         views[0] = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.layout_guide1, null);
         views[1] = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.layout_guide2, null);
         views[2] = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.layout_guide3, null);
+        views[3] = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.layout_guide4, null);
         PagerAdapter pagerAdapter = new PagerAdapter() {
             @Override
             public int getCount() {
@@ -74,20 +75,20 @@ public class GuideWindow extends BaseWindow {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                colorShades.setFromColor(guideColor[position % guideColor.length])
-                        .setToColor(guideColor[(position + 1) % guideColor.length])
-                        .setShade(positionOffset);
-                guideLayout.setBackgroundColor(colorShades.generate());
+//                colorShades.setFromColor(guideColor[position % guideColor.length])
+//                        .setToColor(guideColor[(position + 1) % guideColor.length])
+//                        .setShade(positionOffset);
+//                guideLayout.setBackgroundColor(colorShades.generate());
             }
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 2) {
+                if (position == 3) {
                     ObjectAnimator upAnim = ObjectAnimator.ofFloat(intoLayout, "y", intoLayout.getY(), intoLayout.getY() - intoLayout.getHeight());
                     upAnim.setDuration(200);
                     upAnim.setInterpolator(new AccelerateInterpolator());
                     upAnim.start();
-                } else if (position == 1 && lastPosition == 2) {
+                } else if (position == 2 && lastPosition == 3) {
                     ObjectAnimator upAnim = ObjectAnimator.ofFloat(intoLayout, "y", intoLayout.getY(), intoLayout.getY() + intoLayout.getHeight());
                     upAnim.setDuration(200);
                     upAnim.setInterpolator(new AccelerateInterpolator());
@@ -103,7 +104,7 @@ public class GuideWindow extends BaseWindow {
         });
         viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
 
-            private float parallaxCoefficient = 0.7f;
+            private float parallaxCoefficient = 0.4f;
             private float distanceCoefficient = 0.2f;
 
             @Override

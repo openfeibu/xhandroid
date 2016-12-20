@@ -43,8 +43,8 @@ public class PicBrowserWindow extends BaseWindow {
 
     @InjectView(R.id.vp_pic)
     ViewPager vpPic;
-    @InjectView(R.id.tv_num)
-    TextView tvNum;
+    @InjectView(R.id.tv_title)
+    TextView tvTitle;
     @InjectView(R.id.tv_save)
     TextView tvSave;
     @InjectView(R.id.tv_delete)
@@ -83,7 +83,7 @@ public class PicBrowserWindow extends BaseWindow {
         } else if (TextUtils.equals(type, Constants.GALLERY)) {
             tvSave.setVisibility(GONE);
             tvDelete.setVisibility(GONE);
-            tvNum.setVisibility(GONE);
+            tvTitle.setVisibility(GONE);
         }
 
         for (int i = 0; i < uri.size(); i++) {
@@ -141,7 +141,7 @@ public class PicBrowserWindow extends BaseWindow {
             @Override
             public void onPageSelected(int position) {
                 currPosition = position;
-                tvNum.setText(position + 1 + "/" + uri.size());
+                tvTitle.setText(position + 1 + "/" + uri.size());
             }
 
             @Override
@@ -149,7 +149,8 @@ public class PicBrowserWindow extends BaseWindow {
 
             }
         });
-        tvNum.setText(position + 1 + "/" + uri.size());
+        tvTitle.setText(String.format(getResources().getString(R.string.format_picbrowser),
+                String.valueOf(position + 1), String.valueOf(uri.size())));
         vpPic.setCurrentItem(position, false);
         vpPic.setOnClickListener(new OnClickListener() {
             @Override
@@ -174,7 +175,7 @@ public class PicBrowserWindow extends BaseWindow {
                                 new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        if (BitmapUtil.saveImageToGallery(getContext(),photoView.getVisibleRectangleBitmap())) {
+                                        if (BitmapUtil.saveImageToGallery(getContext(), photoView.getVisibleRectangleBitmap())) {
                                             showToast(R.string.save_success);
                                         } else {
                                             showToast(R.string.save_failure);
@@ -205,7 +206,8 @@ public class PicBrowserWindow extends BaseWindow {
                 } else {
                     views.remove(currPosition);
                     pagerAdapter.notifyDataSetChanged();
-                    tvNum.setText(vpPic.getCurrentItem() + 1 + "/" + uri.size());
+                    tvTitle.setText(String.format(getResources().getString(R.string.format_picbrowser),
+                            String.valueOf(vpPic.getCurrentItem() + 1), String.valueOf(uri.size())));
                     currPosition = vpPic.getCurrentItem();
                 }
                 break;

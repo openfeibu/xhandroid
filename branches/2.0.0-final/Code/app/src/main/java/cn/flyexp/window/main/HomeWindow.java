@@ -1,11 +1,16 @@
 package cn.flyexp.window.main;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -25,9 +30,15 @@ import cn.flyexp.callback.main.HomeCallback;
 import cn.flyexp.entity.AdResponse;
 import cn.flyexp.entity.AssnActivityResponse;
 import cn.flyexp.entity.TaskResponse;
+import cn.flyexp.entity.UpdateRequest;
+import cn.flyexp.entity.UpdateResponse;
 import cn.flyexp.entity.WebBean;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.main.HomePresenter;
+import cn.flyexp.util.DialogHelper;
+import cn.flyexp.util.LogUtil;
+import cn.flyexp.util.PackageUtil;
+import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.DividerItemDecoration;
 import cn.flyexp.window.BaseWindow;
 
@@ -47,6 +58,7 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     @InjectView(R.id.layout_assn_acti)
     View layoutAssnActi;
 
+    private View updateLayout;
     private ArrayList<String> imgUrls = new ArrayList<>();
     private ArrayList<AdResponse.AdResponseData> adResponseDatas = new ArrayList<>();
     private ArrayList<TaskResponse.TaskResponseData> recommendTaskDatas = new ArrayList<>();
@@ -54,6 +66,9 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     private HomePresenter homePresenter;
     private RecommendTaskAdapter recommendTaskAdapter;
     private AssnActivityAdapter assnActivityAdapter;
+    private UpdateResponse.UpdateResponseData updateData;
+    private AlertDialog dialog;
+    private TextView tvMsg;
 
     @Override
     protected int getLayoutId() {
@@ -70,6 +85,17 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
         homePresenter.requestAd();
         homePresenter.requestRecommendTask();
         homePresenter.requestHotActivity();
+        long lastTime = SharePresUtil.getLong(SharePresUtil.KEY_LAST_TIME_UPDATE);
+        //超过一个星期检查更新
+        if (System.currentTimeMillis() - lastTime > 1000 * 60 * 60 * 24 * 7) {
+            LogUtil.e("last");
+            UpdateRequest updateRequest = new UpdateRequest();
+            updateRequest.setPlatform("and");
+            homePresenter.requestCheckUpdate(updateRequest);
+            SharePresUtil.putLong(SharePresUtil.KEY_LAST_TIME_UPDATE,System.currentTimeMillis());
+        }else{
+            LogUtil.e("last no");
+        }
     }
 
     @Override
@@ -97,7 +123,7 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
                 openWindow(WindowIDDefine.WINDOW_WEBVIEW, bundle);
             }
         });
-        banner.setPageIndicator(new int[]{R.mipmap.icon_carousel_white,R.mipmap.icon_carousel_black});
+        banner.setPageIndicator(new int[]{R.mipmap.icon_carousel_white, R.mipmap.icon_carousel_black});
 
         recommendTaskAdapter = new RecommendTaskAdapter(getContext(), recommendTaskDatas);
         recommendTaskAdapter.setOnItemClickLinstener(new RecommendTaskAdapter.OnItemClickLinstener() {
@@ -127,7 +153,22 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
         rvAssnActi.addItemDecoration(new DividerItemDecoration(getContext()));
         rvAssnActi.setHasFixedSize(true);
         rvAssnActi.setNestedScrollingEnabled(false);
-
+        updateLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_update, null);
+        updateLayout.findViewById(R.id.tv_yes).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(updateData.getDownload());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                getContext().startActivity(intent);
+            }
+        });
+        updateLayout.findViewById(R.id.tv_no).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tvMsg = (TextView) updateLayout.findViewById(R.id.tv_msg);
     }
 
     public class NetworkImageHolderView implements Holder<String> {
@@ -196,6 +237,28 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     @Override
     public void requestFinish() {
         super.requestFinish();
+    }
+
+    @Override
+    public void responseCheckUpdate(UpdateResponse response) {
+        final UpdateResponse.UpdateResponseData responseData = response.getData();
+        int downloadVersionCode = responseData.getCode();
+        int versionCode = PackageUtil.getVersionCode(getContext());
+        if (downloadVersionCode > versionCode) {
+            updateData = response.getData();
+            showDialog();
+        }else{
+            dialog = null;
+            updateLayout = null;
+        }
+    }
+
+    private void showDialog() {
+        if (dialog == null) {
+            dialog = new AlertDialog.Builder(getContext()).setView(updateLayout).create();
+        }
+        tvMsg.setText(updateData.getDetail());
+        dialog.show();
     }
 
     @Override

@@ -1,8 +1,10 @@
 package cn.flyexp.window.mine;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,7 +31,10 @@ public class AboutWindow extends BaseWindow implements AboutCallback.ResponseCal
     TextView versionNameTextView;
     private int versionCode;
     private AboutPresenter aboutPresenter;
-    private SweetAlertDialog sweetAlertDialog;
+    private View updateLayout;
+    private AlertDialog dialog;
+    private UpdateResponse.UpdateResponseData data;
+    private final TextView tvMsg;
 
     @Override
     protected int getLayoutId() {
@@ -41,6 +46,22 @@ public class AboutWindow extends BaseWindow implements AboutCallback.ResponseCal
         versionCode = PackageUtil.getVersionCode(getContext());
         versionNameTextView.setText(String.format(getResources().getString(R.string.verison_name), versionName));
         aboutPresenter = new AboutPresenter(this);
+        updateLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_update, null);
+        updateLayout.findViewById(R.id.tv_yes).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(data.getDownload());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                getContext().startActivity(intent);
+            }
+        });
+        updateLayout.findViewById(R.id.tv_no).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tvMsg = (TextView) updateLayout.findViewById(R.id.tv_msg);
     }
 
     @OnClick({R.id.img_back, R.id.layout_checkupdate, R.id.layout_agreement, R.id.layout_taskstatement, R.id.layout_integral})
@@ -52,7 +73,6 @@ public class AboutWindow extends BaseWindow implements AboutCallback.ResponseCal
             case R.id.layout_checkupdate:
                 UpdateRequest updateRequest = new UpdateRequest();
                 updateRequest.setPlatform("and");
-                sweetAlertDialog = DialogHelper.getProgressDialog(getContext(), "");
                 aboutPresenter.requestUpdate(updateRequest);
                 break;
             case R.id.layout_agreement:
@@ -86,28 +106,22 @@ public class AboutWindow extends BaseWindow implements AboutCallback.ResponseCal
     }
 
     @Override
-    public void requestFailure() {
-        sweetAlertDialog.dismissWithAnimation();
-        DialogHelper.showErrorDialog(getContext(),getResources().getString(R.string.request_failure));
-    }
-
-    @Override
     public void responseUpdate(UpdateResponse response) {
-        sweetAlertDialog.dismiss();
         final UpdateResponse.UpdateResponseData responseData = response.getData();
         int downloadVersionCode = responseData.getCode();
         if (downloadVersionCode > versionCode) {
-            DialogHelper.showSelectDialog(getContext(), responseData.getDetail(), getResources().getString(R.string.go_download), getResources().getString(R.string.next_time), new SweetAlertDialog.OnSweetClickListener() {
-                @Override
-                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    Uri uri = Uri.parse(responseData.getDownload());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    getContext().startActivity(intent);
-                    sweetAlertDialog.dismissWithAnimation();
-                }
-            });
+            data = response.getData();
+            showDialog();
         } else {
             DialogHelper.showSingleDialog(getContext(), getResources().getString(R.string.newest_version), null);
         }
+    }
+
+    private void showDialog() {
+        if (dialog == null) {
+            dialog = new AlertDialog.Builder(getContext()).setView(updateLayout).create();
+        }
+        tvMsg.setText(data.getDetail());
+        dialog.show();
     }
 }

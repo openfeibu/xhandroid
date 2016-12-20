@@ -35,8 +35,6 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     TextView tvNickName;
     @InjectView(R.id.tv_campus)
     TextView tvCampus;
-    @InjectView(R.id.layout_certifition)
-    View layoutCertifition;
 
     private MinePresenter minePresenter;
     private MyInfoResponse.MyInfoResponseData responseData = new MyInfoResponse().new MyInfoResponseData();
@@ -49,7 +47,15 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     public MineWindow() {
         minePresenter = new MinePresenter(this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_MINE_REFRESH, this);
+        initView();
         readyMineRequest();
+    }
+
+    private void initView() {
+        String nickname = SharePresUtil.getString(SharePresUtil.KEY_NICK_NAME);
+        String college = SharePresUtil.getString(SharePresUtil.KEY_COLLEGE);
+        tvNickName.setText(nickname);
+        tvCampus.setText(college);
     }
 
     private void readyMineRequest() {
@@ -61,7 +67,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
 
     @OnClick({R.id.tv_changecampus, R.id.tv_message, R.id.layout_setting, R.id.layout_mywallet,
             R.id.layout_myassn, R.id.layout_share, R.id.layout_myintergal, R.id.layout_myinfo, R.id.tv_mytopic,
-            R.id.tv_mytask, R.id.tv_myorder, R.id.layout_storecollection, R.id.layout_certifition})
+            R.id.tv_mytask, R.id.tv_myorder, R.id.layout_storecollection})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_changecampus:
@@ -74,7 +80,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
                 if (responseData != null) {
                     Bundle myinfoBundle = new Bundle();
                     myinfoBundle.putSerializable("myinfo", responseData);
-                    openWindow(WindowIDDefine.WINDOW_MYINFO,myinfoBundle);
+                    openWindow(WindowIDDefine.WINDOW_MYINFO, myinfoBundle);
                 }
                 break;
             case R.id.tv_mytopic:
@@ -96,9 +102,6 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
                 webBean2.setTitle(getResources().getString(R.string.store_collection));
                 webBean2.setName("storeCollection");
                 openWebWindow(webBean2);
-                break;
-            case R.id.layout_certifition:
-                openWindow(WindowIDDefine.WINDOW_CERTIFITION);
                 break;
             case R.id.layout_setting:
                 openWindow(WindowIDDefine.WINDOW_SETTING);
@@ -145,17 +148,14 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
         responseData = response.getData();
         tvNickName.setText(responseData.getNickname());
         tvCampus.setText(responseData.getCollege());
-        Glide.with(getContext()).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imgAvatar);
-        if (responseData.getIs_auth() != 1) {
-            layoutCertifition.setVisibility(VISIBLE);
-        } else {
-            layoutCertifition.setVisibility(GONE);
-        }
+        Glide.with(getContext()).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imgAvatar);
 
         SharePresUtil.putFloat(SharePresUtil.KEY_BALANCE, responseData.getWallet());
         SharePresUtil.putInt(SharePresUtil.KEY_SETPAYACCOUNT, responseData.getIs_alipay());
         SharePresUtil.putInt(SharePresUtil.KEY_SETPAYPWD, responseData.getIs_paypassword());
         SharePresUtil.putInt(SharePresUtil.KEY_AUTH, responseData.getIs_auth());
+        SharePresUtil.putString(SharePresUtil.KEY_NICK_NAME, responseData.getNickname());
+        SharePresUtil.putString(SharePresUtil.KEY_COLLEGE, responseData.getCollege());
         SharePresUtil.putString(SharePresUtil.KEY_ALIPAYNAME, responseData.getAlipay());
         SharePresUtil.putString(SharePresUtil.KEY_ADDRESS, responseData.getAddress());
         SharePresUtil.putString(SharePresUtil.KEY_PHONE, responseData.getMobile_no());
