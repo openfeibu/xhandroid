@@ -55,11 +55,12 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         holder.tvFavouritesCount.setText(String.valueOf(responseData.getFavourites_count()));
         holder.tvContent.setText(responseData.getContent());
         if(TextUtils.isEmpty(responseData.getImg())) {
-            holder.imgtopicphoto.setVisibility(View.GONE);
+            holder.imgTopicPhoto.setVisibility(View.GONE);
         } else {
-            Glide.with(context).load(responseData.getImg()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgtopicphoto);
+            holder.imgTopicPhoto.setVisibility(View.VISIBLE);
+            Glide.with(context).load(responseData.getImg()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgTopicPhoto);
         }
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgavatar);
+        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,10 +79,10 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
     protected static class TopicViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.img_avatar)
-        CircleImageView imgavatar;
+        CircleImageView imgAvatar;
 
         @InjectView(R.id.img_topicphoto)
-        ImageView imgtopicphoto;
+        ImageView imgTopicPhoto;
 
         @InjectView(R.id.tv_nickname)
         TextView tvNickname;

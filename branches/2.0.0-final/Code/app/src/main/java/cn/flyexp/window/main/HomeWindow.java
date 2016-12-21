@@ -130,7 +130,7 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
             @Override
             public void onItemClickLinstener(View view, int position) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("taskdetail", recommendTaskDatas.get(position));
+                bundle.putSerializable("taskDetail", recommendTaskDatas.get(position));
                 openWindow(WindowIDDefine.WINDOW_TASK_DETAIL, bundle);
             }
         });

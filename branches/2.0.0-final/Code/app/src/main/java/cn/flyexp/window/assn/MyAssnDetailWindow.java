@@ -173,7 +173,7 @@ public class MyAssnDetailWindow extends BaseWindow implements NotifyManager.Noti
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_exit, R.id.tv_exmine, R.id.layout_member, R.id.tv_edit, R.id.tv_publish})
+    @OnClick({R.id.img_back, R.id.tv_exit, R.id.tv_exmine, R.id.layout_member, R.id.tv_edit, R.id.tv_publish})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -201,7 +201,7 @@ public class MyAssnDetailWindow extends BaseWindow implements NotifyManager.Noti
                 bundle4.putInt("aid", aid);
                 openWindow(WindowIDDefine.WINDOW_ASSN_EXAMINE_LIST, bundle4);
                 break;
-            case R.id.img_exit:
+            case R.id.tv_exit:
                 if (level == 1) {
                     showToast(R.string.president_unable_exit);
                 } else {

@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +36,7 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.user.MyInfoPresenter;
 import cn.flyexp.util.BitmapUtil;
 import cn.flyexp.util.DialogHelper;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.util.UploadFileHelper;
 import cn.flyexp.view.CircleImageView;
@@ -67,6 +71,7 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
     private SweetAlertDialog loadingDialog;
     private int gender;
     private String imgPath;
+    private boolean isSave = true;
 
     @Override
     protected int getLayoutId() {
@@ -85,13 +90,10 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
     private void initView() {
         Glide.with(getContext()).load(datas.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imgAvatar);
         tvNickName.setText(datas.getNickname());
-
         if (datas.getGender() == 1) {
             tvGender.setText("男");
-            gender = 1;
         } else if (datas.getGender() == 2) {
             tvGender.setText("女");
-            gender = 2;
         } else {
             tvGender.setText("报名");
         }
@@ -105,7 +107,6 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
         }
         tvIntro.setText(datas.getIntroduction());
         tvAddress.setText(datas.getAddress());
-
 
         View popLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_gender, null);
         popLayout.findViewById(R.id.tv_man).setOnClickListener(popOnListener);
@@ -125,17 +126,20 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
     }
 
     private OnClickListener popOnListener = new OnClickListener() {
-
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.tv_man:
                     gender = 1;
                     tvGender.setText("男");
+                    isSave = false;
+                    tvSave.setVisibility(VISIBLE);
                     break;
                 case R.id.tv_women:
                     gender = 2;
                     tvGender.setText("女");
+                    isSave = false;
+                    tvSave.setVisibility(VISIBLE);
                     break;
             }
         }
@@ -147,7 +151,9 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                hideWindow(true);
+                if (!isBackInEdit()) {
+                    hideWindow(true);
+                }
                 break;
             case R.id.rl_certification:
                 if (SharePresUtil.getInt(SharePresUtil.KEY_AUTH) == 0) {
@@ -158,13 +164,26 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
                 popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.rl_address:
-                openEditWindow("常用地址", datas.getAddress(), 20);
+                if(datas.getAddress().toString().trim() == tvAddress.getText().toString().trim()) {
+                    openEditWindow("常用地址", datas.getAddress(), 20);
+                } else {
+                    openEditWindow("常用地址",tvAddress.getText().toString().trim(),20);
+                }
                 break;
             case R.id.rl_fillinfo:
-                openEditWindow("简介", datas.getIntroduction(), 40);
+                if(datas.getIntroduction().toString().trim() == tvIntro.getText().toString().trim()) {
+                    openEditWindow("简介", datas.getIntroduction(), 40);
+                } else {
+                    openEditWindow("简介",tvIntro.getText().toString().trim(),40);
+                }
                 break;
             case R.id.rl_nickname:
-                openEditWindow("昵称", datas.getNickname(), 6);
+                if(datas.getNickname().toString().trim() == tvNickName.getText().toString().trim()) {
+                    openEditWindow("昵称", datas.getNickname(), 6);
+                } else {
+                    openEditWindow("昵称",tvNickName.getText().toString().trim(),6);
+                }
+
                 break;
             case R.id.rl_avatar:
                 Bundle bundle1 = new Bundle();
@@ -172,9 +191,9 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
                 openWindow(WindowIDDefine.WINDOW_GALLERY, bundle1);
                 break;
             case R.id.tv_save:
+                isSave = true;
                 readyChangeMyInfo();
                 break;
-
         }
     }
 
@@ -183,6 +202,7 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
         bundle.putString("name", name);
         bundle.putString("value", value);
         bundle.putInt("length", length);
+        bundle.putBoolean("isSave",isSave);
         openWindow(WindowIDDefine.WINDOW_EDIT, bundle);
     }
 
@@ -250,6 +270,7 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
             Bundle bundle = mes.getData();
             String result = bundle.getString("result");
             String name = bundle.getString("name");
+            isSave = bundle.getBoolean("isSave");
             if (TextUtils.equals(name, "常用地址")) {
                 tvAddress.setText(result);
             } else if (TextUtils.equals(name, "简介")) {
@@ -257,12 +278,31 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
             } else if (TextUtils.equals(name, "昵称")) {
                 tvNickName.setText(result);
             }
-            tvSave.setVisibility(VISIBLE);
+            if (!isSave)
+                tvSave.setVisibility(VISIBLE);
         } else if (mes.what == NotifyIDDefine.NOTIFY_GALLERY) {
             Bundle bundle = mes.getData();
             ArrayList<String> images = bundle.getStringArrayList("images");
             imgPath = images.get(0);
             readyUploadAvatar();
         }
+    }
+    private boolean isBackInEdit() {
+        if (isSave == false) {
+            DialogHelper.showSelectDialog(getContext(), getResources().getString(R.string.hint_giveup_edit), getResources().getString(R.string.dialog_giveup), new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    dismissProgressDialog(sweetAlertDialog);
+                    hideWindow(true);
+                }
+            });
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return isBackInEdit();
     }
 }

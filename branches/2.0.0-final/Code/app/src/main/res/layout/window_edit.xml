@@ -26,18 +26,18 @@
             android:textColor="@color/font_black"
             android:textSize="@dimen/font_most" />
 
-        <TextView
-            android:id="@+id/tv_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:alpha="0.5"
-            android:enabled="false"
-            android:text="@string/save"
-            android:textColor="@color/font_black"
-            android:textSize="@dimen/font_large" />
+        <!--<TextView-->
+            <!--android:id="@+id/tv_save"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="@dimen/margin_normal"-->
+            <!--android:alpha="0.5"-->
+            <!--android:enabled="false"-->
+            <!--android:text="@string/save"-->
+            <!--android:textColor="@color/font_black"-->
+            <!--android:textSize="@dimen/font_large" />-->
 
         <View
             style="@style/horizontalLine"

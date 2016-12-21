@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -188,9 +189,7 @@ public class TaskWindow extends BaseWindow implements TaskCallback.ResponseCallb
 
     @Override
     public void responseTaskList(TaskResponse response) {
-        LogUtil.e("response task lists");
         for (int i = 0; i < 3; i++) {
-            LogUtil.e("taskViews page", taskViews[i].getPage() + "");
             if (TextUtils.equals(response.getType(), type[i])) {
                 if (taskViews[i].isRefresh()) {
                     taskViews[i].getDatas().clear();

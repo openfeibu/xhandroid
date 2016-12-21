@@ -77,16 +77,6 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
         });
 
 
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.layout_refresh);
-        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.light_blue));
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                page = 1;
-                isRefresh = true;
-                readyMyTopicList();
-            }
-        });
     }
 
     private void readyMyTopicList() {
@@ -117,19 +107,6 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
         topicAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void requestFailure() {
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
-        }
-    }
-
-    @Override
-    public void requestFinish() {
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
-        }
-    }
 
     @OnClick({R.id.img_publish})
     void onClick(View view) {

@@ -370,4 +370,5 @@
     <string name="format_destination">送达地点：%s</string>
     <string name="hint_good_share">好东西就是要分享~</string>
     <string name="format_picbrowser">图片预览(%1$s/%2$s)</string>
+    <string name="exit">退出</string>
 </resources>

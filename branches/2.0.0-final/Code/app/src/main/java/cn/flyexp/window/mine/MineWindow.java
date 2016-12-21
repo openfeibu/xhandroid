@@ -23,6 +23,7 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.presenter.mine.MinePresenter;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.window.BaseWindow;
 
@@ -185,6 +186,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     @Override
     public void onNotify(Message mes) {
         if (mes.what == NotifyIDDefine.NOTIFY_MINE_REFRESH) {
+            LogUtil.e("mine notify");
             readyMineRequest();
         } else if (mes.what == NotifyIDDefine.NOTIFY_MESSAGE_PUSH) {
             ((Activity) getContext()).runOnUiThread(new Runnable() {
@@ -216,8 +218,12 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     @Override
     public void responseMyInfo(MyInfoResponse response) {
         responseData = response.getData();
-        tvNickName.setText(responseData.getNickname());
+        LogUtil.e("first:" + responseData.getNickname());
+        LogUtil.e("mine responseData");
+        tvNickName.setText("jklklj");
+        LogUtil.e("second:" + responseData.getNickname());
         tvCampus.setText(responseData.getCollege());
+        LogUtil.e("third:" + responseData.getNickname());
         Glide.with(getContext()).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imgAvatar);
 
         SharePresUtil.putFloat(SharePresUtil.KEY_BALANCE, responseData.getWallet());

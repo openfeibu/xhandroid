@@ -27,19 +27,31 @@
             android:textColor="@color/font_black"
             android:textSize="@dimen/font_most" />
 
-        <ImageView
-            android:id="@+id/img_exit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/onclick_background"
-            android:paddingLeft="@dimen/margin_normal_small"
-            android:paddingRight="@dimen/margin_normal_small"
-            android:src="@mipmap/icon_back" />
+        <!--<ImageView-->
+            <!--android:id="@+id/img_exit"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:background="@drawable/onclick_background"-->
+            <!--android:paddingLeft="@dimen/margin_normal_small"-->
+            <!--android:paddingRight="@dimen/margin_normal_small"-->
+            <!--android:src="@mipmap/icon_back" />-->
 
         <View
             style="@style/horizontalLine"
             android:layout_alignParentBottom="true" />
+
+        <TextView
+            android:id="@+id/tv_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin_normal_small"
+            android:paddingRight="@dimen/margin_normal_small"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="@dimen/font_normal"
+            android:text="@string/exit"/>
     </RelativeLayout>
 
     <ScrollView

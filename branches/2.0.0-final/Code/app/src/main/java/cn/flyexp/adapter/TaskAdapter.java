@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import cn.flyexp.R;
 import cn.flyexp.entity.MyTaskResponse;
 import cn.flyexp.entity.TaskResponse;
 import cn.flyexp.util.DateUtil;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.view.CircleImageView;
 
 /**
@@ -53,7 +55,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(TaskAdapter.TaskViewHolder holder, final int position) {
-        TaskResponse.TaskResponseData responseData = datas.get(position);
+        final TaskResponse.TaskResponseData responseData = datas.get(position);
         holder.tvAddress.setText(String.format(context.getString(R.string.format_task_address), responseData.getDestination()));
         holder.tvContent.setText(responseData.getDescription());
         holder.tvNickName.setText(responseData.getNickname());
@@ -62,14 +64,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.layoutState.setBackgroundColor(tranfStateColor(responseData.getStatus()));
         holder.imgState.setImageDrawable(tranfStateDrawable(responseData.getStatus()));
         Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
-        if (onItemClickLinstener != null && responseData.getStatus().equals("new")) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onItemClickLinstener != null) {
                     onItemClickLinstener.onItemClickLinstener(view, position);
                 }
-            });
-        }
+
+            }
+        });
     }
 
     private int tranfStateColor(String status) {

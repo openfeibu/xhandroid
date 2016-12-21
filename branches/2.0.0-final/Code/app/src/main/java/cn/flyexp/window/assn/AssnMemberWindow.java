@@ -223,7 +223,7 @@ public class AssnMemberWindow extends BaseWindow implements AssnMemberCallback.R
             AssnMemberListRequest assnMemberListRequest = new AssnMemberListRequest();
             assnMemberListRequest.setToken(token);
             assnMemberListRequest.setAssociation_id(aid);
-            assnMemberListRequest.setPage(1);
+            assnMemberListRequest.setPage(page);
             assnMemberPresenter.requestAssnMemberList(assnMemberListRequest);
         }
     }
