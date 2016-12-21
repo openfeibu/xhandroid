@@ -1,112 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_normal"
+    android:background="@color/white"
+    android:minHeight="@dimen/topic_height"
+    android:orientation="horizontal">
+
+    <cn.flyexp.view.CircleImageView
+        android:id="@+id/img_avatar"
+        android:layout_width="@dimen/margin_large"
+        android:layout_height="@dimen/margin_large"
+        android:src="@mipmap/icon_defaultavatar_small" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/topic_height"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/margin_normal">
-
-        <cn.flyexp.view.CircleImageView
-            android:id="@+id/img_avatar"
-            android:layout_width="@dimen/margin_large"
-            android:layout_height="@dimen/margin_large"
-            android:src="@mipmap/icon_defaultavatar_small"/>
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_least"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_least"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_least">
 
-            <LinearLayout
-                android:layout_marginBottom="@dimen/margin_least"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_nickname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_normal" />
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_small" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_content"
-                    android:layout_marginTop="@dimen/margin_normal"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_normal"
-                    android:textColor="@color/font_black"
-                    android:lines="1"
-                    android:ellipsize="end" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="@dimen/margin_normal"
+            <TextView
+                android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:textSize="@dimen/font_normal" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="阅读"
-                    android:textSize="@dimen/font_least" />
-
-                <TextView
-                    android:id="@+id/tv_viewnum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_least" />
-
-                <TextView
-                    android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_least"
-                    android:text="评论"/>
-                <TextView
-                    android:id="@+id/tv_commentnum"
-                    android:layout_width="wrap_content"
-                    android:layout_height= "wrap_content"
-                    android:textSize="@dimen/font_least" />
-
-                <TextView
-                    android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_least"
-                    android:text="喜欢"/>
-                <TextView
-                    android:id="@+id/tv_favourites_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_least" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:textSize="@dimen/font_small" />
         </LinearLayout>
-        <ImageView
-            android:visibility="visible"
-            android:id="@+id/img_topicphoto"
-            android:layout_alignParentRight="true"
-            android:layout_width="@dimen/img_width"
-            android:layout_height="@dimen/img_width"
-            android:src="@mipmap/icon_defaultavatar_small" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/font_normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="阅读"
+                android:textSize="@dimen/font_least" />
+
+            <TextView
+                android:id="@+id/tv_viewnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_least" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:text="评论"
+                android:textSize="@dimen/font_least" />
+
+            <TextView
+                android:id="@+id/tv_commentnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_least" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:text="喜欢"
+                android:textSize="@dimen/font_least" />
+
+            <TextView
+                android:id="@+id/tv_favourites_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_least" />
+        </LinearLayout>
     </LinearLayout>
 
-
-</android.support.v7.widget.CardView>
+    <ImageView
+        android:id="@+id/img_topicphoto"
+        android:layout_width="@dimen/img_width"
+        android:layout_height="@dimen/img_width"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/icon_defaultavatar_small"
+        android:visibility="visible" />
+</LinearLayout>

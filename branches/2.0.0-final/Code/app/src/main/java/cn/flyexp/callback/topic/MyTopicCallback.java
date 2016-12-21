@@ -16,28 +16,11 @@ import cn.flyexp.entity.TopicListResponse;
  */
 public interface MyTopicCallback {
 
-    interface RequestCallback extends BaseRequestCallback {
+    interface RequestCallback extends BaseRequestCallback{
         void requestMyTopicList(TopicListRequest request);
-
-        void requestComment(CommentRequest request);
-
-        void requestThumbUp(ThumbUpRequest request);
-
-        void requestDeleteComment(DeleteCommentRequest request);
-
-        void requestDeleteTopic(DeleteTopicRequest request);
     }
 
     interface ResponseCallback extends BaseResponseCallback {
         void responseMyTopicList(TopicListResponse response);
-
-        void responseComment(CommentResponse response);
-
-        void responseThumbUp(BaseResponse response);
-
-        void responseDeleteComment(BaseResponse response);
-
-        void responseDeleteTopic(BaseResponse response);
     }
-
 }

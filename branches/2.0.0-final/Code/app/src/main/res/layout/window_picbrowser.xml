@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/font_topic">
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_pic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    android:background="@color/font_topic"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="@dimen/tool_bar_height">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/img_back"
@@ -52,11 +48,17 @@
             android:layout_marginRight="@dimen/margin_normal"
             android:text="@string/delete"
             android:textColor="@color/font_black"
-            android:visibility="gone"
-            android:textSize="@dimen/font_large" />
+            android:textSize="@dimen/font_large"
+            android:visibility="gone" />
 
         <View
             style="@style/horizontalLine"
             android:layout_alignParentBottom="true" />
     </RelativeLayout>
-</RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

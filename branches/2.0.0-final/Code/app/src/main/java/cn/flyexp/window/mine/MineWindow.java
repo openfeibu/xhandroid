@@ -1,5 +1,7 @@
 package cn.flyexp.window.mine;
 
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
@@ -35,9 +37,24 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     TextView tvNickName;
     @InjectView(R.id.tv_campus)
     TextView tvCampus;
+    @InjectView(R.id.tv_mytopic)
+    TextView tvMyTopic;
+    @InjectView(R.id.tv_mytask)
+    TextView tvMyTask;
+    @InjectView(R.id.tv_message)
+    TextView tvMessage;
 
     private MinePresenter minePresenter;
     private MyInfoResponse.MyInfoResponseData responseData = new MyInfoResponse().new MyInfoResponseData();
+    private Drawable remineTopic;
+    private Drawable remineTask;
+    private Drawable remineMessage;
+    private boolean isTopicRemine;
+    private boolean isTaskRemine;
+    private boolean isMessageRemine;
+    private Drawable topicDrawable;
+    private Drawable taskDrawable;
+    private Drawable messageDrawable;
 
     @Override
     protected int getLayoutId() {
@@ -47,11 +64,28 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     public MineWindow() {
         minePresenter = new MinePresenter(this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_MINE_REFRESH, this);
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_MESSAGE_PUSH, this);
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_MYTASK_PUSH, this);
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC_PUSH, this);
         initView();
         readyMineRequest();
     }
 
     private void initView() {
+        remineTopic = getResources().getDrawable(R.mipmap.icon_mine_campustask_remind);
+        remineTask = getResources().getDrawable(R.mipmap.icon_mine_campustask_remind);
+        remineMessage = getResources().getDrawable(R.mipmap.icon_message_sel);
+        remineTopic.setBounds(0, 0, remineTopic.getMinimumWidth(), remineTopic.getMinimumHeight());
+        remineTask.setBounds(0, 0, remineTopic.getMinimumWidth(), remineTopic.getMinimumHeight());
+        remineMessage.setBounds(0, 0, remineTopic.getMinimumWidth(), remineTopic.getMinimumHeight());
+
+        topicDrawable = getResources().getDrawable(R.mipmap.icon_mine_topic);
+        taskDrawable = getResources().getDrawable(R.mipmap.icon_mine_campustask);
+        messageDrawable = getResources().getDrawable(R.mipmap.icon_message_nor);
+        topicDrawable.setBounds(0, 0, topicDrawable.getMinimumWidth(), topicDrawable.getMinimumHeight());
+        taskDrawable.setBounds(0, 0, taskDrawable.getMinimumWidth(), taskDrawable.getMinimumHeight());
+        messageDrawable.setBounds(0, 0, messageDrawable.getMinimumWidth(), messageDrawable.getMinimumHeight());
+
         String nickname = SharePresUtil.getString(SharePresUtil.KEY_NICK_NAME);
         String college = SharePresUtil.getString(SharePresUtil.KEY_COLLEGE);
         tvNickName.setText(nickname);
@@ -74,6 +108,10 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
                 showToast(R.string.comming_soon);
                 break;
             case R.id.tv_message:
+                if (isMessageRemine) {
+                    tvMyTopic.setCompoundDrawables(null, messageDrawable, null, null);
+                    isMessageRemine = false;
+                }
                 openWindow(WindowIDDefine.WINDOW_MESSAGE);
                 break;
             case R.id.layout_myinfo:
@@ -84,9 +122,17 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
                 }
                 break;
             case R.id.tv_mytopic:
+                if (isTopicRemine) {
+                    tvMyTopic.setCompoundDrawables(null, topicDrawable, null, null);
+                    isTopicRemine = false;
+                }
                 openWindow(WindowIDDefine.WINDOW_MYTOPIC);
                 break;
             case R.id.tv_mytask:
+                if (isTaskRemine) {
+                    tvMyTask.setCompoundDrawables(null, taskDrawable, null, null);
+                    isTaskRemine = false;
+                }
                 openWindow(WindowIDDefine.WINDOW_MYTASK);
                 break;
             case R.id.tv_myorder:
@@ -140,6 +186,30 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     public void onNotify(Message mes) {
         if (mes.what == NotifyIDDefine.NOTIFY_MINE_REFRESH) {
             readyMineRequest();
+        } else if (mes.what == NotifyIDDefine.NOTIFY_MESSAGE_PUSH) {
+            ((Activity) getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    isMessageRemine = true;
+                    tvMessage.setCompoundDrawables(remineMessage, null, null, null);
+                }
+            });
+        } else if (mes.what == NotifyIDDefine.NOTIFY_MYTASK_PUSH) {
+            ((Activity) getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    isTaskRemine = true;
+                    tvMyTask.setCompoundDrawables(null, remineTask, null, null);
+                }
+            });
+        } else if (mes.what == NotifyIDDefine.NOTIFY_TOPIC_PUSH) {
+            ((Activity) getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    isTopicRemine = true;
+                    tvMyTopic.setCompoundDrawables(null, remineTopic, null, null);
+                }
+            });
         }
     }
 

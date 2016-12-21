@@ -25,6 +25,7 @@ import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.topic.TopicPresenter;
 import cn.flyexp.util.SharePresUtil;
+import cn.flyexp.view.DividerItemDecoration;
 import cn.flyexp.view.LoadMoreRecyclerView;
 import cn.flyexp.window.BaseWindow;
 
@@ -72,6 +73,7 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
             }
         });
         rvTopic.setAdapter(topicAdapter);
+        rvTopic.addItemDecoration(new DividerItemDecoration(getContext()));
         rvTopic.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTopic.setLoadMoreLinstener(new LoadMoreRecyclerView.LoadMoreLinstener() {
             @Override
@@ -106,7 +108,7 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
 
     @Override
     public void responseTopicList(TopicListResponse response) {
-        if(isRefresh) {
+        if (isRefresh) {
             datas.clear();
             isRefresh = false;
         }
@@ -116,8 +118,19 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
 
     @Override
     public void onNotify(Message mes) {
-
+        if(mes.what == NotifyIDDefine.NOTIFY_TOPIC){
+            isRefresh = true;
+            readyTopicList();
+        }
     }
+
+    @Override
+    public void requestFailure() {
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+    }
+
 
     @Override
     public void requestFinish() {

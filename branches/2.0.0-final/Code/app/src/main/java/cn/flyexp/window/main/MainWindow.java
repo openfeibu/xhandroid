@@ -45,6 +45,7 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
     private View[] views = new View[5];
     private boolean[] vis = new boolean[5];
     private int lastIndex = -1;
+    private Drawable remineMine;
 
     @Override
     protected int getLayoutId() {
@@ -54,6 +55,7 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
     public MainWindow() {
         getNotifyManager().register(NotifyIDDefine.NOTICE_MAIN_HOME, this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_MAIN_TASK, this);
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_MAIN_PUSH, this);
         initView();
         loadPushData();
     }
@@ -69,6 +71,14 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
         tabDrawable[3][1] = getResources().getDrawable(R.mipmap.icon_store_sel);
         tabDrawable[4][0] = getResources().getDrawable(R.mipmap.icon_mine_nor);
         tabDrawable[4][1] = getResources().getDrawable(R.mipmap.icon_mine_sel);
+
+        remineMine = getResources().getDrawable(R.mipmap.icon_mine_news);
+        remineMine.setBounds(0, 0, remineMine.getMinimumWidth(), remineMine.getMinimumHeight());
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                tabDrawable[i][j].setBounds(0, 0, tabDrawable[i][j].getMinimumWidth(), tabDrawable[i][j].getMinimumHeight());
+            }
+        }
 
         views[0] = new HomeWindow();
         views[1] = new TaskWindow();
@@ -93,12 +103,10 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
         for (int i = 0; i < 5; i++) {
             if (i == index) {
                 tvTabs.get(i).setTextColor(getResources().getColor(R.color.light_blue));
-                tabDrawable[i][1].setBounds(0, 0, tabDrawable[i][1].getMinimumWidth(), tabDrawable[i][1].getMinimumHeight());
                 tvTabs.get(i).setCompoundDrawables(null, tabDrawable[i][1], null, null);
                 ((BaseWindow) views[index]).onResume();
             } else {
                 tvTabs.get(i).setTextColor(getResources().getColor(R.color.font_dark));
-                tabDrawable[i][0].setBounds(0, 0, tabDrawable[i][0].getMinimumWidth(), tabDrawable[i][0].getMinimumHeight());
                 tvTabs.get(i).setCompoundDrawables(null, tabDrawable[i][0], null, null);
                 ((BaseWindow) views[index]).onStop();
             }
@@ -168,6 +176,15 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
             switchWindow(0);
         } else if (mes.what == NotifyIDDefine.NOTIFY_MAIN_TASK) {
             switchWindow(1);
+        } else if (mes.what == NotifyIDDefine.NOTIFY_MAIN_PUSH) {
+            if (lastIndex != 4) {
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTabs.get(4).setCompoundDrawables(null, remineMine, null, null);
+                    }
+                });
+            }
         }
     }
 }

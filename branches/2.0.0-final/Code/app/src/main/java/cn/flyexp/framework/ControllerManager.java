@@ -22,6 +22,7 @@ import cn.flyexp.window.mine.FeedbackWindow;
 import cn.flyexp.window.mine.MessageWindow;
 import cn.flyexp.window.mine.SettingWindow;
 import cn.flyexp.window.mine.ShareWindow;
+import cn.flyexp.window.other.EditWindow;
 import cn.flyexp.window.other.GalleryWindow;
 import cn.flyexp.window.other.GuideWindow;
 import cn.flyexp.window.other.PicBrowserWindow;
@@ -41,7 +42,6 @@ import cn.flyexp.window.user.LoginWindow;
 import cn.flyexp.window.user.RegisterVercodeWindow;
 import cn.flyexp.window.user.RegisterWindow;
 import cn.flyexp.window.user.ResetPwdVercodeWindow;
-import cn.flyexp.window.user.MyInfoEditWindow;
 import cn.flyexp.window.user.MyInfoWindow;
 import cn.flyexp.window.user.ResetPwdWindow;
 import cn.flyexp.window.wallet.BindAlipayWindow;
@@ -181,10 +181,6 @@ public class ControllerManager {
                 new MyTopicWindow().showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_MYINFO) {
                 new MyInfoWindow(msg.getData()).showWindow(true);
-            } else if (msg.what == WindowIDDefine.WINDOW_MYINFO_EDIT) {
-                new MyInfoEditWindow(msg.getData()).showWindow(true);
-            } else if (msg.what == WindowIDDefine.WINDOW_OTHERS) {
-                new MyInfoEditWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_GALLERY) {
                 new GalleryWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_TOPIC_DETAIL) {
@@ -193,6 +189,8 @@ public class ControllerManager {
                 new AssnMemberWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_CHANGEPWD) {
                 new ChangePwdWindow().showWindow(true);
+            } else if (msg.what == WindowIDDefine.WINDOW_EDIT) {
+                new EditWindow(msg.getData()).showWindow(true);
             }
         }
     }

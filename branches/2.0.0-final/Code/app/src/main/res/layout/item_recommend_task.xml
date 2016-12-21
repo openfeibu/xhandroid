@@ -54,7 +54,7 @@
             android:id="@+id/tv_money"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:background="@color/black"
+            android:background="@color/font_topic"
             android:gravity="center"
             android:textColor="@color/white" />
     </LinearLayout>

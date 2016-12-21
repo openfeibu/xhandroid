@@ -23,7 +23,7 @@ public class NotifyIDDefine {
 
     public static int NOTIFY_ASSN_NOTICE_REFRESH = generateMessageId();
 
-    public static int NOTIFY_MINE_MYTASK_REFRESH = generateMessageId();
+    public static int NOTIFY_MYTASK_PUSH = generateMessageId();
 
     public static int NOTIFY_MYTASK = generateMessageId();
 
@@ -33,6 +33,8 @@ public class NotifyIDDefine {
 
     public static int NOTIFY_TOPIC_PUSH = generateMessageId();
 
+    public static int NOTIFY_MAIN_PUSH = generateMessageId();
+
     public static int NOTIFY_TOPIC = generateMessageId();
 
     public static int NOTIFY_MINE_REFRESH = generateMessageId();
@@ -41,7 +43,7 @@ public class NotifyIDDefine {
 
     public static int NOTIFY_MAIN_TASK = generateMessageId();
 
-    public static int NOTIFY_MESSAGE_REFRESH = generateMessageId();
+    public static int NOTIFY_MESSAGE_PUSH = generateMessageId();
 
     public static int NOTICE_MAIN_HOME = generateMessageId();
 

@@ -121,8 +121,7 @@ public class MyTaskWindow extends BaseWindow implements MyTaskCallback.ResponseC
             @Override
             public void onItemClickLinstener(View view, int position) {
                 Bundle bundle = new Bundle();
-                bundle.putBoolean("mytask", true);
-                bundle.putSerializable("mytaskDetail", myTaskdatas.get(position));
+                bundle.putSerializable("myTaskDetail", myTaskdatas.get(position));
                 openWindow(WindowIDDefine.WINDOW_MYTASK_DETAIL, bundle);
             }
         });
@@ -153,8 +152,7 @@ public class MyTaskWindow extends BaseWindow implements MyTaskCallback.ResponseC
             @Override
             public void onItemClickLinstener(View view, int position) {
                 Bundle bundle = new Bundle();
-                bundle.putBoolean("mytask", false);
-                bundle.putSerializable("mytaskDetail", myOrderdatas.get(position));
+                bundle.putSerializable("myTaskDetail", myOrderdatas.get(position));
                 openWindow(WindowIDDefine.WINDOW_MYTASK_DETAIL, bundle);
             }
         });

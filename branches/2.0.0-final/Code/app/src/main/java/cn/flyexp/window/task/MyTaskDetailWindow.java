@@ -3,12 +3,16 @@ package cn.flyexp.window.task;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +22,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -37,6 +44,7 @@ import cn.flyexp.util.DateUtil;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.ShareHelper;
 import cn.flyexp.util.SharePresUtil;
+import cn.flyexp.view.CircleImageView;
 import cn.flyexp.view.PasswordView;
 import cn.flyexp.view.TaskStepView;
 import cn.flyexp.window.BaseWindow;
@@ -47,10 +55,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallback.ResponseCallback {
 
+    @InjectView(R.id.img_avatar)
+    CircleImageView imgAvatar;
     @InjectView(R.id.tv_nickname)
     TextView tvNickname;
-    @InjectView(R.id.tv_state)
-    TextView tvState;
+    @InjectView(R.id.img_state)
+    ImageView imgState;
     @InjectView(R.id.tv_fee)
     TextView tvFee;
     @InjectView(R.id.tv_destination)
@@ -67,7 +77,6 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     private MyTaskResponse.MyTaskResponseData data;
     private MyTaskDetailPresenter myTaskDetailPresenter;
     private PopupWindow popupWindow;
-    private String currState;
     private boolean isTask;
     private SweetAlertDialog loadingDialog;
     private View inputPayPwdLayout;
@@ -85,7 +94,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
             showToast(R.string.data_unable);
             return;
         }
-        isTask = TextUtils.equals(data.getType(),"work");
+        isTask = TextUtils.equals(data.getType(), "work");
         myTaskDetailPresenter = new MyTaskDetailPresenter(this);
         loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.commiting));
         inputPayPwdLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_input_paypwd, null);
@@ -96,10 +105,17 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     private void initView() {
         hideViewByStatus(data.getStatus());
         tvNickname.setText(String.format(getResources().getString(R.string.task_sender), data.getNickname()));
-        tvFee.setText(String.format(getResources().getString(R.string.format_task_money), data.getFee()));
-        tvDestination.setText(data.getDestination());
-        tvDescription.setText(data.getDescription());
-        tvState.setText(currState);
+        SpannableStringBuilder feeStr = new SpannableStringBuilder("赏金： "
+                + String.format(getResources().getString(R.string.format_task_money),
+                String.valueOf(data.getFee())));
+        feeStr.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.font_dark)),
+                0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvFee.setText(feeStr);
+        tvDestination.setText(data.getDestination().trim());
+        tvDescription.setText(data.getDescription().trim());
+        Glide.with(getContext()).load(data.getAvatar_url())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imgAvatar);
+        imgState.setImageDrawable(tranfStateDrawable(data.getStatus()));
         MyTaskResponse.MyTaskResponseData.TimeData timeData = data.getTime();
         if (TextUtils.isEmpty(timeData.getNew_time())) {
             taskStepView.showCancel(timeData.getCancelled_time());
@@ -167,7 +183,6 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
 
     private void hideViewByStatus(String status) {
         if (status.equals("new")) {
-            currState = getResources().getString(R.string.task_state_new);
             if (isTask) {
                 btnTask.setVisibility(GONE);
                 imgShare.setVisibility(VISIBLE);
@@ -175,25 +190,41 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                 btnTask.setText(R.string.cancel_task);
             }
         } else if (status.equals("finish")) {
-            currState = getResources().getString(R.string.task_state_finish);
             if (isTask) {
                 btnTask.setText(R.string.complete_task);
             } else {
                 btnTask.setVisibility(GONE);
             }
         } else if (status.equals("accepted")) {
-            currState = getResources().getString(R.string.task_state_accepted);
             if (isTask) {
                 btnTask.setVisibility(GONE);
             } else {
                 btnTask.setText(R.string.finish_task);
             }
         } else if (status.equals("completed")) {
-            currState = getResources().getString(R.string.task_state_completed);
             btnTask.setVisibility(GONE);
         } else {
             btnTask.setVisibility(GONE);
         }
+    }
+
+    private Drawable tranfStateDrawable(String status) {
+        Drawable drawable = getResources().getDrawable(R.mipmap.icon_task_end);
+        if (TextUtils.isEmpty(status)) {
+            return drawable;
+        }
+        if (TextUtils.equals(status, "new")) {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_notstarted);
+        } else if (TextUtils.equals(status, "accepted")) {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_ongoing);
+        } else if (TextUtils.equals(status, "completed")) {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_end);
+        } else if (TextUtils.equals(status, "finish")) {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_bechecked);
+        } else {
+            drawable = getResources().getDrawable(R.mipmap.icon_task_end);
+        }
+        return drawable;
     }
 
 
@@ -318,7 +349,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     @Override
     public void responseTaskCancel(BaseResponse response) {
         getNotifyManager().notify(NotifyIDDefine.NOTIFY_MYTASK);
-        tvState.setText(R.string.task_state_cancel);
+        imgState.setVisibility(GONE);
         btnTask.setVisibility(GONE);
         showToast(R.string.task_cancel_success);
     }
@@ -326,7 +357,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     @Override
     public void responseTaskFinish(BaseResponse response) {
         getNotifyManager().notify(NotifyIDDefine.NOTIFY_MYTASK);
-        tvState.setText(R.string.task_state_finish);
+        imgState.setImageDrawable(tranfStateDrawable("finish"));
         btnTask.setVisibility(GONE);
         showToast(R.string.task_finish_success);
     }
@@ -334,7 +365,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     @Override
     public void responseTaskComplete(BaseResponse response) {
         getNotifyManager().notify(NotifyIDDefine.NOTIFY_MYTASK);
-        tvState.setText(R.string.task_state_completed);
+        imgState.setImageDrawable(tranfStateDrawable("completed"));
         btnTask.setVisibility(GONE);
         showToast(R.string.task_complete_success);
     }

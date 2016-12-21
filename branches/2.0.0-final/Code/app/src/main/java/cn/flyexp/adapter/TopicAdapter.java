@@ -28,32 +28,13 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     private Context context;
     private ArrayList<TopicResponseData> datas;
     private OnItemClickLinstener onItemClickLinstener;
-    private OnTopicClickListener onTopicClickListener;
 
     public void setOnItemClickLinstener(OnItemClickLinstener onItemClickLinstener) {
         this.onItemClickLinstener = onItemClickLinstener;
     }
-
-    public void setOnTopicClickListener(OnTopicClickListener onTopicClickListener) {
-        this.onTopicClickListener = onTopicClickListener;
-    }
     public interface OnItemClickLinstener {
         void onItemClickLinstener(View view, int position);
     }
-
-
-    public interface OnTopicClickListener {
-        void onLikeClick(int position);
-
-        void onCommentClick(int position, int cpos, int commentid, String nickname, String openid);
-
-        void onPicClick(int position, int picPosition);
-
-        void onDeleteTopicClick(int position);
-
-        void onLongClick();
-    }
-
 
     public TopicAdapter(Context context, ArrayList<TopicResponseData> datas) {
         this.context = context;
@@ -66,22 +47,21 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
-        TopicViewHolder viewHolder = (TopicViewHolder)holder;
         final TopicResponseData responseData = datas.get(position);
-        viewHolder.tvNickname.setText(responseData.getNickname());
-        viewHolder.tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData.getCreated_at())));
-        viewHolder.tvCommentNum.setText(String.valueOf(responseData.getComment_num()));
-        viewHolder.tvViewNum.setText(String.valueOf(responseData.getView_num()));
-        viewHolder.tvFavouritesCount.setText(String.valueOf(responseData.getFavourites_count()));
-        viewHolder.tvContent.setText(responseData.getContent());
+        holder.tvNickname.setText(responseData.getNickname());
+        holder.tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData.getCreated_at())));
+        holder.tvCommentNum.setText(String.valueOf(responseData.getComment_num()));
+        holder.tvViewNum.setText(String.valueOf(responseData.getView_num()));
+        holder.tvFavouritesCount.setText(String.valueOf(responseData.getFavourites_count()));
+        holder.tvContent.setText(responseData.getContent());
         if(TextUtils.isEmpty(responseData.getImg())) {
-            viewHolder.imgtopicphoto.setVisibility(View.GONE);
+            holder.imgtopicphoto.setVisibility(View.GONE);
         } else {
-            Glide.with(context).load(responseData.getImg()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgtopicphoto);
+            Glide.with(context).load(responseData.getImg()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgtopicphoto);
         }
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgavatar);
+        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgavatar);
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (onItemClickLinstener != null) {

@@ -366,7 +366,6 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         if (isRefresh) {
             comments.clear();
         }
-        Collections.reverse(response.getData());
         comments.addAll(response.getData());
         topicCommentAdapter.notifyDataSetChanged();
     }

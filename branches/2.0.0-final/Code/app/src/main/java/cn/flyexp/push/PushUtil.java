@@ -3,17 +3,10 @@ package cn.flyexp.push;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.ta.utdid2.android.utils.SystemUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.flyexp.entity.MyTaskResponse;
@@ -36,11 +29,11 @@ public class PushUtil {
 
     /**
      * 分发透传数据
-     * <p/>
+     * <p>
      * refresh: 1或0 是否刷新
      * target: 指定区域  ad、extra、assn_hotact、message、assn_member_review、assn_act、assn_notice、mytask、topic
      * data: 数据或null
-     * <p/>
+     * <p>
      * 通知刷新的window未初始化用sharedpreference保存
      *
      * @param throughData 透传数据
@@ -53,13 +46,14 @@ public class PushUtil {
         String target = pushThroughBean.getTarget();
         if (refresh == 1) {
             if (TextUtils.equals(target, "message")) {
-                mes.what = NotifyIDDefine.NOTIFY_MESSAGE_REFRESH;
+                mes.what = NotifyIDDefine.NOTIFY_MESSAGE_PUSH;
             } else if (TextUtils.equals(target, "mytask")) {
-                mes.what = NotifyIDDefine.NOTIFY_MINE_MYTASK_REFRESH;
+                mes.what = NotifyIDDefine.NOTIFY_MYTASK_PUSH;
             } else if (TextUtils.equals(target, "topic")) {
                 mes.what = NotifyIDDefine.NOTIFY_TOPIC_PUSH;
             }
             BaseWindow.getNotifyManager().notify(mes);
+            BaseWindow.getNotifyManager().notify(NotifyIDDefine.NOTICE_MAIN_HOME);
         }
     }
 
@@ -103,8 +97,8 @@ public class PushUtil {
         if (isAppAlive(context, "cn.flyexp")) {
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("cn.flyexp");
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            launchIntent.putExtra("pushBundle",bundle);
-            launchIntent.putExtra("windowId",windowId);
+            launchIntent.putExtra("pushBundle", bundle);
+            launchIntent.putExtra("windowId", windowId);
             context.startActivity(launchIntent);
         } else {
             ControllerManager.getInstance().sendMessage(windowId, bundle);
