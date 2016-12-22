@@ -21,7 +21,7 @@ import cn.flyexp.view.CircleImageView;
 /**
  * Created by tanxinye on 2016/10/29.
  */
-public class AssnListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AssnListAdapter extends RecyclerView.Adapter<AssnListAdapter.AssnListViewHolder> {
 
     private Context context;
     private ArrayList<AssnListResponse.AssnListResponseData.AssnResponseData> datas;
@@ -41,19 +41,18 @@ public class AssnListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AssnListAdapter.AssnListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new AssnListViewHolder(LayoutInflater.from(context).inflate(R.layout.item_assnlist, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(AssnListAdapter.AssnListViewHolder holder, final int position) {
         AssnListResponse.AssnListResponseData.AssnResponseData responseData = datas.get(position);
-        AssnListViewHolder viewHolder = (AssnListViewHolder) holder;
-        viewHolder.tvAssnName.setText(responseData.getAname());
-        viewHolder.tvLeader.setText(responseData.getLeader());
-        viewHolder.tvDescription.setText(responseData.getIntroduction());
-        viewHolder.tvDetail.setText(String.format(context.getResources().getString(R.string.assnlist_detail), responseData.getMember_number(), responseData.getActivity_count(), responseData.getLabel()));
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgAvatar);
+        holder.tvAssnName.setText(responseData.getAname());
+        holder.tvLeader.setText(responseData.getLeader());
+        holder.tvDescription.setText(responseData.getIntroduction());
+        holder.tvDetail.setText(String.format(context.getResources().getString(R.string.assnlist_detail), responseData.getMember_number(), responseData.getActivity_count(), responseData.getLabel()));
+        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
         if (onItemClickLinstener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,7 +68,7 @@ public class AssnListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return datas.size();
     }
 
-    public class AssnListViewHolder extends RecyclerView.ViewHolder {
+     class AssnListViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.img_avatar)
         CircleImageView imgAvatar;

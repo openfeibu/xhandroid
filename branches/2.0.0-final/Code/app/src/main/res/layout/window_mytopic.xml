@@ -36,16 +36,6 @@
                 android:textColor="@color/font_black"
                 android:textSize="@dimen/font_most" />
 
-            <ImageView
-                android:id="@+id/img_publish"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/onclick_background"
-                android:paddingLeft="@dimen/margin_normal_small"
-                android:paddingRight="@dimen/margin_normal_small"
-                android:src="@mipmap/icon_release" />
-
             <View
                 style="@style/horizontalLine"
                 android:layout_alignParentBottom="true" />

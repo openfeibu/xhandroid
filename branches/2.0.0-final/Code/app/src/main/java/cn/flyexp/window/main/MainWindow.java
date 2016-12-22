@@ -153,6 +153,7 @@ public class MainWindow extends BaseWindow implements NotifyManager.Notify {
     @Override
     public void onResume() {
         ((BaseWindow) views[0]).onResume();
+        ((BaseWindow) views[2]).onResume();
     }
 
     public void getPushData() {

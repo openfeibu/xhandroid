@@ -34,14 +34,16 @@ public class TopicResponseData implements Serializable {
     private String openid;
     @SerializedName("tid")
     private int tid;
+    @SerializedName("thumb")
+    private String thumb;
 
-    @SerializedName("comment")
-    private ArrayList<CommentResponseData> comment;
-
-    public ArrayList<CommentResponseData> getComment() {
-        return comment;
+    public String getThumb() {
+        return thumb;
     }
 
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
 
     public int getTid() {
         return tid;
@@ -51,9 +53,6 @@ public class TopicResponseData implements Serializable {
         this.tid = tid;
     }
 
-    public void setComment(ArrayList<CommentResponseData> comment) {
-        this.comment = comment;
-    }
 
     public String getOpenid() {
         return openid;

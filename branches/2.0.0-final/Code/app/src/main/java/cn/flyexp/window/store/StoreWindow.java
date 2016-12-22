@@ -6,6 +6,7 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import org.json.JSONException;
@@ -63,6 +64,14 @@ public class StoreWindow extends BaseWindow implements WebCallback.ResponseCallb
         webSettings.setAppCachePath(appCachePath);
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
     }
 
     private class JavaScriptInterface {

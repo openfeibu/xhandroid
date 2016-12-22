@@ -2,6 +2,7 @@ package cn.flyexp.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by tanxinye on 2016/10/26.
@@ -11,7 +12,7 @@ public class DateUtil {
     public static long date2Long(String dateStr) {
         if (dateStr == null || dateStr.equals(""))
             return 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         Date date = null;
         try {
             date = sdf.parse(dateStr);
@@ -27,7 +28,7 @@ public class DateUtil {
     public static String long2Date(long t, String format) {
         if (t < 0)
             return "";
-        SimpleDateFormat myFormatter = new SimpleDateFormat(format);
+        SimpleDateFormat myFormatter = new SimpleDateFormat(format,Locale.CHINA);
         Date date = null;
         String dateStr = null;
         try {

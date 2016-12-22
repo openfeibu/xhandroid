@@ -39,7 +39,7 @@ public interface TopicService {
     @POST("topic/deleteTopic/")
     Observable<EncodeData> deleteTopicRequest(@Body DeleteTopicRequest request);
 
-    @GET("topic/getMyTopic/")
+    @GET("topic/getMyTopics/")
     Observable<EncodeData> myTopicListRequest(@Query("data") String data);
 
     @GET("topic/getTopicCommentsList/")

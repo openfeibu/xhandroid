@@ -108,9 +108,9 @@ public class ImageUtil {
         }
         Cursor cursor = contentResolver.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection.toArray(new String[projection.size()]), selection,
-                selectionArgs, MediaStore.Images.Media.DATE_ADDED +" DESC LIMIT " + limit +" OFFSET " + offset);
+                selectionArgs, MediaStore.Images.Media.DATE_ADDED + " DESC LIMIT " + limit + " OFFSET " + offset);
         if (cursor != null && cursor.getCount() > 0) {
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 ImageBean imageBean = parseImageCursorAndCreateThumImage(cursor);
                 list.add(imageBean);
             }
@@ -120,6 +120,7 @@ public class ImageUtil {
 
     /**
      * 解析图片cursor 并且创建缩略图
+     *
      * @param cursor
      * @return
      */
@@ -144,7 +145,7 @@ public class ImageUtil {
         imageBean.setThumbnailBigPath(createThumbnailBigFileName(originalPath).getAbsolutePath());
         imageBean.setThumbnailSmallPath(createThumbnailSmallFileName(originalPath).getAbsolutePath());
         int width = 0, height = 0;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             width = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
             height = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
         } else {
@@ -171,18 +172,19 @@ public class ImageUtil {
 
     public static File createThumbnailBigFileName(String originalPath) {
         File storeFile = StorageUtil.getCacheDirectory(MainActivity.getContext());
-        File bigThumFile = new File(storeFile, "big_" +originalPath);
+        File bigThumFile = new File(storeFile, "big_" + originalPath);
         return bigThumFile;
     }
 
     public static File createThumbnailSmallFileName(String originalPath) {
         File storeFile = StorageUtil.getCacheDirectory(MainActivity.getContext());
-        File smallThumFile = new File(storeFile, "small_" +originalPath);
+        File smallThumFile = new File(storeFile, "small_" + originalPath);
         return smallThumFile;
     }
 
     /**
      * 根据原图获取图片相关信息
+     *
      * @param context
      * @param originalPath
      * @return
@@ -202,19 +204,19 @@ public class ImageUtil {
         projection.add(MediaStore.Images.Media.LONGITUDE);
         projection.add(MediaStore.Images.Media.ORIENTATION);
         projection.add(MediaStore.Images.Media.SIZE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             projection.add(MediaStore.Images.Media.WIDTH);
             projection.add(MediaStore.Images.Media.HEIGHT);
         }
         Cursor cursor = contentResolver.query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection.toArray(new String[projection.size()]), MediaStore.Images.Media.DATA +"=?",
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection.toArray(new String[projection.size()]), MediaStore.Images.Media.DATA + "=?",
                 new String[]{originalPath}, null);
         ImageBean imageBean = null;
-        if(cursor != null && cursor.getCount() > 0) {
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
-            imageBean =  parseImageCursorAndCreateThumImage(cursor);
+            imageBean = parseImageCursorAndCreateThumImage(cursor);
         }
-        if(cursor != null && !cursor.isClosed()){
+        if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
         cursor = null;

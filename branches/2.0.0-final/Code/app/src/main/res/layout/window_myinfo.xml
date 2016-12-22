@@ -27,19 +27,6 @@
             android:textColor="@color/black"
             android:textSize="@dimen/font_most" />
 
-
-        <TextView
-            android:id="@+id/tv_save"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:paddingLeft="@dimen/margin_normal"
-            android:paddingRight="@dimen/margin_normal"
-            android:text="@string/save"
-            android:textColor="@color/black"
-            android:textSize="@dimen/font_large"
-            android:visibility="gone" />
     </RelativeLayout>
 
     <View

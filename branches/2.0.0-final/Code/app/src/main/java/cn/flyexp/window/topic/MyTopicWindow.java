@@ -38,10 +38,9 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
     private MyTopicPresenter myTopicPresenter;
     private TopicAdapter topicAdapter;
     private ArrayList<TopicResponseData> datas = new ArrayList<>();
-    private View layoutTopic;
     private int page = 1;
-    private SwipeRefreshLayout refreshLayout;
     private boolean isRefresh;
+    private int intoPosition;
 
     @Override
     protected int getLayoutId() {
@@ -50,7 +49,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
 
     public MyTopicWindow() {
         myTopicPresenter = new MyTopicPresenter(this);
-        getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC, this);
+        getNotifyManager().notify(NotifyIDDefine.NOTIFY_MYTOPIC_DELETE_ITEM);
         initView();
         readyMyTopicList();
     }
@@ -63,6 +62,7 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("topicDetail", datas.get(position));
                 openWindow(WindowIDDefine.WINDOW_TOPIC_DETAIL, bundle);
+                intoPosition = position;
             }
         });
         rvTopic.setAdapter(topicAdapter);
@@ -75,7 +75,6 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
                 readyMyTopicList();
             }
         });
-
 
     }
 
@@ -90,10 +89,15 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
     }
 
     @Override
+    public void onResume() {
+        topicAdapter.notifyItemChanged(intoPosition);
+    }
+
+    @Override
     public void onNotify(Message mes) {
-        if (mes.what == NotifyIDDefine.NOTIFY_TOPIC) {
-            isRefresh = true;
-            readyMyTopicList();
+        if (mes.what == NotifyIDDefine.NOTIFY_MYTOPIC_DELETE_ITEM) {
+            datas.remove(intoPosition);
+            topicAdapter.notifyItemRemoved(intoPosition);
         }
     }
 
@@ -108,11 +112,11 @@ public class MyTopicWindow extends BaseWindow implements NotifyManager.Notify, M
     }
 
 
-    @OnClick({R.id.img_publish})
+    @OnClick({R.id.img_back})
     void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_publish:
-                openWindow(WindowIDDefine.WINDOW_TOPIC_PUBLISH);
+            case R.id.img_back:
+                hideWindow(true);
                 break;
         }
     }

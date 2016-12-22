@@ -98,7 +98,6 @@
                 android:layout_centerVertical="true"
                 android:src="@mipmap/icon_fillinfo" />
 
-            />
         </RelativeLayout>
 
     </LinearLayout>

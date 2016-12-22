@@ -35,6 +35,7 @@ import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.task.TaskPublishPresenter;
 import cn.flyexp.util.DialogHelper;
+import cn.flyexp.util.EncodeUtil;
 import cn.flyexp.util.PatternUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.PasswordView;
@@ -225,7 +226,7 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
             public void afterTextChanged(Editable editable) {
                 paypwd = passwordView.getText().toString();
                 if (paypwd.length() == 6) {
-                    taskPublishRequest.setPay_password(paypwd);
+                    taskPublishRequest.setPay_password(EncodeUtil.md5Encode(paypwd));
                     taskPublishPresenter.requestTaskPublish(taskPublishRequest);
                     inputPayPwdDialog.dismiss();
                     loadingDialog.show();

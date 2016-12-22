@@ -80,7 +80,7 @@ public class BucketsAdapter extends RecyclerView.Adapter<BucketsAdapter.BucketVi
         }
     }
 
-    static class BucketViewHolder extends RecyclerView.ViewHolder {
+     class BucketViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.img_cover)
         ImageView imgCover;

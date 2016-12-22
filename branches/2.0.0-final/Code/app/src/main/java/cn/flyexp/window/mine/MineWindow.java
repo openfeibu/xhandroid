@@ -73,7 +73,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     }
 
     private void initView() {
-        remineTopic = getResources().getDrawable(R.mipmap.icon_mine_campustask_remind);
+        remineTopic = getResources().getDrawable(R.mipmap.icon_topic_news);
         remineTask = getResources().getDrawable(R.mipmap.icon_mine_campustask_remind);
         remineMessage = getResources().getDrawable(R.mipmap.icon_message_sel);
         remineTopic.setBounds(0, 0, remineTopic.getMinimumWidth(), remineTopic.getMinimumHeight());
@@ -218,13 +218,10 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     @Override
     public void responseMyInfo(MyInfoResponse response) {
         responseData = response.getData();
-        LogUtil.e("first:" + responseData.getNickname());
-        LogUtil.e("mine responseData");
-        tvNickName.setText("jklklj");
-        LogUtil.e("second:" + responseData.getNickname());
+        tvNickName.setText(responseData.getNickname());
         tvCampus.setText(responseData.getCollege());
-        LogUtil.e("third:" + responseData.getNickname());
-        Glide.with(getContext()).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imgAvatar);
+        Glide.with(getContext()).load(responseData.getAvatar_url())
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(imgAvatar);
 
         SharePresUtil.putFloat(SharePresUtil.KEY_BALANCE, responseData.getWallet());
         SharePresUtil.putInt(SharePresUtil.KEY_SETPAYACCOUNT, responseData.getIs_alipay());

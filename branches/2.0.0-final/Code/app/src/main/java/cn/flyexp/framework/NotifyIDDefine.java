@@ -37,6 +37,10 @@ public class NotifyIDDefine {
 
     public static int NOTIFY_TOPIC = generateMessageId();
 
+    public static int NOTIFY_TOPIC_DELETE_ITEM = generateMessageId();
+
+    public static int NOTIFY_MYTOPIC_DELETE_ITEM = generateMessageId();
+
     public static int NOTIFY_MINE_REFRESH = generateMessageId();
 
     public static int NOTIFY_TASK_REFRESH = generateMessageId();

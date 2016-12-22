@@ -98,6 +98,7 @@ public class MyAssnWindow extends BaseWindow implements MyAssnCallback.ResponseC
             rvMyAssn.setVisibility(GONE);
             layoutHint.setVisibility(VISIBLE);
         } else {
+            datas.clear();
             datas.addAll(responseData);
             myAssnAdapter.notifyDataSetChanged();
         }
@@ -105,6 +106,8 @@ public class MyAssnWindow extends BaseWindow implements MyAssnCallback.ResponseC
 
     @Override
     public void onNotify(Message mes) {
-        readyMyAssn();
+        if (mes.what == NotifyIDDefine.NOTICE_MYASSN) {
+            readyMyAssn();
+        }
     }
 }

@@ -40,6 +40,7 @@ import cn.flyexp.entity.DeleteCommentRequest;
 import cn.flyexp.entity.DeleteTopicRequest;
 import cn.flyexp.entity.ThumbUpRequest;
 import cn.flyexp.entity.TopicResponseData;
+import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.topic.TopicDetailPresenter;
 import cn.flyexp.util.DateUtil;
@@ -81,6 +82,7 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
     private PopupWindow popupWindow;
     private EditText edtComment;
     private ArrayList<String> imgs = new ArrayList<>();
+    private ArrayList<String> tImgs = new ArrayList<>();
     private ArrayList<TopicResponseData.CommentResponseData> comments = new ArrayList<>();
     private TopicCommentAdapter topicCommentAdapter;
     private boolean isRefresh;
@@ -112,18 +114,19 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         tvNickName.setText(data.getNickname());
         tvContent.setText(data.getContent().trim());
         tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(data.getCreated_at())));
-        tvDetail.setText(String.format(getResources().getString(R.string.format_topic_detail),
-                String.valueOf(data.getView_num()), String.valueOf(data.getComment_num()),
-                String.valueOf(data.getFavourites_count())));
+        updateDetail();
         Glide.with(getContext()).load(data.getAvatar_url())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imgAvatar);
 
-        if (TextUtils.isEmpty(data.getImg())) {
-            rvTopicPic.setVisibility(GONE);
-        } else {
+        if (!TextUtils.isEmpty(data.getImg())) {
             imgs.addAll(Arrays.asList(splitImageUrl(data.getImg())));
         }
-        TopicPicAdapter topicPicAdapter = new TopicPicAdapter(getContext(), imgs);
+        if (TextUtils.isEmpty(data.getThumb())) {
+            rvTopicPic.setVisibility(GONE);
+        } else {
+            tImgs.addAll(Arrays.asList(splitImageUrl(data.getThumb())));
+        }
+        TopicPicAdapter topicPicAdapter = new TopicPicAdapter(getContext(), tImgs);
         topicPicAdapter.setOnItemClickLinstener(new TopicPicAdapter.OnItemClickLinstener() {
             @Override
             public void onItemClickLinstener(int position) {
@@ -219,7 +222,7 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         }
     }
 
-    public String[] splitImageUrl(String imgUrl) {
+    private String[] splitImageUrl(String imgUrl) {
         return imgUrl.split("\\,");
     }
 
@@ -329,14 +332,12 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         if (TextUtils.isEmpty(token)) {
             renewLogin();
         } else {
-            LogUtil.e("comment" + comment);
             CommentRequest commentRequest = new CommentRequest();
             commentRequest.setToken(token);
             commentRequest.setTopic_comment(comment);
             commentRequest.setTopic_id(data.getTid());
             commentRequest.setComment_id(tcid);
             topicDetailPresenter.requestComment(commentRequest);
-            dialog.show();
         }
     }
 
@@ -368,11 +369,16 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         }
         comments.addAll(response.getData());
         topicCommentAdapter.notifyDataSetChanged();
+        data.setComment_num(comments.size());
+        updateDetail();
     }
 
     @Override
     public void responseThumbUp(BaseResponse response) {
         data.setFavorited(data.getFavorited() == 1 ? 0 : 1);
+        data.setFavourites_count(data.getFavorited() == 1 ? data.getFavourites_count() + 1 :
+                data.getFavourites_count() - 1);
+        updateDetail();
         updateLike(data.getFavorited() == 1);
     }
 
@@ -380,10 +386,20 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
     public void responseDeleteComment(BaseResponse response) {
         comments.remove(deletePosition);
         topicCommentAdapter.notifyDataSetChanged();
+        data.setComment_num(data.getComment_num() - 1);
+        updateDetail();
+    }
+
+    private void updateDetail() {
+        tvDetail.setText(String.format(getResources().getString(R.string.format_topic_detail),
+                String.valueOf(data.getView_num()), String.valueOf(data.getComment_num()),
+                String.valueOf(data.getFavourites_count())));
     }
 
     @Override
     public void responseDeleteTopic(BaseResponse response) {
+        getNotifyManager().notify(NotifyIDDefine.NOTIFY_TOPIC_DELETE_ITEM);
+        getNotifyManager().notify(NotifyIDDefine.NOTIFY_MYTOPIC_DELETE_ITEM);
         hideWindow(true);
     }
 }

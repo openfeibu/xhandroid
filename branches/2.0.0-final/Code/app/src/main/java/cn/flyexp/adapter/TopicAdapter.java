@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,6 +33,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     public void setOnItemClickLinstener(OnItemClickLinstener onItemClickLinstener) {
         this.onItemClickLinstener = onItemClickLinstener;
     }
+
     public interface OnItemClickLinstener {
         void onItemClickLinstener(View view, int position);
     }
@@ -40,9 +42,10 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         this.context = context;
         this.datas = datas;
     }
+
     @Override
     public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TopicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_topic,parent,false));
+        return new TopicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_topic, parent, false));
     }
 
     @Override
@@ -54,11 +57,13 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         holder.tvViewNum.setText(String.valueOf(responseData.getView_num()));
         holder.tvFavouritesCount.setText(String.valueOf(responseData.getFavourites_count()));
         holder.tvContent.setText(responseData.getContent());
-        if(TextUtils.isEmpty(responseData.getImg())) {
+        if (TextUtils.isEmpty(responseData.getThumb())) {
             holder.imgTopicPhoto.setVisibility(View.GONE);
         } else {
             holder.imgTopicPhoto.setVisibility(View.VISIBLE);
-            Glide.with(context).load(responseData.getImg()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgTopicPhoto);
+            Glide.with(context).load(Arrays.asList(splitImageUrl(responseData.getThumb())).get(0))
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgTopicPhoto);
+
         }
         Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
 
@@ -66,10 +71,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
             @Override
             public void onClick(View view) {
                 if (onItemClickLinstener != null) {
-                    onItemClickLinstener.onItemClickLinstener(view,position);
+                    onItemClickLinstener.onItemClickLinstener(view, position);
                 }
             }
         });
+    }
+
+    private String[] splitImageUrl(String imgUrl) {
+        return imgUrl.split("\\,");
     }
 
     @Override
@@ -103,7 +112,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
         public TopicViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this,itemView);
+            ButterKnife.inject(this, itemView);
         }
     }
 }

@@ -62,8 +62,6 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
     TextView tvCertification;
     @InjectView(R.id.tv_address)
     TextView tvAddress;
-    @InjectView(R.id.tv_save)
-    TextView tvSave;
 
     private MyInfoResponse.MyInfoResponseData datas;
     private PopupWindow popupWindow;
@@ -71,7 +69,9 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
     private SweetAlertDialog loadingDialog;
     private int gender;
     private String imgPath;
-    private boolean isSave = true;
+    private String address;
+    private String nickname;
+    private String intro;
 
     @Override
     protected int getLayoutId() {
@@ -132,14 +132,10 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
                 case R.id.tv_man:
                     gender = 1;
                     tvGender.setText("男");
-                    isSave = false;
-                    tvSave.setVisibility(VISIBLE);
                     break;
                 case R.id.tv_women:
                     gender = 2;
                     tvGender.setText("女");
-                    isSave = false;
-                    tvSave.setVisibility(VISIBLE);
                     break;
             }
         }
@@ -147,13 +143,11 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
 
 
     @OnClick({R.id.img_back, R.id.rl_certification, R.id.rl_gender, R.id.rl_avatar,
-            R.id.rl_address, R.id.rl_fillinfo, R.id.rl_nickname, R.id.tv_save})
+            R.id.rl_address, R.id.rl_fillinfo, R.id.rl_nickname})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                if (!isBackInEdit()) {
-                    hideWindow(true);
-                }
+                hideWindow(true);
                 break;
             case R.id.rl_certification:
                 if (SharePresUtil.getInt(SharePresUtil.KEY_AUTH) == 0) {
@@ -164,24 +158,24 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
                 popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.rl_address:
-                if(datas.getAddress().toString().trim() == tvAddress.getText().toString().trim()) {
+                if (datas.getAddress().toString().trim() == tvAddress.getText().toString().trim()) {
                     openEditWindow("常用地址", datas.getAddress(), 20);
                 } else {
-                    openEditWindow("常用地址",tvAddress.getText().toString().trim(),20);
+                    openEditWindow("常用地址", tvAddress.getText().toString().trim(), 20);
                 }
                 break;
             case R.id.rl_fillinfo:
-                if(datas.getIntroduction().toString().trim() == tvIntro.getText().toString().trim()) {
+                if (datas.getIntroduction().toString().trim() == tvIntro.getText().toString().trim()) {
                     openEditWindow("简介", datas.getIntroduction(), 40);
                 } else {
-                    openEditWindow("简介",tvIntro.getText().toString().trim(),40);
+                    openEditWindow("简介", tvIntro.getText().toString().trim(), 40);
                 }
                 break;
             case R.id.rl_nickname:
-                if(datas.getNickname().toString().trim() == tvNickName.getText().toString().trim()) {
+                if (datas.getNickname().toString().trim() == tvNickName.getText().toString().trim()) {
                     openEditWindow("昵称", datas.getNickname(), 6);
                 } else {
-                    openEditWindow("昵称",tvNickName.getText().toString().trim(),6);
+                    openEditWindow("昵称", tvNickName.getText().toString().trim(), 6);
                 }
 
                 break;
@@ -189,10 +183,6 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt("max", 1);
                 openWindow(WindowIDDefine.WINDOW_GALLERY, bundle1);
-                break;
-            case R.id.tv_save:
-                isSave = true;
-                readyChangeMyInfo();
                 break;
         }
     }
@@ -202,7 +192,6 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
         bundle.putString("name", name);
         bundle.putString("value", value);
         bundle.putInt("length", length);
-        bundle.putBoolean("isSave",isSave);
         openWindow(WindowIDDefine.WINDOW_EDIT, bundle);
     }
 
@@ -213,9 +202,9 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
         } else {
             ChangeMyInfoRequest changeMyInfoRequest = new ChangeMyInfoRequest();
             changeMyInfoRequest.setGender(gender);
-            changeMyInfoRequest.setIntroduction(tvIntro.getText().toString());
-            changeMyInfoRequest.setNickname(tvNickName.getText().toString());
-            changeMyInfoRequest.setAddress(tvAddress.getText().toString());
+            changeMyInfoRequest.setIntroduction(TextUtils.isEmpty(intro) ? datas.getIntroduction() : intro);
+            changeMyInfoRequest.setNickname(TextUtils.isEmpty(nickname) ? datas.getNickname() : nickname);
+            changeMyInfoRequest.setAddress(TextUtils.isEmpty(address) ? datas.getAddress() : address);
             changeMyInfoRequest.setToken(token);
             myInfoEditPresenter.requestChangeMyInfo(changeMyInfoRequest);
             loadingDialog.show();
@@ -227,13 +216,13 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
         if (TextUtils.isEmpty(token)) {
             renewLogin();
         } else {
-            new Thread(){
+            new Thread() {
                 @Override
                 public void run() {
                     ArrayList<File> files = new ArrayList<>();
                     files.add(BitmapUtil.compressBmpToFile(imgPath));
                     MultipartBody multipartBody = UploadFileHelper.uploadMultipartFile(files);
-                    myInfoEditPresenter.requestUploadAvatar(multipartBody,new TokenRequest(token));
+                    myInfoEditPresenter.requestUploadAvatar(multipartBody, new TokenRequest(token));
                 }
             }.start();
         }
@@ -243,6 +232,12 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
         WindowManager.LayoutParams lp = ((Activity) getContext()).getWindow().getAttributes();
         lp.alpha = v;
         ((Activity) getContext()).getWindow().setAttributes(lp);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        readyChangeMyInfo();
     }
 
     @Override
@@ -270,39 +265,21 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
             Bundle bundle = mes.getData();
             String result = bundle.getString("result");
             String name = bundle.getString("name");
-            isSave = bundle.getBoolean("isSave");
             if (TextUtils.equals(name, "常用地址")) {
+                address = result;
                 tvAddress.setText(result);
             } else if (TextUtils.equals(name, "简介")) {
+                intro = result;
                 tvIntro.setText(result);
             } else if (TextUtils.equals(name, "昵称")) {
+                nickname = result;
                 tvNickName.setText(result);
             }
-            if (!isSave)
-                tvSave.setVisibility(VISIBLE);
         } else if (mes.what == NotifyIDDefine.NOTIFY_GALLERY) {
             Bundle bundle = mes.getData();
             ArrayList<String> images = bundle.getStringArrayList("images");
             imgPath = images.get(0);
             readyUploadAvatar();
         }
-    }
-    private boolean isBackInEdit() {
-        if (isSave == false) {
-            DialogHelper.showSelectDialog(getContext(), getResources().getString(R.string.hint_giveup_edit), getResources().getString(R.string.dialog_giveup), new SweetAlertDialog.OnSweetClickListener() {
-                @Override
-                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    dismissProgressDialog(sweetAlertDialog);
-                    hideWindow(true);
-                }
-            });
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        return isBackInEdit();
     }
 }

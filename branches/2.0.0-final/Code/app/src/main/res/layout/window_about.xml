@@ -68,7 +68,6 @@
             android:textColor="@color/font_dark"
             android:textSize="@dimen/font_large" />
 
-        />
     </RelativeLayout>
 
     <RelativeLayout

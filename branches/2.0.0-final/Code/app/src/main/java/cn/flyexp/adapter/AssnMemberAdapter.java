@@ -21,7 +21,7 @@ import cn.flyexp.entity.AssnMemberListResponse;
 /**
  * Created by tanxinye on 2016/11/3.
  */
-public class AssnMemberAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AssnMemberAdapter extends RecyclerView.Adapter<AssnMemberAdapter.AssnMemberViewHolder> {
 
     private Context context;
     private ArrayList<AssnMemberListResponse.AssnMemberResponseData> datas;
@@ -41,18 +41,17 @@ public class AssnMemberAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AssnMemberAdapter.AssnMemberViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new AssnMemberViewHolder(LayoutInflater.from(context).inflate(R.layout.item_assnmember, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        AssnMemberViewHolder viewHolder = (AssnMemberViewHolder) holder;
+    public void onBindViewHolder(AssnMemberAdapter.AssnMemberViewHolder holder, final int position) {
         AssnMemberListResponse.AssnMemberResponseData responseData = datas.get(position);
-        viewHolder.tvNickName.setText(responseData.getNickname());
-        viewHolder.tvPosition.setText(tranfLevel(responseData.getLevel()));
-        viewHolder.tvRealName.setText(responseData.getRealname());
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgAvatar);
+        holder.tvNickName.setText(responseData.getNickname());
+        holder.tvPosition.setText(tranfLevel(responseData.getLevel()));
+        holder.tvRealName.setText(responseData.getRealname());
+        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
         if (onItemClickLinstener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,7 +87,7 @@ public class AssnMemberAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return datas == null ? 0 : datas.size();
     }
 
-    public class AssnMemberViewHolder extends RecyclerView.ViewHolder {
+     class AssnMemberViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.img_avatar)
         ImageView imgAvatar;

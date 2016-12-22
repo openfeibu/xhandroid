@@ -20,6 +20,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/discovery"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/font_normal" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

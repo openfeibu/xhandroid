@@ -28,7 +28,7 @@ import cn.flyexp.view.CircleImageView;
 /**
  * Created by tanxinye on 2016/11/1.
  */
-public class AssnActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AssnActivityAdapter extends RecyclerView.Adapter<AssnActivityAdapter.AssnActivityViewHolder> {
 
     private Context context;
     private ArrayList<AssnActivityResponse.AssnActivityResponseData> datas;
@@ -48,30 +48,29 @@ public class AssnActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AssnActivityAdapter.AssnActivityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new AssnActivityViewHolder(LayoutInflater.from(context).inflate(R.layout.item_assnacti, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(AssnActivityAdapter.AssnActivityViewHolder holder, final int position) {
         AssnActivityResponse.AssnActivityResponseData responseData = datas.get(position);
-        AssnActivityViewHolder viewHolder = (AssnActivityViewHolder) holder;
-        viewHolder.tvTitle.setText(responseData.getTitle().trim());
-        viewHolder.tvAssnName.setText(responseData.getAname());
-        viewHolder.tvViewNum.setText(String.format(context.getResources().getString(R.string.assnactiv_viewnum), responseData.getView_num()));
-        viewHolder.tvDate.setText(DateUtil.dateFormat(responseData.getEnd_time(), "MM-dd"));
+        holder.tvTitle.setText(responseData.getTitle().trim());
+        holder.tvAssnName.setText(responseData.getAname());
+        holder.tvViewNum.setText(String.format(context.getResources().getString(R.string.assnactiv_viewnum), responseData.getView_num()));
+        holder.tvDate.setText(DateUtil.dateFormat(responseData.getEnd_time(), "MM-dd"));
         if (DateUtil.date2Long(responseData.getStart_time()) > new Date().getTime()) {
-            viewHolder.imgState.setImageResource(R.mipmap.icon_activities_notstarted);
-            viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.light_blue));
+            holder.imgState.setImageResource(R.mipmap.icon_activities_notstarted);
+            holder.tvDate.setTextColor(context.getResources().getColor(R.color.light_blue));
         } else if (DateUtil.date2Long(responseData.getEnd_time()) < new Date().getTime()) {
-            viewHolder.imgState.setImageResource(R.mipmap.icon_activities_end);
-            viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.font_light));
+            holder.imgState.setImageResource(R.mipmap.icon_activities_end);
+            holder.tvDate.setTextColor(context.getResources().getColor(R.color.font_light));
         } else {
-            viewHolder.imgState.setImageResource(R.mipmap.icon_activities_ongoing);
-            viewHolder.tvDate.setTextColor(context.getResources().getColor(R.color.light_red));
+            holder.imgState.setImageResource(R.mipmap.icon_activities_ongoing);
+            holder.tvDate.setTextColor(context.getResources().getColor(R.color.light_red));
         }
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgAvatar);
-        Glide.with(context).load(responseData.getImg_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).fitCenter().into(viewHolder.imgActi);
+        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
+        Glide.with(context).load(responseData.getImg_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).fitCenter().into(holder.imgActi);
         if (onItemClickLinstener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -87,7 +86,7 @@ public class AssnActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return datas == null ? 0 : datas.size();
     }
 
-    public class AssnActivityViewHolder extends RecyclerView.ViewHolder {
+     class AssnActivityViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.img_avatar)
         CircleImageView imgAvatar;

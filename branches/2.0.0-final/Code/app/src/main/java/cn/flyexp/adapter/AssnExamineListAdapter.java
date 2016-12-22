@@ -21,7 +21,7 @@ import cn.flyexp.view.CircleImageView;
 /**
  * Created by tanxinye on 2016/11/3.
  */
-public class AssnExamineListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AssnExamineListAdapter extends RecyclerView.Adapter<AssnExamineListAdapter.AsssnExamineListViewHolder> {
 
     private Context context;
     private ArrayList<AssnExamineListResponse.AssnExamineListResponseData> datas;
@@ -41,17 +41,16 @@ public class AssnExamineListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AssnExamineListAdapter.AsssnExamineListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new AsssnExamineListViewHolder(LayoutInflater.from(context).inflate(R.layout.item_assn_examinelist, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(AssnExamineListAdapter.AsssnExamineListViewHolder holder, final int position) {
         AssnExamineListResponse.AssnExamineListResponseData responseData = datas.get(position);
-        AsssnExamineListViewHolder viewHolder = (AsssnExamineListViewHolder) holder;
-        viewHolder.tvRealName.setText(responseData.getAr_username());
-        viewHolder.tvCause.setText(responseData.getCauses());
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(viewHolder.imgAvatar);
+        holder.tvRealName.setText(responseData.getAr_username());
+        holder.tvCause.setText(responseData.getCauses());
+        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
         if (onItemClickLinstener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,7 +66,7 @@ public class AssnExamineListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return datas == null ? 0 : datas.size();
     }
 
-    public class AsssnExamineListViewHolder extends RecyclerView.ViewHolder {
+     class AsssnExamineListViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.img_avatar)
         CircleImageView imgAvatar;

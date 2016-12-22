@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -40,11 +37,10 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     private TopicPresenter topicPresenter;
     private TopicAdapter topicAdapter;
     private ArrayList<TopicResponseData> datas = new ArrayList<>();
-    private View layoutTopic;
     private int page = 1;
     private SwipeRefreshLayout refreshLayout;
     private boolean isRefresh;
-    private boolean isRequesting;
+    private int intoPosition;
 
     @Override
     protected int getLayoutId() {
@@ -54,6 +50,7 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     public TopicWindow() {
         topicPresenter = new TopicPresenter(this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC, this);
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_TOPIC_DELETE_ITEM, this);
         initView();
     }
 
@@ -62,20 +59,31 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
         readyTopicList();
     }
 
+    @Override
+    public void onRenew() {
+        isRefresh = true;
+        readyTopicList();
+    }
+
+    @Override
+    public void onResume() {
+        topicAdapter.notifyItemChanged(intoPosition);
+    }
+
     private void initView() {
         topicAdapter = new TopicAdapter(getContext(), datas);
         topicAdapter.setOnItemClickLinstener(new TopicAdapter.OnItemClickLinstener() {
             @Override
             public void onItemClickLinstener(View view, int position) {
                 String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
-                if(TextUtils.isEmpty(token)) {
+                if (TextUtils.isEmpty(token)) {
                     renewLogin();
                 } else {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("topicDetail", datas.get(position));
                     openWindow(WindowIDDefine.WINDOW_TOPIC_DETAIL, bundle);
+                    intoPosition = position;
                 }
-
             }
         });
 
@@ -126,9 +134,12 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
 
     @Override
     public void onNotify(Message mes) {
-        if(mes.what == NotifyIDDefine.NOTIFY_TOPIC){
+        if (mes.what == NotifyIDDefine.NOTIFY_TOPIC) {
             isRefresh = true;
             readyTopicList();
+        } else if (mes.what == NotifyIDDefine.NOTIFY_TOPIC_DELETE_ITEM) {
+            datas.remove(intoPosition);
+            topicAdapter.notifyItemRemoved(intoPosition);
         }
     }
 
@@ -142,7 +153,6 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
 
     @Override
     public void requestFinish() {
-        isRequesting = false;
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
@@ -152,7 +162,12 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_publish:
-                openWindow(WindowIDDefine.WINDOW_TOPIC_PUBLISH);
+                String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
+                if (TextUtils.isEmpty(token)) {
+                    renewLogin();
+                } else {
+                    openWindow(WindowIDDefine.WINDOW_TOPIC_PUBLISH);
+                }
                 break;
         }
     }

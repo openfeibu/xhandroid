@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/topic_height"
-    android:padding="@dimen/margin_normal"
     android:background="@color/white"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_normal">
 
     <cn.flyexp.view.CircleImageView
         android:id="@+id/img_avatar"
