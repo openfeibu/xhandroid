@@ -102,6 +102,11 @@ public class ControllerManager {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.clearStack();
                 mainWindow.showWindow(false);
+                Bundle data = msg.getData();
+                int afterOpenId = WindowIDDefine.WINDOW_MAIN;
+                if (data != null && (afterOpenId = data.getInt("openwindow", afterOpenId)) != WindowIDDefine.WINDOW_MAIN) {
+                    ControllerManager.this.sendMessage(afterOpenId);
+                }
             } else if (msg.what == WindowIDDefine.WINDOW_LOGIN) {
                 new LoginWindow().showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_REGISTER) {
