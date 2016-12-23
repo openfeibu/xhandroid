@@ -5,33 +5,6 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/white">
-
-        <ImageView
-            android:id="@+id/img_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/onclick_background"
-            android:paddingLeft="@dimen/margin_normal_small"
-            android:paddingRight="@dimen/margin_normal_small"
-            android:src="@mipmap/icon_back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/assn_activty_detail"
-            android:textColor="@color/font_black"
-            android:textSize="@dimen/font_most" />
-
-        <View
-            style="@style/horizontalLine"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -60,7 +33,8 @@
                     android:maxEms="15"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/font_dark"
+                    android:textColor="@color/font_title"
+                    android:textStyle="bold"
                     android:textSize="@dimen/font_large" />
 
                 <TextView
@@ -129,4 +103,32 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/onclick_background"
+            android:paddingLeft="@dimen/margin_normal_small"
+            android:paddingRight="@dimen/margin_normal_small"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/assn_activty_detail"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/font_most" />
+
+        <View
+            style="@style/horizontalLine"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
 </LinearLayout>

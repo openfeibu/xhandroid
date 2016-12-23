@@ -30,6 +30,7 @@
     <color name="light_orange">#F29F5B</color>
     <color name="wallet_blue">#86cbe4</color>
     <color name="wallet_red">#f59b9b</color>
+    <color name="font_title">#333333</color>
 
 
 </resources>
