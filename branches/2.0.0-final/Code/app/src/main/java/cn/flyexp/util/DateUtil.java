@@ -60,7 +60,7 @@ public class DateUtil {
         if (day - 4 > 0) {
             return long2Date(t);
         } else if (day - 1 > 0) {
-            sb.append(day + "天");
+            sb.append((day - 1) + "天");
         } else if (hour - 1 > 0) {
             if (hour >= 24) {
                 sb.append("1天");

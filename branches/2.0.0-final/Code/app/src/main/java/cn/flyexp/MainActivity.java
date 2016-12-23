@@ -24,6 +24,7 @@ import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.WindowManager;
+import cn.flyexp.permission.PermissionInterceptor;
 import cn.flyexp.push.PushUtil;
 import cn.flyexp.push.XMPush;
 import cn.flyexp.util.LogUtil;
@@ -91,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         WindowManager.getInstance(this).onBackPressed();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 200) {
+            PermissionInterceptor.requestResult(permissions, grantResults);
+        }
     }
 
     @Override

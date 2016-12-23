@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import cn.flyexp.MainActivity;
+import cn.flyexp.permission.PermissionHandler;
+import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.window.assn.AssnActiDetailWindow;
 import cn.flyexp.window.assn.AssnActiPublishWindow;
 import cn.flyexp.window.assn.AssnDetailWindow;
@@ -182,7 +185,7 @@ public class ControllerManager {
             } else if (msg.what == WindowIDDefine.WINDOW_MYINFO) {
                 new MyInfoWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_GALLERY) {
-                new GalleryWindow(msg.getData()).showWindow(true);
+                openGalleryWindow(msg);
             } else if (msg.what == WindowIDDefine.WINDOW_TOPIC_DETAIL) {
                 new TopicDetailWindow(msg.getData()).showWindow(true);
             } else if (msg.what == WindowIDDefine.WINDOW_ASSN_MEMBER) {
@@ -193,6 +196,24 @@ public class ControllerManager {
                 new EditWindow(msg.getData()).showWindow(true);
             }
         }
+    }
+
+    private void openGalleryWindow(final Message msg) {
+        PermissionHandler.PermissionCallback permissionCallback = new PermissionHandler.PermissionCallback() {
+            public void onSuccess() {
+                new GalleryWindow(msg.getData()).showWindow(true);;
+            }
+
+            public void onFail(int[] ids) {
+            }
+
+            public void onCancel() {
+            }
+
+            public void goSetting() {
+            }
+        };
+        PermissionTools.requestPermission(MainActivity.getContext(), permissionCallback, new int[]{PermissionHandler.PERMISSION_FILE});
     }
 
 }
