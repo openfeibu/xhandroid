@@ -17,4 +17,6 @@ public class Constants {
     public static final String TASK_TYPE_BUSINESS = "business";
 
     public static final int CAMERA_RESULT = 0x1;
+
+    public static final int WEBVIEW_FILE_CHOOSER_RESULT = 0x2;
 }

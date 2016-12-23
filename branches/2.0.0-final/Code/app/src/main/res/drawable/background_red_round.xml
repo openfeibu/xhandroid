@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/light_red" />
+    <solid android:color="@color/wallet_red" />
     <corners
         android:bottomLeftRadius="@dimen/btn_radius"
         android:bottomRightRadius="@dimen/btn_radius"

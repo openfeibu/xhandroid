@@ -88,4 +88,5 @@ public class EditWindow extends BaseWindow implements TextWatcher {
             tvSave.setAlpha(1f);
         }
     }
+
 }

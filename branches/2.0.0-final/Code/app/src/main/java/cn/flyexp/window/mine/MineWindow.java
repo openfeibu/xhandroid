@@ -102,7 +102,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
 
     @OnClick({R.id.tv_changecampus, R.id.tv_message, R.id.layout_setting, R.id.layout_mywallet,
             R.id.layout_myassn, R.id.layout_share, R.id.layout_myintergal, R.id.layout_myinfo, R.id.tv_mytopic,
-            R.id.tv_mytask, R.id.tv_myorder, R.id.layout_storecollection})
+            R.id.tv_mytask, R.id.tv_myorder, R.id.layout_storecollection,R.id.layout_mystore})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_changecampus:
@@ -150,6 +150,15 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
                 webBean2.setName("storeCollection");
                 openWebWindow(webBean2);
                 break;
+
+            case R.id.layout_mystore:
+                WebBean webBean4 = new WebBean();
+                webBean4.setRequest(true);
+                webBean4.setTitle(getResources().getString(R.string.my_store));
+                webBean4.setName("myShop");
+                openWebWindow(webBean4);
+                break;
+
             case R.id.layout_setting:
                 openWindow(WindowIDDefine.WINDOW_SETTING);
                 break;

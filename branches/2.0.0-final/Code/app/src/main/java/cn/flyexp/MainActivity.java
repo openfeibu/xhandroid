@@ -99,9 +99,21 @@ public class MainActivity extends AppCompatActivity {
         if (tencent != null) {
             tencent.onActivityResult(requestCode, resultCode, data);
         }
-        if (requestCode == Constants.CAMERA_RESULT && resultCode == RESULT_OK) {
-            LogUtil.e("camera ok");
-            NotifyManager.getInstance().notify(NotifyIDDefine.NOTIFY_CAMERA_RESULT);
+        if(resultCode == RESULT_OK) {
+            if (requestCode == Constants.CAMERA_RESULT) {
+                NotifyManager.getInstance().notify(NotifyIDDefine.NOTIFY_CAMERA_RESULT);
+            } else if(requestCode == Constants.WEBVIEW_FILE_CHOOSER_RESULT) {
+                LogUtil.e("web_file");
+                Bundle bundle = new Bundle();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    bundle.putParcelable("clipData", data.getClipData());
+                }
+                bundle.putString("dataString", data.getDataString());
+                Message mes = Message.obtain();
+                mes.what = NotifyIDDefine.NOTIFY_WEBVIEW_FILE_CHOOSER_RESULT;
+                mes.setData(bundle);
+                NotifyManager.getInstance().notify(mes);
+            }
         }
     }
 }

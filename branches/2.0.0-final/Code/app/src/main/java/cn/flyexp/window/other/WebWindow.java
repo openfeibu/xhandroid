@@ -1,10 +1,16 @@
 package cn.flyexp.window.other;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -24,9 +30,11 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
 import cn.flyexp.callback.other.WebCallback;
+import cn.flyexp.constants.Constants;
 import cn.flyexp.entity.WebBean;
 import cn.flyexp.entity.WebUrlRequest;
 import cn.flyexp.entity.WebUrlResponse;
+import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
@@ -53,6 +61,7 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
     private WebSettings webSettings;
     private boolean goBack;
     private JavaScriptInterface anInterface;
+    private  ValueCallback<Uri[]> filePathCallback;
 
     @Override
     protected int getLayoutId() {
@@ -147,8 +156,14 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
                     progressBar.setProgress(newProgress);
                 }
             }
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                openFileChooserImpl(filePathCallback);
+                return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+            }
 
         });
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -211,14 +226,16 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
                         public void onCancel() {
                         }
 
+
                         public void goSetting() {
                         }
+
+
                     };
                     PermissionTools.requestPermission(getContext(), permissionCallback, new int[]{PermissionHandler.PERMISSION_FILE, PermissionHandler.PERMISSION_PHONE});
                 }
                 return super.shouldOverrideUrlLoading(view, url);
             }
-
 
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -235,8 +252,25 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
                 }
             }
 
+
         });
         webView.loadUrl(url);
+    }
+
+
+    private void openFileChooserImpl(ValueCallback<Uri[]> filePathCallback) {
+        LogUtil.e("openFileChooserImp");
+        WebWindow.this.filePathCallback = filePathCallback;
+        Intent contentSelectionIntent  = new Intent(Intent.ACTION_GET_CONTENT);
+        contentSelectionIntent .addCategory(Intent.CATEGORY_OPENABLE);
+        contentSelectionIntent .setType("image/*");
+
+        Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+        chooserIntent.putExtra(Intent.EXTRA_INTENT,contentSelectionIntent);
+        chooserIntent.putExtra(Intent.EXTRA_TITLE,"Image Chooser");
+
+        ((Activity)getContext()).startActivityForResult(Intent.createChooser(chooserIntent,"File Browser"),Constants.WEBVIEW_FILE_CHOOSER_RESULT);
+
     }
 
     @OnClick({R.id.tv_close, R.id.img_back})
@@ -262,6 +296,29 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
             return true;
         } else {
             return super.onBackPressed();
+        }
+    }
+
+    public void onNotify(Message mes) {
+        if(mes.what == NotifyIDDefine.NOTIFY_WEBVIEW_FILE_CHOOSER_RESULT){
+            Bundle data = mes.getData();
+            ClipData clipData = data.getParcelable("clipData");
+            String dataString = data.getString("dataString");
+            Uri[] results = null;
+            if (clipData != null) {
+                results = new Uri[clipData.getItemCount()];
+                for(int i=0; i<clipData.getItemCount(); i++) {
+                    ClipData.Item item = clipData.getItemAt(i);
+                    results[i] = item.getUri();
+                }
+            }
+            if (dataString != null) {
+                results = new Uri[]{Uri.parse((dataString))};
+            }
+
+            if (filePathCallback != null) {
+                filePathCallback.onReceiveValue(results);
+            }
         }
     }
 }

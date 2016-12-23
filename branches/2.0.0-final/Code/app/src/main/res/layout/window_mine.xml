@@ -277,6 +277,34 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/layout_mystore"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_select_height"
+                android:background="@drawable/onclick_background">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:background="@drawable/onclick_background"
+                    android:drawableLeft="@mipmap/icon_mine_store"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="@string/my_store"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/font_normal" />
+
+                <View
+                    style="@style/horizontalLine"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
                 android:id="@+id/layout_share"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_select_height"

@@ -28,4 +28,8 @@
     <color name="task_blue">#87CBF6</color>
     <color name="task_gray">#DDDDDD</color>
     <color name="light_orange">#F29F5B</color>
+    <color name="wallet_blue">#86cbe4</color>
+    <color name="wallet_red">#f59b9b</color>
+
+
 </resources>

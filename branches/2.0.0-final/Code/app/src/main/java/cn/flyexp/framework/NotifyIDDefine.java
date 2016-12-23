@@ -73,4 +73,6 @@ public class NotifyIDDefine {
 
     public static int NOTIFY_EDIT_RESULT = generateMessageId();
 
+    public static int NOTIFY_WEBVIEW_FILE_CHOOSER_RESULT = generateMessageId();
+
 }
