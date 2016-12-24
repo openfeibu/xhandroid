@@ -35,10 +35,7 @@ import cn.flyexp.presenter.task.TaskPresenter;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.LoadMoreRecyclerView;
-import cn.flyexp.view.RefreshLayout;
 import cn.flyexp.window.BaseWindow;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by tanxinye on 2016/10/22.

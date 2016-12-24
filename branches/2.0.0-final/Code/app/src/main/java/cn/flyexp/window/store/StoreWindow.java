@@ -8,7 +8,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 
 import com.alipay.sdk.app.PayTask;
 import com.alipay.sdk.util.H5PayResultModel;
@@ -17,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.InjectView;
-import butterknife.OnClick;
 import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.callback.other.WebCallback;
@@ -298,7 +296,7 @@ public class StoreWindow extends BaseWindow implements WebCallback.ResponseCallb
 
     @Override
     public void responseWebUrl(WebUrlResponse response) {
-       webView.loadUrl(response.getUrl());
+        webView.loadUrl(response.getUrl());
     }
 
     @Override

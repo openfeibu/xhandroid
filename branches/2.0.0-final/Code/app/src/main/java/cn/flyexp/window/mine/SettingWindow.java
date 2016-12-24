@@ -50,7 +50,7 @@ public class SettingWindow extends BaseWindow implements SettingCallback.Respons
         }
     }
 
-    @OnClick({R.id.img_back, R.id.layout_about, R.id.layout_clear,R.id.layout_changepwd, R.id.layout_feedback, R.id.layout_faq, R.id.btn_logout})
+    @OnClick({R.id.img_back, R.id.layout_about, R.id.layout_clear, R.id.layout_changepwd, R.id.layout_feedback, R.id.layout_faq, R.id.btn_logout})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -95,14 +95,34 @@ public class SettingWindow extends BaseWindow implements SettingCallback.Respons
 
     @Override
     public void requestFailure() {
-        logoutDialog.dismissWithAnimation();
+        logoutClean();
+    }
+
+    @Override
+    public void requestFinish() {
+        logoutClean();
+    }
+
+    private void logoutClean() {
+        dismissProgressDialog(logoutDialog);
+        SharePresUtil.putFloat(SharePresUtil.KEY_BALANCE, 0);
+        SharePresUtil.putInt(SharePresUtil.KEY_SETPAYACCOUNT, 0);
+        SharePresUtil.putInt(SharePresUtil.KEY_SETPAYPWD, 0);
+        SharePresUtil.putInt(SharePresUtil.KEY_AUTH, 0);
+        SharePresUtil.putString(SharePresUtil.KEY_TOKEN, "");
+        SharePresUtil.putString(SharePresUtil.KEY_NICK_NAME, "");
+        SharePresUtil.putString(SharePresUtil.KEY_COLLEGE, "");
+        SharePresUtil.putString(SharePresUtil.KEY_ALIPAYNAME, "");
+        SharePresUtil.putString(SharePresUtil.KEY_ADDRESS, "");
+        SharePresUtil.putString(SharePresUtil.KEY_PHONE, "");
+        SharePresUtil.putString(SharePresUtil.KEY_LAST_PHONE, "");
+        SharePresUtil.putString(SharePresUtil.KEY_LAST_AVATAR, "");
+        SharePresUtil.putString(SharePresUtil.KEY_OPENID, "");
+        getNotifyManager().notify(NotifyIDDefine.NOTICE_MAIN_HOME);
+        hideWindow(true);
     }
 
     @Override
     public void responseLogout(BaseResponse response) {
-        logoutDialog.dismissWithAnimation();
-        SharePresUtil.putString(SharePresUtil.KEY_TOKEN, "");
-        getNotifyManager().notify(NotifyIDDefine.NOTICE_MAIN_HOME);
-        hideWindow(true);
     }
 }

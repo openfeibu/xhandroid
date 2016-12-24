@@ -1,21 +1,19 @@
 package cn.flyexp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
 
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
-import com.xiaomi.mipush.sdk.MiPushMessage;
-import com.xiaomi.mipush.sdk.PushMessageHelper;
+import com.tencent.tinker.lib.tinker.TinkerInstaller;
+
+import java.io.File;
 
 import cn.flyexp.constants.Config;
 import cn.flyexp.constants.Constants;
@@ -108,11 +106,10 @@ public class MainActivity extends AppCompatActivity {
         if (tencent != null) {
             tencent.onActivityResult(requestCode, resultCode, data);
         }
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == Constants.CAMERA_RESULT) {
                 NotifyManager.getInstance().notify(NotifyIDDefine.NOTIFY_CAMERA_RESULT);
-            } else if(requestCode == Constants.WEBVIEW_FILE_CHOOSER_RESULT) {
-                LogUtil.e("web_file");
+            } else if (requestCode == Constants.WEBVIEW_FILE_CHOOSER_RESULT) {
                 Bundle bundle = new Bundle();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     bundle.putParcelable("clipData", data.getClipData());

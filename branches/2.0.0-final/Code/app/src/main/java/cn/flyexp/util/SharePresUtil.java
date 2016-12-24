@@ -19,8 +19,6 @@ public class SharePresUtil {
     public static final String KEY_TOKEN = "token";
     public static final String KEY_DEVICE_TOKEN = "device_token";
     public static final String KEY_COOKIE = "cookie";
-    public static final String KEY_WINDOW_ID = "window_id";
-    public static final String KEY_PUSH_DATA = "push_data";
     public static final String KEY_PUSH_TYPE = "push_type";
     public static final String KEY_BALANCE = "balance";
     public static final String KEY_ALIPAYNAME = "alipay_name";

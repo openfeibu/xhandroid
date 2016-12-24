@@ -72,6 +72,7 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
     private String address;
     private String nickname;
     private String intro;
+    private boolean isChanged;
 
     @Override
     protected int getLayoutId() {
@@ -94,8 +95,6 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
             tvGender.setText("男");
         } else if (datas.getGender() == 2) {
             tvGender.setText("女");
-        } else {
-            tvGender.setText("报名");
         }
 
         if (SharePresUtil.getInt(SharePresUtil.KEY_AUTH) == 0) {
@@ -132,10 +131,12 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
                 case R.id.tv_man:
                     gender = 1;
                     tvGender.setText("男");
+                    isChanged = true;
                     break;
                 case R.id.tv_women:
                     gender = 2;
                     tvGender.setText("女");
+                    isChanged = true;
                     break;
             }
         }
@@ -237,7 +238,9 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        readyChangeMyInfo();
+        if (isChanged) {
+            readyChangeMyInfo();
+        }
     }
 
     @Override
@@ -275,6 +278,7 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
                 nickname = result;
                 tvNickName.setText(result);
             }
+            isChanged = true;
         } else if (mes.what == NotifyIDDefine.NOTIFY_GALLERY) {
             Bundle bundle = mes.getData();
             ArrayList<String> images = bundle.getStringArrayList("images");

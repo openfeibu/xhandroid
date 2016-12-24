@@ -22,7 +22,7 @@ public class DateUtil {
     }
 
     public static String long2Date(long t) {
-        return long2Date(t, "yyyy-MM-dd");
+        return long2Date(t, "-MM-dd");
     }
 
     public static String long2Date(long t, String format) {

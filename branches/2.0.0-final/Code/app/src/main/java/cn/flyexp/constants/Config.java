@@ -5,7 +5,7 @@ package cn.flyexp.constants;
  */
 public class Config {
 
-    public static final boolean isDebug = true;
+    public static final boolean isDebug = false;
 
     //测试服
 //    public static final String SERVER_URL = "http://xh.flyexp.cn";
@@ -15,5 +15,8 @@ public class Config {
 
     public static final String QQAPI_APPID = "1105527191";
     public static final String WXAPI_APPID = "wx13275568a3405957";
+
+    public static final String TINKER_KEY = "51d4b8bb2d42ff52";
+    public static final String TINKER_VERSION = "1.3.0";
 
 }

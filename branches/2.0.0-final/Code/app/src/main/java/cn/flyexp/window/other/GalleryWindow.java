@@ -87,11 +87,27 @@ public class GalleryWindow extends BaseWindow implements NotifyManager.Notify, G
     }
 
     public GalleryWindow(Bundle bundle) {
-        max = bundle.getInt("max");
-        initView();
         galleryPresenter = new GalleryPresenter(this);
-        galleryPresenter.getBuckets();
-        scanner();
+        max = bundle.getInt("max");
+        PermissionHandler.PermissionCallback permissionCallback = new PermissionHandler.PermissionCallback() {
+            public void onSuccess() {
+                galleryPresenter.getBuckets();
+                scanner();
+            }
+
+            public void onFail(int[] ids) {
+                hideWindow(true);
+            }
+
+            public void onCancel() {
+            }
+
+            public void goSetting() {
+            }
+        };
+        PermissionTools.requestPermission(getContext(), permissionCallback,
+                new int[]{PermissionHandler.PERMISSION_FILE});
+        initView();
         getNotifyManager().register(NotifyIDDefine.NOTIFY_CAMERA_RESULT, this);
     }
 
@@ -302,7 +318,6 @@ public class GalleryWindow extends BaseWindow implements NotifyManager.Notify, G
     @Override
     public void onNotify(Message mes) {
         if (mes.what == NotifyIDDefine.NOTIFY_CAMERA_RESULT) {
-            LogUtil.e("connect");
             scannerConnection.connect();
         }
     }
