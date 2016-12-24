@@ -39,6 +39,8 @@ import cn.flyexp.entity.TaskCompleteRequest;
 import cn.flyexp.entity.TaskFinishRequest;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.WindowIDDefine;
+import cn.flyexp.permission.PermissionHandler;
+import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.task.MyTaskDetailPresenter;
 import cn.flyexp.util.DateUtil;
 import cn.flyexp.util.DialogHelper;
@@ -254,15 +256,33 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                 }
                 break;
             case R.id.tv_contact:
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                String mobile = isTask ? data.getAlt_phone() : data.getPhone();
-                Uri uri = Uri.parse("tel:" + mobile);
-                intent.setData(uri);
-                try {
-                    getContext().startActivity(intent);
-                } catch (Exception e) {
-                    showToast(R.string.unable_call);
-                }
+                PermissionTools.requestPermission(getContext(), new PermissionHandler.PermissionCallback() {//信鸽等push需要手机权限，借机申请,它不是拨号必须的权限
+                    @Override
+                    public void onSuccess() {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        String mobile = isTask ? data.getAlt_phone() : data.getPhone();
+                        Uri uri = Uri.parse("tel:" + mobile);
+                        intent.setData(uri);
+                        try {
+                            getContext().startActivity(intent);
+                        } catch (Exception e) {
+                            showToast(R.string.unable_call);
+                        }
+                    }
+
+                    @Override
+                    public void goSetting() {
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                    }
+
+                    @Override
+                    public void onFail(int[] ids) {
+                    }
+                }, new int[]{PermissionHandler.PERMISSION_PHONE});
                 break;
         }
     }

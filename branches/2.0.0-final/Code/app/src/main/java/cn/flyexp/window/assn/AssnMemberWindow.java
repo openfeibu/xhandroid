@@ -21,6 +21,8 @@ import cn.flyexp.entity.AssnMemberListResponse;
 import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.DelelteMemberRequest;
 import cn.flyexp.entity.MemberManageRequest;
+import cn.flyexp.permission.PermissionHandler;
+import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.assn.AssnMemberPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.SharePresUtil;
@@ -151,17 +153,35 @@ public class AssnMemberWindow extends BaseWindow implements AssnMemberCallback.R
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.layout_call:
-                    assnMemberDialog.dismiss();
-                    String mobile = memberDatas.get(currPosition).getMobile_no();
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    Uri uri = Uri.parse("tel:" + mobile);
-                    intent.setData(uri);
-                    try {
-                        getContext().startActivity(intent);
-                    } catch (Exception e) {
-                        showToast(R.string.unable_call);
-                    }
+                case R.id.layout_call://信鸽等push需要手机权限，借机申请,它不是拨号必须的权限
+                        PermissionTools.requestPermission(getContext(), new PermissionHandler.PermissionCallback() {
+                            @Override
+                            public void onSuccess() {
+                                assnMemberDialog.dismiss();
+                                String mobile = memberDatas.get(currPosition).getMobile_no();
+                                Intent intent = new Intent(Intent.ACTION_DIAL);
+                                Uri uri = Uri.parse("tel:" + mobile);
+                                intent.setData(uri);
+                                try {
+                                    getContext().startActivity(intent);
+                                } catch (Exception e) {
+                                    showToast(R.string.unable_call);
+                                }
+                            }
+
+                            @Override
+                            public void goSetting() {
+
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+
+                            @Override
+                            public void onFail(int[] ids) {
+                            }
+                        }, new int[]{PermissionHandler.PERMISSION_PHONE});
                     break;
                 case R.id.layout_setmember:
                     assnMemberDialog.dismiss();
