@@ -1,5 +1,6 @@
 package cn.flyexp.window.store;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,17 +10,23 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
+import com.alipay.sdk.app.PayTask;
+import com.alipay.sdk.util.H5PayResultModel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.flyexp.MainActivity;
 import cn.flyexp.R;
 import cn.flyexp.callback.other.WebCallback;
 import cn.flyexp.entity.WebBean;
 import cn.flyexp.entity.WebUrlRequest;
 import cn.flyexp.entity.WebUrlResponse;
 import cn.flyexp.framework.WindowIDDefine;
+import cn.flyexp.permission.PermissionHandler;
+import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.other.WebPresenter;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.window.BaseWindow;
@@ -68,13 +75,177 @@ public class StoreWindow extends BaseWindow implements WebCallback.ResponseCallb
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
+                final PayTask task = new PayTask((Activity) MainActivity.getContext());
+                final String ex = task.fetchOrderInfoFromH5PayUrl(url);
+                if (!TextUtils.isEmpty(ex)) {
+                    PermissionHandler.PermissionCallback permissionCallback = new PermissionHandler.PermissionCallback() {
+                        public void onSuccess() {
+                            new Thread() {
+                                public void run() {
+                                    final H5PayResultModel model = task.h5Pay(ex, true);
+                                    int resId = R.string.h5pay_unknow;
+                                    if (model != null) {
+                                        String resultStatus = model.getResultCode();
+                                        if (TextUtils.equals(resultStatus, "9000")) {
+                                            post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    webView.loadUrl(model.getReturnUrl());
+                                                }
+                                            });
+                                            return;
+                                        }
+//                                8000——正在处理中
+                                        else if (TextUtils.equals(resultStatus, "8000")) {
+                                            resId = R.string.h5pay_ing;
+                                        }
+//                                4000——订单支付失败
+                                        else if (TextUtils.equals(resultStatus, "4000")) {
+                                            resId = R.string.h5pay_fail;
+                                        }
+//                                5000——重复请求
+                                        else if (TextUtils.equals(resultStatus, "5000")) {
+                                            resId = R.string.h5pay_dup;
+                                        }
+//                                6001——用户中途取消
+                                        else if (TextUtils.equals(resultStatus, "6001")) {
+                                            resId = R.string.h5pay_cancel;
+                                        }
+//                                6002——网络连接出错
+                                        else if (TextUtils.equals(resultStatus, "6002")) {
+                                            resId = R.string.h5pay_network_error;
+                                        }
+                                    }
+                                    final int id = resId;
+                                    post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(id);
+                                        }
+                                    });
+
+                                }
+                            }.start();
+                        }
+
+                        public void onFail(int[] ids) {
+                        }
+
+                        public void onCancel() {
+                        }
+
+
+                        public void goSetting() {
+                        }
+
+
+                    };
+                    PermissionTools.requestPermission(getContext(), permissionCallback, new int[]{PermissionHandler.PERMISSION_FILE, PermissionHandler.PERMISSION_PHONE});
+                }
+                return super.shouldOverrideUrlLoading(view, url);
             }
         });
     }
 
     private class JavaScriptInterface {
+        @JavascriptInterface
+        public String alipay(String json) {
+            JSONObject jsonObject = null;
+            String payUrl = "";
+            try {
+                jsonObject = new JSONObject(json);
+                payUrl = jsonObject.getString("payUrl");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            jsonObject = new JSONObject();
+
+            final PayTask task = new PayTask((Activity) MainActivity.getContext());
+            final String ex = task.fetchOrderInfoFromH5PayUrl(payUrl);
+            if (!TextUtils.isEmpty(ex)) {
+                PermissionHandler.PermissionCallback permissionCallback = new PermissionHandler.PermissionCallback() {
+                    public void onSuccess() {
+                        new Thread() {
+                            public void run() {
+                                final H5PayResultModel model = task.h5Pay(ex, true);
+                                int resId = R.string.h5pay_unknow;
+                                if (model != null) {
+                                    String resultStatus = model.getResultCode();
+                                    if (TextUtils.equals(resultStatus, "9000")) {
+                                        post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                webView.loadUrl(model.getReturnUrl());
+                                            }
+                                        });
+                                        return;
+                                    }
+//                                8000——正在处理中
+                                    else if (TextUtils.equals(resultStatus, "8000")) {
+                                        resId = R.string.h5pay_ing;
+                                    }
+//                                4000——订单支付失败
+                                    else if (TextUtils.equals(resultStatus, "4000")) {
+                                        resId = R.string.h5pay_fail;
+                                    }
+//                                5000——重复请求
+                                    else if (TextUtils.equals(resultStatus, "5000")) {
+                                        resId = R.string.h5pay_dup;
+                                    }
+//                                6001——用户中途取消
+                                    else if (TextUtils.equals(resultStatus, "6001")) {
+                                        resId = R.string.h5pay_cancel;
+                                    }
+//                                6002——网络连接出错
+                                    else if (TextUtils.equals(resultStatus, "6002")) {
+                                        resId = R.string.h5pay_network_error;
+                                    }
+                                }
+                                final int id = resId;
+                                post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showToast(id);
+                                    }
+                                });
+
+                            }
+                        }.start();
+                    }
+
+                    public void onFail(int[] ids) {
+                    }
+
+                    public void onCancel() {
+                    }
+
+
+                    public void goSetting() {
+                    }
+
+
+                };
+                PermissionTools.requestPermission(getContext(), permissionCallback, new int[]{PermissionHandler.PERMISSION_FILE, PermissionHandler.PERMISSION_PHONE});
+            }
+
+            return jsonObject.toString();
+        }
+
+        @JavascriptInterface
+        public String getToken() {
+            JSONObject jsonObject = new JSONObject();
+            String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
+            if ("".equals(token)) {
+                token = "undefined";
+            }
+            try {
+                jsonObject.put("value", token);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return jsonObject.toString();
+        }
 
         @JavascriptInterface
         public String interactive(String json) {
