@@ -204,7 +204,6 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
             @Override
             public void onDismiss() {
                 changeWindowAlpha(1f);
-                toggleKeyboard();
             }
         });
 
