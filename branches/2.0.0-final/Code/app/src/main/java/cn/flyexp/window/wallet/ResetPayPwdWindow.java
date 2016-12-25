@@ -51,6 +51,9 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
     public ResetPayPwdWindow() {
         resetPayPwdPresenter = new ResetPayPwdPresenter(this);
         resetPayPwdDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.commiting));
+
+        edtPwd.addTextChangedListener(this);
+        edtVercode.addTextChangedListener(this);
     }
 
     @OnClick({R.id.img_back, R.id.tv_getvercode, R.id.btn_reset})
@@ -113,23 +116,29 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
 
     @Override
     public void requestFailure() {
-        if(resetPayPwdDialog.isShowing()){
+        if (resetPayPwdDialog.isShowing()) {
             resetPayPwdDialog.dismissWithAnimation();
         }
-        downTimer.onFinish();
+        if (downTimer != null) {
+            downTimer.onFinish();
+        }
     }
 
     @Override
     public void requestFinish() {
-        if(resetPayPwdDialog.isShowing()){
+        if (resetPayPwdDialog.isShowing()) {
             resetPayPwdDialog.dismissWithAnimation();
         }
-        downTimer.onFinish();
+        if (downTimer != null) {
+            downTimer.onFinish();
+        }
     }
 
     @Override
     public void responseResetPayPwd(BaseResponse response) {
-        downTimer.cancel();
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
     }
 
     @Override
