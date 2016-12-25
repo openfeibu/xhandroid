@@ -44,6 +44,7 @@ import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.presenter.task.MyTaskDetailPresenter;
 import cn.flyexp.util.DateUtil;
 import cn.flyexp.util.DialogHelper;
+import cn.flyexp.util.EncodeUtil;
 import cn.flyexp.util.ShareHelper;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.CircleImageView;
@@ -360,7 +361,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
             TaskCompleteRequest taskCompleteRequest = new TaskCompleteRequest();
             taskCompleteRequest.setToken(token);
             taskCompleteRequest.setOrder_id(data.getOid());
-            taskCompleteRequest.setPay_password(paypwd);
+            taskCompleteRequest.setPay_password(EncodeUtil.md5Encode(paypwd));
             myTaskDetailPresenter.requestTaskComplete(taskCompleteRequest);
             loadingDialog.show();
         }
