@@ -210,7 +210,7 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
         }
         inputPayPwdDialog.show();
         final PasswordView passwordView = (PasswordView) inputPayPwdDialog.findViewById(R.id.edt_paypwd);
-        passwordView.requestFocus();
+        passwordView.setText("");
         passwordView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -249,7 +249,9 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
     public void responseTaskPublish(DataResponse response) {
         final String payInfo = response.getData();
         if (TextUtils.isEmpty(payInfo)) {
-
+            hideWindow(true);
+            showToast(R.string.hint_pay_success);
+            getNotifyManager().notify(NotifyIDDefine.NOTIFY_TASK_REFRESH);
         } else {
             PermissionHandler.PermissionCallback permissionCallback = new PermissionHandler.PermissionCallback() {
                 public void onSuccess() {

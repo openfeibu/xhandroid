@@ -1,6 +1,7 @@
 package cn.flyexp.window.topic;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,7 +41,7 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
     private int page = 1;
     private SwipeRefreshLayout refreshLayout;
     private boolean isRefresh;
-    private int intoPosition;
+    private int intoPosition = -1;
 
     @Override
     protected int getLayoutId() {
@@ -67,7 +68,9 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
 
     @Override
     public void onResume() {
-        topicAdapter.notifyItemChanged(intoPosition);
+        if (topicAdapter != null && intoPosition < 0) {
+            topicAdapter.notifyItemChanged(intoPosition);
+        }
     }
 
     private void initView() {
@@ -88,9 +91,9 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
         });
 
         rvTopic.setAdapter(topicAdapter);
-        rvTopic.addItemDecoration(new DividerItemDecoration(getContext()));
         rvTopic.setHasFixedSize(false);
         rvTopic.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvTopic.addItemDecoration(new DividerItemDecoration(getContext()));
         rvTopic.setLoadMoreLinstener(new LoadMoreRecyclerView.LoadMoreLinstener() {
             @Override
             public void onLoadMore() {

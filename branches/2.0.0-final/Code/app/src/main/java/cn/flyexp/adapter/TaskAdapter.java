@@ -58,12 +58,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         final TaskResponse.TaskResponseData responseData = datas.get(position);
         holder.tvAddress.setText(String.format(context.getString(R.string.format_task_address), responseData.getDestination()));
         holder.tvContent.setText(responseData.getDescription());
-        holder.tvNickName.setText(responseData.getNickname());
+        if(TextUtils.isEmpty(responseData.getNickname())){
+            holder.tvNickName.setText("未被接");
+        }else{
+            holder.tvNickName.setText(responseData.getNickname());
+        }
         holder.tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(responseData.getCreated_at())));
         holder.tvMoney.setText(String.valueOf(responseData.getFee()));
         holder.layoutState.setBackgroundColor(tranfStateColor(responseData.getStatus()));
         holder.imgState.setImageDrawable(tranfStateDrawable(responseData.getStatus()));
-        Glide.with(context).load(responseData.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
+        if(!TextUtils.isEmpty(responseData.getAvatar_url())){
+            Glide.with(context).load(responseData.getAvatar_url())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.imgAvatar);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

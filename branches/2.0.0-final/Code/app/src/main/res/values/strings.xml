@@ -372,4 +372,5 @@
     <string name="format_picbrowser">图片预览(%1$s/%2$s)</string>
     <string name="exit">退出</string>
     <string name="my_store">我的店铺</string>
+    <string name="hint_pay_success">支付成功</string>
 </resources>

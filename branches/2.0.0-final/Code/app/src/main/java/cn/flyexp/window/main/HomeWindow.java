@@ -88,13 +88,10 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
         long lastTime = SharePresUtil.getLong(SharePresUtil.KEY_LAST_TIME_UPDATE);
         //超过一个星期检查更新
         if (System.currentTimeMillis() - lastTime > 1000 * 60 * 60 * 24 * 7) {
-            LogUtil.e("last");
             UpdateRequest updateRequest = new UpdateRequest();
             updateRequest.setPlatform("and");
             homePresenter.requestCheckUpdate(updateRequest);
             SharePresUtil.putLong(SharePresUtil.KEY_LAST_TIME_UPDATE,System.currentTimeMillis());
-        }else{
-            LogUtil.e("last no");
         }
     }
 

@@ -97,11 +97,12 @@ public class MyInfoWindow extends BaseWindow implements NotifyManager.Notify, My
             tvGender.setText("女");
         }
 
-        if (SharePresUtil.getInt(SharePresUtil.KEY_AUTH) == 0) {
+        int auth = SharePresUtil.getInt(SharePresUtil.KEY_AUTH);
+        if (auth == 0) {
             tvCertification.setText("未实名");
-        } else if (SharePresUtil.getInt(SharePresUtil.KEY_AUTH) == 1) {
+        } else if (auth == 1) {
             tvCertification.setText("已实名");
-        } else if (SharePresUtil.getInt(SharePresUtil.KEY_AUTH) == 2) {
+        } else if (auth == 2) {
             tvCertification.setText("实名中");
         }
         tvIntro.setText(datas.getIntroduction());

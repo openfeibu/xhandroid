@@ -106,7 +106,12 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
 
     private void initView() {
         hideViewByStatus(data.getStatus());
-        tvNickname.setText(String.format(getResources().getString(R.string.task_sender), data.getNickname()));
+        if (isTask && TextUtils.isEmpty(data.getNickname())) {
+            tvNickname.setText("未被接");
+        } else {
+            tvNickname.setText(String.format(getResources().getString(R.string.task_sender), data.getNickname()));
+        }
+
         SpannableStringBuilder feeStr = new SpannableStringBuilder("赏金： "
                 + String.format(getResources().getString(R.string.format_task_money),
                 String.valueOf(data.getFee())));
@@ -115,9 +120,11 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
         tvFee.setText(feeStr);
         tvDestination.setText(data.getDestination().trim());
         tvDescription.setText(data.getDescription().trim());
-        Glide.with(getContext()).load(data.getAvatar_url())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imgAvatar);
-        imgState.setImageDrawable(tranfStateDrawable(data.getStatus()));
+        if (!TextUtils.isEmpty(data.getAvatar_url())) {
+            Glide.with(getContext()).load(data.getAvatar_url())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imgAvatar);
+            imgState.setImageDrawable(tranfStateDrawable(data.getStatus()));
+        }
         MyTaskResponse.MyTaskResponseData.TimeData timeData = data.getTime();
         if (TextUtils.isEmpty(timeData.getNew_time())) {
             taskStepView.showCancel(timeData.getCancelled_time());
@@ -189,11 +196,13 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                 btnTask.setVisibility(GONE);
                 imgShare.setVisibility(VISIBLE);
             } else {
+                btnTask.setVisibility(VISIBLE);
                 btnTask.setText(R.string.cancel_task);
             }
         } else if (status.equals("finish")) {
             if (isTask) {
                 btnTask.setText(R.string.complete_task);
+                btnTask.setVisibility(VISIBLE);
             } else {
                 btnTask.setVisibility(GONE);
             }
@@ -201,6 +210,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
             if (isTask) {
                 btnTask.setVisibility(GONE);
             } else {
+                btnTask.setVisibility(VISIBLE);
                 btnTask.setText(R.string.finish_task);
             }
         } else if (status.equals("completed")) {

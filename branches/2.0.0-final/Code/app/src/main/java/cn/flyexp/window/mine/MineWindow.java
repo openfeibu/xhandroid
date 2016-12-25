@@ -3,6 +3,7 @@ package cn.flyexp.window.mine;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
@@ -195,8 +196,12 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     @Override
     public void onNotify(Message mes) {
         if (mes.what == NotifyIDDefine.NOTIFY_MINE_REFRESH) {
-            LogUtil.e("mine notify");
-            readyMineRequest();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    readyMineRequest();
+                }
+            },200);
         } else if (mes.what == NotifyIDDefine.NOTIFY_MESSAGE_PUSH) {
             ((Activity) getContext()).runOnUiThread(new Runnable() {
                 @Override
@@ -226,6 +231,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
 
     @Override
     public void responseMyInfo(MyInfoResponse response) {
+        responseData = null;
         responseData = response.getData();
         tvNickName.setText(responseData.getNickname());
         tvCampus.setText(responseData.getCollege());
