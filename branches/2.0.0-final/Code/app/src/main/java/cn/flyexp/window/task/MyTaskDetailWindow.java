@@ -201,10 +201,10 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
             }
         } else if (status.equals("finish")) {
             if (isTask) {
+                btnTask.setVisibility(GONE);
+            } else {
                 btnTask.setText(R.string.complete_task);
                 btnTask.setVisibility(VISIBLE);
-            } else {
-                btnTask.setVisibility(GONE);
             }
         } else if (status.equals("accepted")) {
             if (isTask) {
