@@ -27,7 +27,6 @@ public class XMPush {
 
     public void init(Context context) {
         this.context = context;
-        SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE,"xiaomi");
         //初始化push推送服务
         if (shouldInit()) {
             MiPushClient.registerPush(context, APP_ID, APP_KEY);

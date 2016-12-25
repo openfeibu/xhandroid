@@ -8,12 +8,19 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
+import com.tencent.android.tpush.service.XGPushService;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import cn.flyexp.constants.Config;
 import cn.flyexp.constants.Constants;
@@ -24,6 +31,7 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.WindowManager;
 import cn.flyexp.permission.PermissionInterceptor;
 import cn.flyexp.push.PushUtil;
+import cn.flyexp.push.XGPush;
 import cn.flyexp.push.XMPush;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        initPush();
         setStatusBar();
         initQQApi();
         initWXApi();
@@ -71,6 +80,48 @@ public class MainActivity extends AppCompatActivity {
         wxapi.registerApp(Config.WXAPI_APPID);
     }
 
+    private void initPush() {
+        if (checkIsMIUI()) {
+            new XMPush().init(this);
+            SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xiaomi");
+        } else {
+            XGPushConfig.enableDebug(this, Config.isDebug);
+            XGPushManager.registerPush(context, "-1", new XGIOperateCallback() {
+                @Override
+                public void onSuccess(Object o, int i) {
+                    LogUtil.e("device_token" + o);
+                    SharePresUtil.putString(SharePresUtil.KEY_DEVICE_TOKEN, (String) o);
+                }
+
+                @Override
+                public void onFail(Object o, int i, String s) {
+                }
+            });
+            SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xiaoge");
+        }
+    }
+
+    private boolean checkIsMIUI() {
+        // 检测MIUI
+        String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
+        String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
+        String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+
+        Properties prop = new Properties();
+        boolean isMIUI;
+        try {
+            prop.load(new FileInputStream(new File(android.os.Environment.getRootDirectory(), "build.prop")));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        isMIUI = prop.getProperty(KEY_MIUI_VERSION_CODE, null) != null
+                || prop.getProperty(KEY_MIUI_VERSION_NAME, null) != null
+                || prop.getProperty(KEY_MIUI_INTERNAL_STORAGE, null) != null;
+        return isMIUI;
+    }
+
+
     private void initWindow() {
         ControllerManager.getInstance().sendMessage(WindowIDDefine.WINDOW_SPLASH);
     }
@@ -79,6 +130,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         WindowManager.getInstance(this).onResume();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);// 必须要调用这句
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        XGPushManager.onActivityStoped(this);
     }
 
     @Override

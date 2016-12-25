@@ -100,6 +100,7 @@ public class GalleryWindow extends BaseWindow implements NotifyManager.Notify, G
             }
 
             public void onCancel() {
+                hideWindow(true);
             }
 
             public void goSetting() {

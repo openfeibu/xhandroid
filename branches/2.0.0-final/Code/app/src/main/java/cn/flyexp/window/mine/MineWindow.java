@@ -103,7 +103,7 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
 
     @OnClick({R.id.tv_changecampus, R.id.tv_message, R.id.layout_setting, R.id.layout_mywallet,
             R.id.layout_myassn, R.id.layout_share, R.id.layout_myintergal, R.id.layout_myinfo, R.id.tv_mytopic,
-            R.id.tv_mytask, R.id.tv_myorder, R.id.layout_storecollection,R.id.layout_mystore})
+            R.id.tv_mytask, R.id.tv_myorder, R.id.layout_storecollection, R.id.layout_mystore})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_changecampus:
@@ -194,14 +194,14 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     }
 
     @Override
+    public void onResume() {
+        LogUtil.e("tv" + String.valueOf(tvNickName == null));
+    }
+
+    @Override
     public void onNotify(Message mes) {
         if (mes.what == NotifyIDDefine.NOTIFY_MINE_REFRESH) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    readyMineRequest();
-                }
-            },200);
+            readyMineRequest();
         } else if (mes.what == NotifyIDDefine.NOTIFY_MESSAGE_PUSH) {
             ((Activity) getContext()).runOnUiThread(new Runnable() {
                 @Override
@@ -231,7 +231,6 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
 
     @Override
     public void responseMyInfo(MyInfoResponse response) {
-        responseData = null;
         responseData = response.getData();
         tvNickName.setText(responseData.getNickname());
         tvCampus.setText(responseData.getCollege());

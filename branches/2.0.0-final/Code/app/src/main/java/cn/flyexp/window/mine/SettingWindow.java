@@ -5,6 +5,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tencent.android.tpush.XGPushManager;
+import com.xiaomi.mipush.sdk.MiPushClient;
+
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
@@ -15,6 +18,7 @@ import cn.flyexp.entity.WebBean;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.mine.SettingPresenter;
+import cn.flyexp.push.XMPush;
 import cn.flyexp.util.DataCleanHelper;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.LogUtil;
@@ -118,6 +122,12 @@ public class SettingWindow extends BaseWindow implements SettingCallback.Respons
         SharePresUtil.putString(SharePresUtil.KEY_LAST_PHONE, "");
         SharePresUtil.putString(SharePresUtil.KEY_LAST_AVATAR, "");
         SharePresUtil.putString(SharePresUtil.KEY_OPENID, "");
+
+        if (TextUtils.equals(SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE), "xiaomi")) {
+            MiPushClient.unregisterPush(getContext());
+        } else if (TextUtils.equals(SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE), "xiaoge")) {
+            XGPushManager.unregisterPush(getContext());
+        }
         getNotifyManager().notify(NotifyIDDefine.NOTICE_MAIN_HOME);
         hideWindow(true);
     }

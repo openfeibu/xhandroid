@@ -97,6 +97,9 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
 
     @Override
     public void onRenew() {
+        homePresenter.requestAd();
+        homePresenter.requestRecommendTask();
+        homePresenter.requestHotActivity();
     }
 
 

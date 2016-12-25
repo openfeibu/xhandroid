@@ -53,7 +53,7 @@ public class PushUtil {
                 mes.what = NotifyIDDefine.NOTIFY_TOPIC_PUSH;
             }
             BaseWindow.getNotifyManager().notify(mes);
-            BaseWindow.getNotifyManager().notify(NotifyIDDefine.NOTICE_MAIN_HOME);
+            BaseWindow.getNotifyManager().notify(NotifyIDDefine.NOTIFY_MAIN_PUSH);
         }
     }
 
