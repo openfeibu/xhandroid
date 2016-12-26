@@ -121,7 +121,15 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
                 e.printStackTrace();
             }
 
-            WebWindow.this.hideWindow("true".equals(action));
+            final boolean ani = "true".equals(action);
+
+            WebWindow.this.post(new Runnable() {
+                @Override
+                public void run() {
+                    WebWindow.this.hideWindow(ani);
+                }
+            });
+
 
             jsonObject = new JSONObject();
             try {
@@ -233,6 +241,7 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
 
         @JavascriptInterface
         public String interactive(String json) {
+//            closeWeb("{\"action\":\"true\"}");
             JSONObject jsonObject = null;
             String action = "";
             try {
