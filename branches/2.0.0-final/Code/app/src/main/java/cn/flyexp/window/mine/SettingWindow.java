@@ -119,8 +119,6 @@ public class SettingWindow extends BaseWindow implements SettingCallback.Respons
         SharePresUtil.putString(SharePresUtil.KEY_ALIPAYNAME, "");
         SharePresUtil.putString(SharePresUtil.KEY_ADDRESS, "");
         SharePresUtil.putString(SharePresUtil.KEY_PHONE, "");
-        SharePresUtil.putString(SharePresUtil.KEY_LAST_PHONE, "");
-        SharePresUtil.putString(SharePresUtil.KEY_LAST_AVATAR, "");
         SharePresUtil.putString(SharePresUtil.KEY_OPENID, "");
 
         if (TextUtils.equals(SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE), "xiaomi")) {
