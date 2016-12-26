@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
@@ -64,6 +65,9 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     }
 
     public MineWindow() {
+        Config config  = new Config();
+        config.setNoneReset(true);
+        setConfig(config);
         minePresenter = new MinePresenter(this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_MINE_REFRESH, this);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_MESSAGE_PUSH, this);
@@ -191,11 +195,6 @@ public class MineWindow extends BaseWindow implements MineCallback.ResponseCallb
     @Override
     protected boolean isEnabledSwipeBack() {
         return false;
-    }
-
-    @Override
-    public void onResume() {
-        LogUtil.e("tv" + String.valueOf(tvNickName == null));
     }
 
     @Override

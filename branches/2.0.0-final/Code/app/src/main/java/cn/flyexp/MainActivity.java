@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onFail(Object o, int i, String s) {
                 }
             });
-            SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xiaoge");
+            SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xinge");
         }
     }
 

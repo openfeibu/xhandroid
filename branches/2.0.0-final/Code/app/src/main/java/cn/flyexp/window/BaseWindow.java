@@ -2,9 +2,7 @@ package cn.flyexp.window;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -17,7 +15,6 @@ import cn.flyexp.framework.ControllerManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowManager;
-import cn.flyexp.util.ScreenHelper;
 import cn.flyexp.view.SwipeBackLayout;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -69,7 +66,9 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         hideKeybroad();
-        ButterKnife.reset(this);
+        if (getConfig() == null || !getConfig().isNoneReset()) {
+            ButterKnife.reset(this);
+        }
     }
 
     private void hideKeybroad() {
@@ -184,6 +183,15 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
         private int[] animStyle = new int[2];
         private boolean isStateBarEnable = true;
         private int stateBarColor;
+        private boolean isNoneReset;
+
+        public boolean isNoneReset() {
+            return isNoneReset;
+        }
+
+        public void setNoneReset(boolean noneReset) {
+            isNoneReset = noneReset;
+        }
 
         public int[] getAnimStyle() {
             return animStyle;

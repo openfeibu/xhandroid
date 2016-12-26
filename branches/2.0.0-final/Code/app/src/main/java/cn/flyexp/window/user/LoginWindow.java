@@ -24,6 +24,7 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.user.LoginPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.EncodeUtil;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.PatternUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.CircleImageView;
@@ -114,6 +115,7 @@ public class LoginWindow extends BaseWindow implements TextWatcher, LoginCallbac
         String mid = SharePresUtil.getString(SharePresUtil.KEY_MID);
         String deviceToken = SharePresUtil.getString(SharePresUtil.KEY_DEVICE_TOKEN);
         String push = SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE);
+        LogUtil.e("push"+push);
         loginRequest.setPlatform("and");
         loginRequest.setMid(mid);
         loginRequest.setMobile_no(phone);

@@ -125,7 +125,7 @@ public class SettingWindow extends BaseWindow implements SettingCallback.Respons
 
         if (TextUtils.equals(SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE), "xiaomi")) {
             MiPushClient.unregisterPush(getContext());
-        } else if (TextUtils.equals(SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE), "xiaoge")) {
+        } else if (TextUtils.equals(SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE), "xinge")) {
             XGPushManager.unregisterPush(getContext());
         }
         getNotifyManager().notify(NotifyIDDefine.NOTICE_MAIN_HOME);
