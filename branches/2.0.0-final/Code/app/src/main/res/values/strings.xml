@@ -162,7 +162,7 @@
     <string name="hint_myassn">你造吗？\n 没有社团的大学不是完整的大学! \n快选择你钟意的组织，涌入他们的怀抱吧！</string>
     <string name="hint_btn_myassn">校园社团</string>
     <string name="assn">社团</string>
-    <string name="assn_detail_join_assn">点我申请加入社团</string>
+    <string name="assn_detail_join_assn">申请加入</string>
     <string name="loading">加载中</string>
     <string name="apply_success">申请成功</string>
     <string name="assn_member">社团人员</string>
@@ -373,4 +373,5 @@
     <string name="exit">退出</string>
     <string name="my_store">我的店铺</string>
     <string name="hint_pay_success">支付成功</string>
+    <string name="twotimes_input_common">请勿设置相同密码</string>
 </resources>

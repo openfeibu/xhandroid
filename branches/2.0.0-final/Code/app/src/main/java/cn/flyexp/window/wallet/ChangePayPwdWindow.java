@@ -15,6 +15,7 @@ import cn.flyexp.entity.ChangePayPwdRequest;
 import cn.flyexp.presenter.wallet.ChangePayPwdPresenter;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.EncodeUtil;
+import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.PasswordView;
 import cn.flyexp.window.BaseWindow;
@@ -61,6 +62,12 @@ public class ChangePayPwdWindow extends BaseWindow implements TextWatcher, Chang
     }
 
     private void readyChangePayPwd() {
+        if(oldPwd.equals(newPWd)) {
+            showToast(R.string.twotimes_input_common);
+            edtOldPwd.setText("");
+            edtNewPwd.setText("");
+            return;
+        }
         String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
         if (TextUtils.isEmpty(token)) {
             renewLogin();

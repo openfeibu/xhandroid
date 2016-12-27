@@ -31,6 +31,8 @@
     <color name="wallet_blue">#86cbe4</color>
     <color name="wallet_red">#f59b9b</color>
     <color name="font_title">#333333</color>
+    <color name="assn_name">#28282e</color>
+    <color name="assn_message">#aaaaaa</color>
 
 
 </resources>

@@ -34,7 +34,7 @@
     <dimen name="img_width">100dp</dimen>
     <dimen name="img_height">75dp</dimen>
     <dimen name="mywallet_height">100dp</dimen>
-    <dimen name="edit_height_large">120dp</dimen>
+    <dimen name="edit_height_large">150dp</dimen>
     <dimen name="assn_btn_width">120dp</dimen>
     <dimen name="assnacti_img_height">200dp</dimen>
     <dimen name="assnacti_imgtv_height">75dp</dimen>
@@ -79,7 +79,7 @@
     <dimen name="assn_notice_height">60dp</dimen>
     <dimen name="sign_height">17dp</dimen>
     <dimen name="sign_width">5dp</dimen>
-    <dimen name="topic_height">130dp</dimen>
+    <dimen name="topic_height">140dp</dimen>
     <dimen name="loadmore_footer_height">40dp</dimen>
 
 </resources>

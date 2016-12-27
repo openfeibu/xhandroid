@@ -62,15 +62,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
-                android:textColor="@color/white"
-                android:textSize="@dimen/margin_normal" />
+                android:textColor="@color/assn_name"
+                android:textSize="@dimen/font_normal" />
 
             <TextView
                 android:id="@+id/tv_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
-                android:textColor="@color/white"
+                android:textColor="@color/assn_message"
                 android:textSize="@dimen/font_small" />
 
         </LinearLayout>
@@ -84,10 +84,11 @@
         android:layout_marginLeft="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_normal"
+        android:lineSpacingExtra="8dp"
         android:background="@drawable/background_gray_round"
         android:padding="@dimen/margin_small"
-        android:textColor="@color/font_light"
-        android:textSize="@dimen/font_small" />
+        android:textColor="@color/font_dark"
+        android:textSize="@dimen/font_normal" />
 
     <View
         android:layout_width="wrap_content"
