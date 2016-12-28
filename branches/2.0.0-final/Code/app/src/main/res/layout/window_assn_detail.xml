@@ -84,7 +84,7 @@
         android:layout_marginLeft="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_normal"
-        android:lineSpacingExtra="8dp"
+        android:lineSpacingExtra="6dp"
         android:background="@drawable/background_gray_round"
         android:padding="@dimen/margin_small"
         android:textColor="@color/font_dark"

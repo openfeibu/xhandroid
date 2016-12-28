@@ -174,4 +174,9 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
                 break;
         }
     }
+
+    @Override
+    protected boolean isEnabledSwipeBack() {
+        return false;
+    }
 }

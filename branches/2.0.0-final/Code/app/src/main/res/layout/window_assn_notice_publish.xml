@@ -41,8 +41,8 @@
         android:layout_marginTop="@dimen/margin_normal"
         android:background="@drawable/background_gray_round"
         android:gravity="left|top"
-        android:maxEms="140"
         android:maxLines="10"
+        android:maxLength="120"
         android:padding="@dimen/margin_small"
         android:textColor="@color/font_light"
         android:textSize="@dimen/font_normal" />

@@ -76,10 +76,9 @@
     <dimen name="topic_img_size">90dp</dimen>
     <dimen name="item_topic_comment_height">75dp</dimen>
     <dimen name="assn_detail_intro_height">50dp</dimen>
-    <dimen name="assn_notice_height">60dp</dimen>
+    <dimen name="assn_notice_height">100dp</dimen>
     <dimen name="sign_height">17dp</dimen>
     <dimen name="sign_width">5dp</dimen>
     <dimen name="topic_height">140dp</dimen>
     <dimen name="loadmore_footer_height">40dp</dimen>
-
 </resources>
