@@ -7,7 +7,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +48,8 @@ import cn.flyexp.entity.DeleteCommentRequest;
 import cn.flyexp.entity.DeleteTopicRequest;
 import cn.flyexp.entity.ThumbUpRequest;
 import cn.flyexp.entity.TopicResponseData;
+import cn.flyexp.entity.WebBean;
+import cn.flyexp.framework.ControllerManager;
 import cn.flyexp.framework.NotifyIDDefine;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.topic.TopicDetailPresenter;
@@ -112,7 +122,8 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
 
     private void initView() {
         tvNickName.setText(data.getNickname());
-        tvContent.setText(data.getContent().trim());
+        tvContent.setText(getClickableHtml(data.getContent().trim()));
+        tvContent.setMovementMethod(LinkMovementMethod.getInstance());
         tvDate.setText(DateUtil.getStandardDate(DateUtil.date2Long(data.getCreated_at())));
         updateDetail();
         Glide.with(getContext()).load(data.getAvatar_url())
@@ -400,5 +411,41 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         getNotifyManager().notify(NotifyIDDefine.NOTIFY_TOPIC_DELETE_ITEM);
         getNotifyManager().notify(NotifyIDDefine.NOTIFY_MYTOPIC_DELETE_ITEM);
         hideWindow(true);
+    }
+
+
+    private void setLinkClickable(final SpannableStringBuilder clickableHtmlBuilder,
+                                  final URLSpan urlSpan) {
+
+        int start = clickableHtmlBuilder.getSpanStart(urlSpan);
+        int end = clickableHtmlBuilder.getSpanEnd(urlSpan);
+        int flags = clickableHtmlBuilder.getSpanFlags(urlSpan);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                int windowId = WindowIDDefine.WINDOW_WEBVIEW;
+                WebBean webBean = new WebBean();
+                webBean.setTitle("");
+                webBean.setUrl(urlSpan.getURL());
+                webBean.setRequest(false);
+                bundle.putSerializable("webbean", webBean);
+                ControllerManager.getInstance().sendMessage(windowId, bundle);
+            }
+        };
+        clickableHtmlBuilder.removeSpan(urlSpan);
+        clickableHtmlBuilder.setSpan(clickableSpan, start, end, flags);
+    }
+
+    final static String REGEX = "((http|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?";
+    final static String REPLACER = "<a href=\"$0\">链接<a>";
+
+    private CharSequence getClickableHtml(String html) {
+        Spanned spannedHtml = Html.fromHtml(html.replaceAll(REGEX, REPLACER));
+        SpannableStringBuilder clickableHtmlBuilder = new SpannableStringBuilder(spannedHtml);
+        URLSpan[] urls = clickableHtmlBuilder.getSpans(0, spannedHtml.length(), URLSpan.class);
+        for (final URLSpan span : urls) {
+            setLinkClickable(clickableHtmlBuilder, span);
+        }
+        return clickableHtmlBuilder;
     }
 }
