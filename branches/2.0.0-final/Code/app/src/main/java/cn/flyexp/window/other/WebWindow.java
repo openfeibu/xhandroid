@@ -8,12 +8,9 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -241,7 +238,6 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
 
         @JavascriptInterface
         public String interactive(String json) {
-//            closeWeb("{\"action\":\"true\"}");
             JSONObject jsonObject = null;
             String action = "";
             try {
@@ -287,6 +283,7 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
                     progressBar.setProgress(newProgress);
                 }
             }
+
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
                 openFileChooserImpl(filePathCallback);
@@ -397,10 +394,10 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
         contentSelectionIntent .setType("image/*");
 
         Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
-        chooserIntent.putExtra(Intent.EXTRA_INTENT,contentSelectionIntent);
-        chooserIntent.putExtra(Intent.EXTRA_TITLE,"Image Chooser");
+        chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+        chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
 
-        ((Activity)getContext()).startActivityForResult(Intent.createChooser(chooserIntent,"File Browser"),Constants.WEBVIEW_FILE_CHOOSER_RESULT);
+        ((Activity)getContext()).startActivityForResult(Intent.createChooser(chooserIntent, "File Browser"), Constants.WEBVIEW_FILE_CHOOSER_RESULT);
 
     }
 
@@ -428,6 +425,17 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
         } else {
             return super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (webView != null) {
+            try {
+                webView.destroy();
+            } catch (Throwable throwable) {
+            }
+        }
+        super.onDetachedFromWindow();
     }
 
     public void onNotify(Message mes) {
