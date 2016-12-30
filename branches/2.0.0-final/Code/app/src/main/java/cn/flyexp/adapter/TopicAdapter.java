@@ -2,6 +2,7 @@ package cn.flyexp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import butterknife.InjectView;
 import cn.flyexp.R;
 import cn.flyexp.entity.TopicResponseData;
 import cn.flyexp.util.DateUtil;
+import cn.flyexp.util.PatternUtil;
 import cn.flyexp.view.CircleImageView;
 
 /**
@@ -56,7 +58,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         holder.tvCommentNum.setText(String.valueOf(responseData.getComment_num()));
         holder.tvViewNum.setText(String.valueOf(responseData.getView_num()));
         holder.tvFavouritesCount.setText(String.valueOf(responseData.getFavourites_count()));
-        holder.tvContent.setText(responseData.getContent());
+        holder.tvContent.setText(Html.fromHtml(PatternUtil.regexReplaceURL(responseData.getContent())));
         if (TextUtils.isEmpty(responseData.getThumb())) {
             holder.imgTopicPhoto.setVisibility(View.GONE);
         } else {

@@ -23,4 +23,15 @@ public class PatternUtil {
     private static boolean matcher(String regex, String input) {
         return Pattern.compile(regex).matcher(input).matches();
     }
+
+
+    final static String REGEX = "((http|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?";
+    final static String REPLACER = "<a href=\"$0\">链接<a>";
+
+    public static String regexReplaceURL(String str) {
+        if (str == null) {
+           return str;
+        }
+        return str.replaceAll(REGEX, REPLACER);
+    }
 }

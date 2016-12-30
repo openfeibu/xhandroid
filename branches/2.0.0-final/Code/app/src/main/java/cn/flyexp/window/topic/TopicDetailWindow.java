@@ -1,21 +1,22 @@
 package cn.flyexp.window.topic;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
-import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +32,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import cn.flyexp.R;
 import cn.flyexp.adapter.TopicCommentAdapter;
 import cn.flyexp.adapter.TopicPicAdapter;
@@ -55,7 +56,7 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.topic.TopicDetailPresenter;
 import cn.flyexp.util.DateUtil;
 import cn.flyexp.util.DialogHelper;
-import cn.flyexp.util.LogUtil;
+import cn.flyexp.util.PatternUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.view.CircleImageView;
 import cn.flyexp.view.DividerItemDecoration;
@@ -249,6 +250,27 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         }
     }
 
+    @OnLongClick({R.id.tv_content})
+    boolean onLongClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_content:
+                if (data == null) {
+                   return true;
+                }
+                final SweetAlertDialog dialog = DialogHelper.showSingleDialog(getContext(), getResources().getString(R.string.topic_copy), null);
+                dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener(){
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        ClipboardManager clipboardManager = (ClipboardManager)getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        clipboardManager.setPrimaryClip(ClipData.newPlainText(null, data.getContent()));
+                        dialog.dismissWithAnimation();
+                    }
+                });
+                break;
+            }
+        return true;
+    }
+
     @OnClick({R.id.img_back, R.id.tv_delete, R.id.layout_comment, R.id.layout_like})
     void onClick(View view) {
         switch (view.getId()) {
@@ -436,11 +458,10 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         clickableHtmlBuilder.setSpan(clickableSpan, start, end, flags);
     }
 
-    final static String REGEX = "((http|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?";
-    final static String REPLACER = "<a href=\"$0\">链接<a>";
+
 
     private CharSequence getClickableHtml(String html) {
-        Spanned spannedHtml = Html.fromHtml(html.replaceAll(REGEX, REPLACER));
+        Spanned spannedHtml = Html.fromHtml(PatternUtil.regexReplaceURL(html));
         SpannableStringBuilder clickableHtmlBuilder = new SpannableStringBuilder(spannedHtml);
         URLSpan[] urls = clickableHtmlBuilder.getSpans(0, spannedHtml.length(), URLSpan.class);
         for (final URLSpan span : urls) {

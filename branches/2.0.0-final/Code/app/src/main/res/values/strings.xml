@@ -364,6 +364,8 @@
     <string name="gender_women">女</string>
     <string name="hint_comment_null">评论不能为空</string>
     <string name="hint_comment_topic">发表下你的看法</string>
+    <string name="topic_copy">复制</string>
+    <string name="topic_paste">粘贴</string>
     <string name="data_unable">数据出错</string>
     <string name="format_curr_version">当前版本v%s</string>
     <string name="hint_change_pwd_success">修改密码成功</string>

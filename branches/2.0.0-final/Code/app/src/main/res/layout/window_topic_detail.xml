@@ -123,6 +123,7 @@
                     android:layout_marginTop="@dimen/margin_normal_small"
                     android:lineSpacingExtra="10dp"
                     android:textColor="@color/font_topic"
+                    android:autoLink="web"
                     android:textSize="@dimen/font_large" />
 
                 <android.support.v7.widget.RecyclerView
