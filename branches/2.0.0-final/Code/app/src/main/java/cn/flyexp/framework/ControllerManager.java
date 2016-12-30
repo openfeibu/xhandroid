@@ -204,9 +204,10 @@ public class ControllerManager {
     }
 
     private void openGalleryWindow(final Message msg) {
+        final Bundle data = msg.getData();
         PermissionHandler.PermissionCallback permissionCallback = new PermissionHandler.PermissionCallback() {
             public void onSuccess() {
-                new GalleryWindow(msg.getData()).showWindow(true);;
+                new GalleryWindow(data).showWindow(true);
             }
 
             public void onFail(int[] ids) {
