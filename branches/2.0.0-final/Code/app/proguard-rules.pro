@@ -45,6 +45,7 @@
 -printmapping mapping.txt
 -keep class cn.flyexp.entity.**{*;}
 -keep class cn.flyexp.window.other.WebWindow$JavaScriptInterface{*;}
+-keep class cn.flyexp.window.other.WebWindow$WebChromeClientImpl{*;}
 -keep class cn.flyexp.window.store.StoreWindow$JavaScriptInterface{*;}
 -keepclasseswithmembers class * {
     @retrofit.http.* <methods>;

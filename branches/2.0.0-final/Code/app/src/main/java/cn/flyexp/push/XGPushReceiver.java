@@ -9,6 +9,9 @@ import com.tencent.android.tpush.XGPushRegisterResult;
 import com.tencent.android.tpush.XGPushShowedResult;
 import com.tencent.android.tpush.XGPushTextMessage;
 
+import cn.flyexp.util.LogUtil;
+import cn.flyexp.util.SharePresUtil;
+
 /**
  * Created by txy on 2016/12/25 0029.
  */
@@ -16,7 +19,10 @@ public class XGPushReceiver extends XGPushBaseReceiver {
 
     @Override
     public void onRegisterResult(Context context, int i, XGPushRegisterResult xgPushRegisterResult) {
-
+        if (xgPushRegisterResult!=null) {
+            LogUtil.e("device_token" + xgPushRegisterResult.getToken());
+            SharePresUtil.putString(SharePresUtil.KEY_DEVICE_TOKEN, xgPushRegisterResult.getToken());
+        }
     }
 
     @Override

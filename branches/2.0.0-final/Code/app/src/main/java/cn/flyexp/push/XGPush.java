@@ -1,5 +1,6 @@
 package cn.flyexp.push;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.tencent.android.tpush.XGIOperateCallback;
@@ -13,7 +14,7 @@ import cn.flyexp.util.SharePresUtil;
  */
 public class XGPush {
 
-    public void init(Context context) {
+    public static void init(Context context) {
         XGPushManager.registerPush(context, "-1", new XGIOperateCallback() {
             @Override
             public void onSuccess(Object o, int i) {

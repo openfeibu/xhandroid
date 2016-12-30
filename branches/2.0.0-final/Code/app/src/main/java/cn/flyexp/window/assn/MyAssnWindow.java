@@ -105,6 +105,12 @@ public class MyAssnWindow extends BaseWindow implements MyAssnCallback.ResponseC
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        getNotifyManager().unRegister(NotifyIDDefine.NOTICE_MYASSN);
+        super.onDetachedFromWindow();
+    }
+
+    @Override
     public void onNotify(Message mes) {
         if (mes.what == NotifyIDDefine.NOTICE_MYASSN) {
             readyMyAssn();

@@ -27,6 +27,7 @@ import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.WindowManager;
 import cn.flyexp.permission.PermissionInterceptor;
+import cn.flyexp.push.XGPush;
 import cn.flyexp.push.XMPush;
 import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xiaomi");
         } else {
             XGPushConfig.enableDebug(this, Config.isDebug);
-            XGPushManager.registerPush(context, "-1", new XGIOperateCallback() {
+            XGPushManager.registerPush(getApplicationContext(),  new XGIOperateCallback() {
                 @Override
                 public void onSuccess(Object o, int i) {
                     LogUtil.e("device_token" + o);
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putParcelable("clipData", data.getClipData());
                 }
                 bundle.putString("dataString", data.getDataString());
+                bundle.putParcelable("oldUri", data.getData());
                 Message mes = Message.obtain();
                 mes.what = NotifyIDDefine.NOTIFY_WEBVIEW_FILE_CHOOSER_RESULT;
                 mes.setData(bundle);

@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
+import com.tencent.android.tpush.XGPushConfig;
+
 import butterknife.InjectView;
 import cn.flyexp.R;
 import cn.flyexp.callback.other.SplashCallback;
@@ -98,6 +100,11 @@ public class SplashWindow extends BaseWindow implements SplashCallback.ResponseC
                     } else {
                         openWindow(WindowIDDefine.WINDOW_MAIN);
                     }
+                }
+
+                String push = SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE);
+                if ("xinge".equals(push)) {
+                    SharePresUtil.putString(SharePresUtil.KEY_DEVICE_TOKEN, XGPushConfig.getToken(getContext()));
                 }
             }
         }, 2500);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.Parcel;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -33,6 +34,7 @@ import cn.flyexp.entity.WebBean;
 import cn.flyexp.entity.WebUrlRequest;
 import cn.flyexp.entity.WebUrlResponse;
 import cn.flyexp.framework.NotifyIDDefine;
+import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.permission.PermissionHandler;
 import cn.flyexp.permission.PermissionTools;
@@ -45,7 +47,7 @@ import cn.flyexp.window.BaseWindow;
 /**
  * Created by tanxinye on 2016/10/27.
  */
-public class WebWindow extends BaseWindow implements WebCallback.ResponseCallback {
+public class WebWindow extends BaseWindow implements WebCallback.ResponseCallback, NotifyManager.Notify  {
 
     @InjectView(R.id.tv_close)
     TextView tvClose;
@@ -59,7 +61,7 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
     private WebSettings webSettings;
     private boolean goBack;
     private JavaScriptInterface anInterface;
-    private  ValueCallback<Uri[]> filePathCallback;
+    private  ValueCallback filePathCallback;
 
     @Override
     protected int getLayoutId() {
@@ -83,6 +85,7 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
         } else {
             DialogHelper.showErrorDialog(getContext(), getResources().getString(R.string.dialog_backfire));
         }
+        getNotifyManager().register(NotifyIDDefine.NOTIFY_WEBVIEW_FILE_CHOOSER_RESULT, this);
     }
 
     private void initWebView() {
@@ -267,30 +270,51 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
         }
     }
 
+    class WebChromeClientImpl extends WebChromeClient {
+        WebChromeClientImpl() {
+        }
+
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            if (webView == null) {
+                return;
+            }
+            if (newProgress == 100) {
+                progressBar.setVisibility(View.GONE);
+            } else {
+                if (View.GONE == progressBar.getVisibility()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+                progressBar.setProgress(newProgress);
+            }
+        }
+
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            openFileChooserImpl(filePathCallback);
+            type = 0;
+            return true;// super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+        }
+
+        // file upload callback (Android 3.0 (API level 11) -- Android 4.0 (API level 15)) (hidden method)
+        public void openFileChooser(ValueCallback filePathCallback, String acceptType) {
+            type = 1;
+            openFileChooserImpl(filePathCallback);
+        }
+
+        // file upload callback (Android 4.1 (API level 16) -- Android 4.3 (API level 18)) (hidden method)
+        public void openFileChooser(ValueCallback<Uri> filePathCallback, String acceptType, String capture) {
+            type = 2;
+            openFileChooserImpl(filePathCallback);
+        }
+
+    }
+
+    int type = 0;
+
     public void loadUrl(String url) {
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                if (webView == null) {
-                    return;
-                }
-                if (newProgress == 100) {
-                    progressBar.setVisibility(View.GONE);
-                } else {
-                    if (View.GONE == progressBar.getVisibility()) {
-                        progressBar.setVisibility(View.VISIBLE);
-                    }
-                    progressBar.setProgress(newProgress);
-                }
-            }
-
-            @Override
-            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                openFileChooserImpl(filePathCallback);
-                return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
-            }
-
-        });
+        webView.setWebChromeClient(new WebChromeClientImpl());
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -386,7 +410,7 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
     }
 
 
-    private void openFileChooserImpl(ValueCallback<Uri[]> filePathCallback) {
+    private void openFileChooserImpl(ValueCallback filePathCallback) {
         LogUtil.e("openFileChooserImp");
         WebWindow.this.filePathCallback = filePathCallback;
         Intent contentSelectionIntent  = new Intent(Intent.ACTION_GET_CONTENT);
@@ -435,29 +459,45 @@ public class WebWindow extends BaseWindow implements WebCallback.ResponseCallbac
             } catch (Throwable throwable) {
             }
         }
+        getNotifyManager().unRegister(NotifyIDDefine.NOTIFY_WEBVIEW_FILE_CHOOSER_RESULT);
         super.onDetachedFromWindow();
     }
 
     public void onNotify(Message mes) {
         if(mes.what == NotifyIDDefine.NOTIFY_WEBVIEW_FILE_CHOOSER_RESULT){
             Bundle data = mes.getData();
-            ClipData clipData = data.getParcelable("clipData");
-            String dataString = data.getString("dataString");
-            Uri[] results = null;
-            if (clipData != null) {
-                results = new Uri[clipData.getItemCount()];
-                for(int i=0; i<clipData.getItemCount(); i++) {
-                    ClipData.Item item = clipData.getItemAt(i);
-                    results[i] = item.getUri();
+            if (data == null) {
+                if (filePathCallback != null) {//确保浏览器不会一直不释放锁
+                    filePathCallback.onReceiveValue(null);
+                }
+                filePathCallback = null;
+                return;
+            }
+            if (type == 0) {
+                ClipData clipData = data.getParcelable("clipData");
+                String dataString = data.getString("dataString");
+                Uri[] results = null;
+                if (clipData != null) {
+                    results = new Uri[clipData.getItemCount()];
+                    for(int i=0; i<clipData.getItemCount(); i++) {
+                        ClipData.Item item = clipData.getItemAt(i);
+                        results[i] = item.getUri();
+                    }
+                }
+                if (dataString != null) {
+                    results = new Uri[]{Uri.parse((dataString))};
+                }
+
+                if (filePathCallback != null) {
+                    filePathCallback.onReceiveValue(results);
+                }
+            } else {
+                Parcel p = data.getParcelable("oldUri");
+                if (filePathCallback != null) {
+                    filePathCallback.onReceiveValue(p);
                 }
             }
-            if (dataString != null) {
-                results = new Uri[]{Uri.parse((dataString))};
-            }
-
-            if (filePathCallback != null) {
-                filePathCallback.onReceiveValue(results);
-            }
+            filePathCallback = null;
         }
     }
 }
