@@ -174,5 +174,16 @@
             android:textColor="@drawable/font_white_gray"
             android:textSize="@dimen/font_large" />
 
+        <Button
+            android:id="@+id/btn_cancel"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:background="@drawable/btn_blue_round"
+            android:text="@string/cancel_task"
+            android:textColor="@drawable/font_white_gray"
+            android:textSize="@dimen/font_large" />
+
     </LinearLayout>
 </LinearLayout>

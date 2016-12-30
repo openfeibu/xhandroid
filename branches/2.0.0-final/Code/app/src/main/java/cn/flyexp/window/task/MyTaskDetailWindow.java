@@ -72,6 +72,8 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     TextView tvDescription;
     @InjectView(R.id.btn_task)
     Button btnTask;
+    @InjectView(R.id.btn_cancel)
+    Button btnCancel;
     @InjectView(R.id.img_share)
     ImageView imgShare;
     @InjectView(R.id.sv_task)
@@ -211,6 +213,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
             if (isTask) {
                 btnTask.setVisibility(VISIBLE);
                 btnTask.setText(R.string.finish_task);
+                btnCancel.setVisibility(VISIBLE);
             } else {
                 btnTask.setVisibility(GONE);
             }
@@ -241,7 +244,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     }
 
 
-    @OnClick({R.id.img_back, R.id.img_share, R.id.tv_report, R.id.btn_task, R.id.tv_contact})
+    @OnClick({R.id.img_back, R.id.img_share, R.id.tv_report, R.id.btn_task, R.id.tv_contact, R.id.btn_cancel})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -256,10 +259,13 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                 bundle.putInt("oid", data.getOid());
                 openWindow(WindowIDDefine.WINDOW_TASK_REPORT, bundle);
                 break;
+            case R.id.btn_cancel:
+                readyTaskCancelPre();
+                break;
             case R.id.btn_task:
                 String status = data.getStatus();
-                if (status.equals("new")) {
-                    readyTaskCancel();
+                if ("new".equals(status)) {
+                    readyTaskCancelPre();
                 } else if (status.equals("accepted")) {
                     readyTaskFinish();
                 } else if (status.equals("finish")) {
@@ -327,16 +333,33 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
         });
     }
 
-    private void readyTaskCancel() {
-        String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
+    private void readyTaskCancel(String token) {
+        TaskCancelRequest taskCancelRequest = new TaskCancelRequest();
+        taskCancelRequest.setToken(token);
+        taskCancelRequest.setOrder_id(data.getOid());
+        myTaskDetailPresenter.requestTaskCancel(taskCancelRequest);
+        loadingDialog.show();
+    }
+
+    private void readyTaskCancelPre() {
+        final String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
         if (TextUtils.isEmpty(token)) {
             renewLogin();
         } else {
-            TaskCancelRequest taskCancelRequest = new TaskCancelRequest();
-            taskCancelRequest.setToken(token);
-            taskCancelRequest.setOrder_id(data.getOid());
-            myTaskDetailPresenter.requestTaskCancel(taskCancelRequest);
-            loadingDialog.show();
+            if (isTask) {
+                DialogHelper.showSelectDialog(getContext(), getResources().getString(R.string.hint_cancel_task),
+                        getContext().getResources().getString(R.string.hint_cancel_task_confirm),
+                        getContext().getResources().getString(R.string.hint_cancel_task_cancel), new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                readyTaskCancel(token);
+                                dismissProgressDialog(sweetAlertDialog);
+                            }
+                        });
+            } else {
+                readyTaskCancel(token);
+            }
+
         }
     }
 
@@ -382,6 +405,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
         getNotifyManager().notify(NotifyIDDefine.NOTIFY_MYTASK);
         imgState.setVisibility(GONE);
         btnTask.setVisibility(GONE);
+        btnCancel.setVisibility(GONE);
         showToast(R.string.task_cancel_success);
     }
 
@@ -390,6 +414,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
         getNotifyManager().notify(NotifyIDDefine.NOTIFY_MYTASK);
         imgState.setImageDrawable(tranfStateDrawable("finish"));
         btnTask.setVisibility(GONE);
+        btnCancel.setVisibility(GONE);
         showToast(R.string.task_finish_success);
     }
 

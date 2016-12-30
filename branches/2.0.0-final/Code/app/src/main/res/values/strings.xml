@@ -264,6 +264,11 @@
     <string name="hint_claim_task">接受任务之后必须完成哦</string>
     <string name="hint_claim_task_confirm">乐意接受</string>
     <string name="hint_claim_task_cancel">残忍拒绝</string>
+
+    <string name="hint_cancel_task">取消请先与主人沟通</string>
+    <string name="hint_cancel_task_confirm">已沟通好</string>
+    <string name="hint_cancel_task_cancel">先去沟通</string>
+
     <string name="contact_ta">联系TA</string>
     <string name="accpet_task_success">接单成功</string>
     <string name="hint_mytask">任务空空如也\n前往任务列表看看吧</string>
