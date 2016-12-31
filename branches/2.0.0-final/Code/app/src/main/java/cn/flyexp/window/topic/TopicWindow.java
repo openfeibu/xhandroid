@@ -78,15 +78,10 @@ public class TopicWindow extends BaseWindow implements NotifyManager.Notify, Top
         topicAdapter.setOnItemClickLinstener(new TopicAdapter.OnItemClickLinstener() {
             @Override
             public void onItemClickLinstener(View view, int position) {
-                String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
-                if (TextUtils.isEmpty(token)) {
-                    renewLogin();
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("topicDetail", datas.get(position));
-                    openWindow(WindowIDDefine.WINDOW_TOPIC_DETAIL, bundle);
-                    intoPosition = position;
-                }
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("topicDetail", datas.get(position));
+                openWindow(WindowIDDefine.WINDOW_TOPIC_DETAIL, bundle);
+                intoPosition = position;
             }
         });
 

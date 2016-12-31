@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -90,7 +91,6 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
 
     private TopicResponseData data;
     private TopicDetailPresenter topicDetailPresenter;
-    private PopupWindow popupWindow;
     private EditText edtComment;
     private ArrayList<String> imgs = new ArrayList<>();
     private ArrayList<String> tImgs = new ArrayList<>();
@@ -104,6 +104,8 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
             getResources().getDrawable(R.mipmap.icon_top_like_sel)};
     private String comment;
     private int deletePosition;
+    private AlertDialog commentDialog;
+    private View popLayout;
 
     @Override
     protected int getLayoutId() {
@@ -189,7 +191,9 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
             }
         });
 
-        View popLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_topic_comment, null);
+        popLayout = LayoutInflater.from(getContext()).inflate(R.layout.pop_topic_comment, null);
+        popLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         edtComment = (EditText) popLayout.findViewById(R.id.edt_comment);
         popLayout.findViewById(R.id.tv_publish).setOnClickListener(new OnClickListener() {
             @Override
@@ -201,21 +205,7 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
                     readyComment();
                 }
                 toggleKeyboard();
-                popupWindow.dismiss();
-            }
-        });
-
-        popupWindow = new PopupWindow(popLayout,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);
-        popupWindow.setTouchable(true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable());
-        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                changeWindowAlpha(1f);
+                commentDialog.dismiss();
             }
         });
 
@@ -255,19 +245,19 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         switch (view.getId()) {
             case R.id.tv_content:
                 if (data == null) {
-                   return true;
+                    return true;
                 }
                 final SweetAlertDialog dialog = DialogHelper.showSingleDialog(getContext(), getResources().getString(R.string.topic_copy), null);
-                dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener(){
+                dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        ClipboardManager clipboardManager = (ClipboardManager)getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                         clipboardManager.setPrimaryClip(ClipData.newPlainText(null, data.getContent()));
                         dialog.dismissWithAnimation();
                     }
                 });
                 break;
-            }
+        }
         return true;
     }
 
@@ -298,15 +288,10 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
     }
 
     private void showCommentPublish() {
-        popupWindow.showAtLocation(this, Gravity.BOTTOM, 0, 0);
-        changeWindowAlpha(0.7f);
-        toggleKeyboard();
-    }
-
-    private void changeWindowAlpha(float v) {
-        WindowManager.LayoutParams lp = ((Activity) getContext()).getWindow().getAttributes();
-        lp.alpha = v;
-        ((Activity) getContext()).getWindow().setAttributes(lp);
+        if (commentDialog == null) {
+            commentDialog = new AlertDialog.Builder(getContext()).setView(popLayout).create();
+        }
+        commentDialog.show();
     }
 
     private void readyDeleteComment() {
@@ -457,7 +442,6 @@ public class TopicDetailWindow extends BaseWindow implements TopicDetailCallback
         clickableHtmlBuilder.removeSpan(urlSpan);
         clickableHtmlBuilder.setSpan(clickableSpan, start, end, flags);
     }
-
 
 
     private CharSequence getClickableHtml(String html) {
