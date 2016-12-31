@@ -6,7 +6,7 @@ package cn.flyexp.constants;
 public class Constants {
 
     public static final String FOLDER_PATH_CRASH = "/crash";
-    public static final String FILE_PATH_CRASH_LOG = "/carsh/carsh.log";
+    public static final String FILE_PATH_CRASH_LOG = "/crash/crash.log";
 
     public static final String GALLERY = "gallery";
     public static final String LOCAL = "local";
