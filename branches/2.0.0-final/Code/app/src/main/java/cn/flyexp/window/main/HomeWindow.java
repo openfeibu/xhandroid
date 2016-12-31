@@ -264,12 +264,17 @@ public class HomeWindow extends BaseWindow implements HomeCallback.ResponseCallb
     @Override
     public void responseAd(AdResponse response) {
         adResponseDatas.clear();
+        imgUrls.clear();
         adResponseDatas.addAll(response.getData());
         for (int i = 0; i < adResponseDatas.size(); i++) {
             imgUrls.add(adResponseDatas.get(i).getAd_image_url());
         }
-        banner.notifyDataSetChanged();
-        banner.startTurning(3000);
+        try {
+            banner.notifyDataSetChanged();
+            banner.startTurning(3000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
