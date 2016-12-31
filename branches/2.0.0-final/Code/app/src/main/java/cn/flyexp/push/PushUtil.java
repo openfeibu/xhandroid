@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import java.util.List;
 
+import cn.flyexp.MainActivity;
 import cn.flyexp.entity.MyTaskResponse;
 import cn.flyexp.entity.PushOpenBean;
 import cn.flyexp.entity.PushThroughBean;
@@ -94,7 +95,7 @@ public class PushUtil {
             TopicResponseData topicResponseData = gsonUtil.fromJson(data, TopicResponseData.class);
             bundle.putSerializable("topicDetail", topicResponseData);
         }
-        if (!isAppAlive(context, "cn.flyexp")) {
+        if (MainActivity.getContext() == null) {
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("cn.flyexp");
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             launchIntent.putExtra("pushBundle", bundle);

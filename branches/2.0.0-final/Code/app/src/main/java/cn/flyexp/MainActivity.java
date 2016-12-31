@@ -7,17 +7,10 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 
-import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 import cn.flyexp.constants.Config;
 import cn.flyexp.constants.Constants;
@@ -27,9 +20,7 @@ import cn.flyexp.framework.NotifyManager;
 import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.framework.WindowManager;
 import cn.flyexp.permission.PermissionInterceptor;
-import cn.flyexp.push.XGPush;
 import cn.flyexp.push.XMPush;
-import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.SharePresUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,45 +68,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initPush() {
-        if (checkIsMIUI()) {
-            new XMPush().init(this);
+            new XMPush().init(this);//注册失败再信鸽
             SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xiaomi");
-        } else {
-            XGPushConfig.enableDebug(this, Config.isDebug);
-            XGPushManager.registerPush(getApplicationContext(), "-1",  new XGIOperateCallback() {
-                @Override
-                public void onSuccess(Object o, int i) {
-                    LogUtil.e("device_token" + o);
-                    SharePresUtil.putString(SharePresUtil.KEY_DEVICE_TOKEN, (String) o);
-                }
-
-                @Override
-                public void onFail(Object o, int i, String s) {
-                }
-            });
-            SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xinge");
-        }
     }
 
-    private boolean checkIsMIUI() {
-        // 检测MIUI
-        String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
-        String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
-        String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
-
-        Properties prop = new Properties();
-        boolean isMIUI;
-        try {
-            prop.load(new FileInputStream(new File(android.os.Environment.getRootDirectory(), "build.prop")));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        isMIUI = prop.getProperty(KEY_MIUI_VERSION_CODE, null) != null
-                || prop.getProperty(KEY_MIUI_VERSION_NAME, null) != null
-                || prop.getProperty(KEY_MIUI_INTERNAL_STORAGE, null) != null;
-        return isMIUI;
-    }
+//    private boolean checkIsMIUI() {
+//        // 检测MIUI
+//        String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
+//        String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
+//        String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+//
+//        Properties prop = new Properties();
+//        boolean isMIUI;
+//        try {
+//            prop.load(new FileInputStream(new File(android.os.Environment.getRootDirectory(), "build.prop")));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        isMIUI = prop.getProperty(KEY_MIUI_VERSION_CODE, null) != null
+//                || prop.getProperty(KEY_MIUI_VERSION_NAME, null) != null
+//                || prop.getProperty(KEY_MIUI_INTERNAL_STORAGE, null) != null;
+//        return isMIUI;
+//    }
 
 
     private void initWindow() {

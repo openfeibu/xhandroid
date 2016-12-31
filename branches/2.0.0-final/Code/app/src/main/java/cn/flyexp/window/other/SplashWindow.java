@@ -8,8 +8,6 @@ import android.text.TextUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
-import com.tencent.android.tpush.XGPushConfig;
-
 import butterknife.InjectView;
 import cn.flyexp.R;
 import cn.flyexp.callback.other.SplashCallback;
@@ -21,11 +19,10 @@ import cn.flyexp.framework.WindowIDDefine;
 import cn.flyexp.presenter.other.SplashPresenter;
 import cn.flyexp.util.FileUtil;
 import cn.flyexp.util.GsonUtil;
-import cn.flyexp.util.LogUtil;
 import cn.flyexp.util.PackageUtil;
 import cn.flyexp.util.ScreenHelper;
-import cn.flyexp.window.BaseWindow;
 import cn.flyexp.util.SharePresUtil;
+import cn.flyexp.window.BaseWindow;
 
 /**
  * Created by tanxinye on 2016/10/22.
@@ -100,11 +97,6 @@ public class SplashWindow extends BaseWindow implements SplashCallback.ResponseC
                     } else {
                         openWindow(WindowIDDefine.WINDOW_MAIN);
                     }
-                }
-
-                String push = SharePresUtil.getString(SharePresUtil.KEY_PUSH_TYPE);
-                if ("xinge".equals(push)) {
-                    SharePresUtil.putString(SharePresUtil.KEY_DEVICE_TOKEN, XGPushConfig.getToken(getContext()));
                 }
             }
         }, 2500);

@@ -3,6 +3,8 @@ package cn.flyexp.push;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -74,6 +76,19 @@ public class XMPushReceiver extends PushMessageReceiver {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
                 SharePresUtil.putString(SharePresUtil.KEY_DEVICE_TOKEN, cmdArg1);
                 LogUtil.e("push token", cmdArg1);
+            } else {
+                SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xinge");
+                XGPushManager.registerPush(context, "-1", new XGIOperateCallback() {
+                    @Override
+                    public void onSuccess(Object o, int i) {
+                        LogUtil.e("device_token" + o);
+                        SharePresUtil.putString(SharePresUtil.KEY_DEVICE_TOKEN, (String) o);
+                    }
+
+                    @Override
+                    public void onFail(Object o, int i, String s) {
+                    }
+                });
             }
         } else if (MiPushClient.COMMAND_SET_ACCOUNT.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
