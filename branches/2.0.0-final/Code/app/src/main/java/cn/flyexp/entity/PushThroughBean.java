@@ -1,5 +1,7 @@
 package cn.flyexp.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +9,9 @@ import java.util.ArrayList;
  */
 public class PushThroughBean {
 
+    @SerializedName("refresh")
     private int refresh;
+    @SerializedName("target")
     private String target;
 
     public int getRefresh() {

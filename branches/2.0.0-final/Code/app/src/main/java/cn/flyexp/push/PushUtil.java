@@ -94,7 +94,7 @@ public class PushUtil {
             TopicResponseData topicResponseData = gsonUtil.fromJson(data, TopicResponseData.class);
             bundle.putSerializable("topicDetail", topicResponseData);
         }
-        if (isAppAlive(context, "cn.flyexp")) {
+        if (!isAppAlive(context, "cn.flyexp")) {
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("cn.flyexp");
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             launchIntent.putExtra("pushBundle", bundle);

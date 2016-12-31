@@ -50,7 +50,7 @@ public class XGPushReceiver extends XGPushBaseReceiver {
 
     @Override
     public void onNotifactionClickedResult(Context context, XGPushClickedResult xgPushClickedResult) {
-        String content = xgPushClickedResult.getContent();
+        String content = xgPushClickedResult.getCustomContent();
         if(!TextUtils.isEmpty(content)){
             PushUtil.openWindowFromPush(context,content);
         }

@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             SharePresUtil.putString(SharePresUtil.KEY_PUSH_TYPE, "xiaomi");
         } else {
             XGPushConfig.enableDebug(this, Config.isDebug);
-            XGPushManager.registerPush(getApplicationContext(),  new XGIOperateCallback() {
+            XGPushManager.registerPush(getApplicationContext(), "-1",  new XGIOperateCallback() {
                 @Override
                 public void onSuccess(Object o, int i) {
                     LogUtil.e("device_token" + o);
