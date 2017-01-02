@@ -15,6 +15,7 @@ import cn.flyexp.entity.BaseResponse;
 import cn.flyexp.entity.ChangePwdRequest;
 import cn.flyexp.presenter.user.ChangePwdPresenter;
 import cn.flyexp.util.DialogHelper;
+import cn.flyexp.util.EncodeUtil;
 import cn.flyexp.util.SharePresUtil;
 import cn.flyexp.window.BaseWindow;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -71,8 +72,8 @@ public class ChangePwdWindow extends BaseWindow implements TextWatcher, ChangePw
         } else {
             ChangePwdRequest changePwdRequest = new ChangePwdRequest();
             changePwdRequest.setToken(token);
-            changePwdRequest.setPassword(oldPwd);
-            changePwdRequest.setNew_password(newPwd);
+            changePwdRequest.setPassword(EncodeUtil.md5Encode(oldPwd));
+            changePwdRequest.setNew_password(EncodeUtil.md5Encode(newPwd));
             changePwdPresenter.requestChangePwd(changePwdRequest);
         }
     }
@@ -112,8 +113,8 @@ public class ChangePwdWindow extends BaseWindow implements TextWatcher, ChangePw
 
     @Override
     public void responseChangePwd(BaseResponse response) {
-        showToast(R.string.hint_change_pwd_success);
         hideWindow(true);
+        renewLogin();
     }
 
 }

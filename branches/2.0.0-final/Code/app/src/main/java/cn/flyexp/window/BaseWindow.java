@@ -65,7 +65,6 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        hideKeybroad();
         if (getConfig() == null || !getConfig().isNoneReset()) {
             ButterKnife.reset(this);
         }
@@ -100,6 +99,7 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
 
     public void hideWindow(boolean animtion) {
         windowManager.popWindow(animtion);
+        hideKeybroad();
     }
 
     public void clearStack() {
