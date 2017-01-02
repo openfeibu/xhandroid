@@ -42,6 +42,7 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
     private String pwd;
     private String vercode;
     private CountDownTimer downTimer;
+    private boolean isGettingCode;
 
     @Override
     protected int getLayoutId() {
@@ -77,6 +78,7 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
             renewLogin();
             return;
         }
+        isGettingCode = true;
         resetPayPwdPresenter.requestVerCode(new TokenRequest(token));
         countDown();
     }
@@ -87,6 +89,7 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
             renewLogin();
             return;
         }
+        isGettingCode = false;
         ResetPayPwdRequest resetPayPwdRequest = new ResetPayPwdRequest();
         resetPayPwdRequest.setToken(token);
         resetPayPwdRequest.setSms_code(vercode);
@@ -95,18 +98,35 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
         resetPayPwdDialog.show();
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
+    }
+
     private void countDown() {
+        tvGetVercode.setEnabled(false);
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
         downTimer = new CountDownTimer(60000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
+                if (tvGetVercode == null) {
+                    return;
+                }
                 tvGetVercode.setText(String.format(getResources().getString(R.string.format_vercode_renew_get), millisUntilFinished / 1000));
                 tvGetVercode.setTextColor(getResources().getColor(R.color.light_red));
-                tvGetVercode.setEnabled(false);
             }
 
             @Override
             public void onFinish() {
+                if (tvGetVercode == null) {
+                    return;
+                }
                 tvGetVercode.setText(getResources().getString(R.string.get_vercode));
                 tvGetVercode.setTextColor(getResources().getColor(R.color.light_blue));
                 tvGetVercode.setEnabled(true);
@@ -126,9 +146,13 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
 
     @Override
     public void requestFinish() {
+        if (isGettingCode) {
+            return;
+        }
         if (resetPayPwdDialog.isShowing()) {
             resetPayPwdDialog.dismissWithAnimation();
         }
+
         if (downTimer != null) {
             downTimer.onFinish();
         }

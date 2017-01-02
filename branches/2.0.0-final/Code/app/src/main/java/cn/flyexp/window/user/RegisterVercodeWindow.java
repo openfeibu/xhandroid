@@ -95,11 +95,17 @@ public class RegisterVercodeWindow extends BaseWindow implements TextWatcher, Re
 
             @Override
             public void onTick(long millisUntilFinished) {
+                if (tvCountDown == null) {
+                    return;
+                }
                 tvCountDown.setText(String.format(getResources().getString(R.string.format_vercode_renew_get), String.valueOf(millisUntilFinished / 1000)));
             }
 
             @Override
             public void onFinish() {
+                if (tvCountDown == null) {
+                    return;
+                }
                 tvCountDown.setVisibility(GONE);
                 renewGetLayout.setVisibility(VISIBLE);
             }
