@@ -301,6 +301,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                 paypwd = passwordView.getText().toString();
                 if (paypwd.length() == 6) {
                     inputPayPwdDialog.dismiss();
+                    passwordView.setText("");
                     readyTaskComplelte();
                 }
             }

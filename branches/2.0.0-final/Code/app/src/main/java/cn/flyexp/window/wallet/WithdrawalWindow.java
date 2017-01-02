@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
@@ -102,6 +103,7 @@ public class WithdrawalWindow extends BaseWindow implements TextWatcher, Withdra
                 paypwd = passwordView.getText().toString();
                 if (paypwd.length() == 6) {
                     inputPayPwdDialog.dismiss();
+                    passwordView.setText("");
                     readyWithdrawal();
                 }
             }
@@ -125,14 +127,22 @@ public class WithdrawalWindow extends BaseWindow implements TextWatcher, Withdra
     @Override
     public void requestFailure() {
         if(withdrawalDialog.isShowing()){
-            withdrawalDialog.dismissWithAnimation();
+            withdrawalDialog.hide();
         }
     }
 
     @Override
     public void requestFinish() {
         if(withdrawalDialog.isShowing()){
-            withdrawalDialog.dismissWithAnimation();
+            withdrawalDialog.hide();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (withdrawalDialog != null) {
+            withdrawalDialog.dismiss();
         }
     }
 
