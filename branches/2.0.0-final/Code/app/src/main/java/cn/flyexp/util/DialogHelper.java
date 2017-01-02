@@ -44,17 +44,22 @@ public class DialogHelper {
         return showSelectDialog(context, msg, comfirmMsg, context.getResources().getString(R.string.dialog_cancel), clickListener);
     }
 
-    public static SweetAlertDialog showSelectDialog(Context context, String msg, String comfirmMsg, String cancelMsg, SweetAlertDialog.OnSweetClickListener clickListener) {
+    public static SweetAlertDialog showSelectDialog(Context context, String msg, String comfirmMsg, String cancelMsg, SweetAlertDialog.OnSweetClickListener confirm, SweetAlertDialog.OnSweetClickListener cancel) {
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE);
         sweetAlertDialog.setTitleText(msg);
         sweetAlertDialog.setCancelable(true);
         sweetAlertDialog.setCanceledOnTouchOutside(true);
-        sweetAlertDialog.setConfirmClickListener(clickListener);
+        sweetAlertDialog.setConfirmClickListener(confirm);
+        sweetAlertDialog.setCancelClickListener(cancel);
         sweetAlertDialog.showCancelButton(true);
         sweetAlertDialog.setConfirmText(comfirmMsg);
         sweetAlertDialog.setCancelText(cancelMsg);
         sweetAlertDialog.show();
         return sweetAlertDialog;
+    }
+
+    public static SweetAlertDialog showSelectDialog(Context context, String msg, String comfirmMsg, String cancelMsg, SweetAlertDialog.OnSweetClickListener clickListener) {
+        return showSelectDialog(context, msg, comfirmMsg, cancelMsg, clickListener,null);
     }
 
     public static SweetAlertDialog showErrorDialog(Context context,String error){

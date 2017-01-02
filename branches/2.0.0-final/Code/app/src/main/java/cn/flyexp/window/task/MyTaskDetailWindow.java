@@ -273,33 +273,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                 }
                 break;
             case R.id.tv_contact:
-                PermissionTools.requestPermission(getContext(), new PermissionHandler.PermissionCallback() {//信鸽等push需要手机权限，借机申请,它不是拨号必须的权限
-                    @Override
-                    public void onSuccess() {
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        String mobile = isTask ? data.getAlt_phone() : data.getPhone();
-                        Uri uri = Uri.parse("tel:" + mobile);
-                        intent.setData(uri);
-                        try {
-                            getContext().startActivity(intent);
-                        } catch (Exception e) {
-                            showToast(R.string.unable_call);
-                        }
-                    }
-
-                    @Override
-                    public void goSetting() {
-
-                    }
-
-                    @Override
-                    public void onCancel() {
-                    }
-
-                    @Override
-                    public void onFail(int[] ids) {
-                    }
-                }, new int[]{PermissionHandler.PERMISSION_PHONE});
+                contact();
                 break;
         }
     }
@@ -341,6 +315,37 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
         loadingDialog.show();
     }
 
+
+    private void contact(){
+        PermissionTools.requestPermission(getContext(), new PermissionHandler.PermissionCallback() {//信鸽等push需要手机权限，借机申请,它不是拨号必须的权限
+            @Override
+            public void onSuccess() {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                String mobile = isTask ? data.getAlt_phone() : data.getPhone();
+                Uri uri = Uri.parse("tel:" + mobile);
+                intent.setData(uri);
+                try {
+                    getContext().startActivity(intent);
+                } catch (Exception e) {
+                    showToast(R.string.unable_call);
+                }
+            }
+
+            @Override
+            public void goSetting() {
+
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onFail(int[] ids) {
+            }
+        }, new int[]{PermissionHandler.PERMISSION_PHONE});
+    }
+
     private void readyTaskCancelPre() {
         final String token = SharePresUtil.getString(SharePresUtil.KEY_TOKEN);
         if (TextUtils.isEmpty(token)) {
@@ -355,7 +360,14 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                                 readyTaskCancel(token);
                                 dismissProgressDialog(sweetAlertDialog);
                             }
+                        }, new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                dismissProgressDialog(sweetAlertDialog);
+                                contact();
+                            }
                         });
+
             } else {
                 readyTaskCancel(token);
             }
