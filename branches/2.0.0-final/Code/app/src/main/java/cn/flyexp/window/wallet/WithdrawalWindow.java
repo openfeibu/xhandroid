@@ -42,7 +42,6 @@ public class WithdrawalWindow extends BaseWindow implements TextWatcher, Withdra
     private SweetAlertDialog withdrawalDialog;
     private float money;
     private AlertDialog inputPayPwdDialog;
-    private final View inputPayPwdLayout;
     private String paypwd;
 
     @Override
@@ -54,7 +53,6 @@ public class WithdrawalWindow extends BaseWindow implements TextWatcher, Withdra
         withdrawalPresenter = new WithdrawalPresenter(this);
         edtMoney.addTextChangedListener(this);
         withdrawalDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.commiting));
-        inputPayPwdLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_input_paypwd, null);
         String account = SharePresUtil.getString(SharePresUtil.KEY_ALIPAYNAME);
         float balance = SharePresUtil.getFloat(SharePresUtil.KEY_BALANCE);
         if (TextUtils.isEmpty(account)) {
@@ -82,7 +80,7 @@ public class WithdrawalWindow extends BaseWindow implements TextWatcher, Withdra
 
     private void showInputPayPwd() {
         if (inputPayPwdDialog == null) {
-            inputPayPwdDialog = new AlertDialog.Builder(getContext()).setView(inputPayPwdLayout).create();
+            inputPayPwdDialog = new AlertDialog.Builder(getContext()).setView(LayoutInflater.from(getContext()).inflate(R.layout.dialog_input_paypwd, null)).create();
         }
         inputPayPwdDialog.show();
         final PasswordView passwordView = (PasswordView) inputPayPwdDialog.findViewById(R.id.edt_paypwd);
@@ -102,7 +100,7 @@ public class WithdrawalWindow extends BaseWindow implements TextWatcher, Withdra
             public void afterTextChanged(Editable editable) {
                 paypwd = passwordView.getText().toString();
                 if (paypwd.length() == 6) {
-                    inputPayPwdDialog.dismiss();
+                    inputPayPwdDialog.hide();
                     passwordView.setText("");
                     readyWithdrawal();
                 }

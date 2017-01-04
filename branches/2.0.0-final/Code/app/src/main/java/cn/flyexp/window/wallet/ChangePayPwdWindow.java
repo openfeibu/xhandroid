@@ -83,16 +83,12 @@ public class ChangePayPwdWindow extends BaseWindow implements TextWatcher, Chang
 
     @Override
     public void requestFailure() {
-        if(changePayPwdDialog.isShowing()){
-            changePayPwdDialog.dismissWithAnimation();
-        }
+        dismissProgressDialog(changePayPwdDialog);
     }
 
     @Override
     public void requestFinish() {
-        if(changePayPwdDialog.isShowing()){
-            changePayPwdDialog.dismissWithAnimation();
-        }
+        dismissProgressDialog(changePayPwdDialog);
     }
 
     @Override

@@ -84,7 +84,6 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
     private PopupWindow popupWindow;
     private boolean isTask;
     private SweetAlertDialog loadingDialog;
-    private View inputPayPwdLayout;
     private String paypwd;
     private AlertDialog inputPayPwdDialog;
 
@@ -102,7 +101,6 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
         isTask = TextUtils.equals(data.getType(), "work");
         myTaskDetailPresenter = new MyTaskDetailPresenter(this);
         loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.commiting));
-        inputPayPwdLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_input_paypwd, null);
 
         initView();
     }
@@ -280,6 +278,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
 
     private void showInputPayPwd() {
         if (inputPayPwdDialog == null) {
+            View inputPayPwdLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_input_paypwd, null);
             inputPayPwdDialog = new AlertDialog.Builder(getContext()).setView(inputPayPwdLayout).create();
         }
         inputPayPwdDialog.show();
@@ -301,7 +300,7 @@ public class MyTaskDetailWindow extends BaseWindow implements MyTaskDetailCallba
                 paypwd = passwordView.getText().toString();
                 if (paypwd.length() == 6) {
                     inputPayPwdDialog.dismiss();
-                    passwordView.setText("");
+                    inputPayPwdDialog = null;
                     readyTaskComplelte();
                 }
             }

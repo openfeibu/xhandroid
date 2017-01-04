@@ -76,7 +76,6 @@ public class AssnActiPublishWindow extends BaseWindow implements NotifyManager.N
     private String content;
     private String place;
     private String title;
-    private View dateLayout;
     private AlertDialog dateDialog;
     private MaterialCalendarView calendarView;
     private String firstDate;
@@ -91,7 +90,6 @@ public class AssnActiPublishWindow extends BaseWindow implements NotifyManager.N
         aid = bundle.getInt("aid");
         assnActiPublishPresenter = new AssnActiPublishPresenter(this);
         loadingDialog = DialogHelper.getProgressDialog(getContext(), getResources().getString(R.string.uploading));
-        dateLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_calendar, null);
         getNotifyManager().register(NotifyIDDefine.NOTIFY_GALLERY, this);
         initView();
     }
@@ -157,6 +155,7 @@ public class AssnActiPublishWindow extends BaseWindow implements NotifyManager.N
 
     private void showDateDialog() {
         if (dateDialog == null) {
+            View dateLayout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_calendar, null);
             dateDialog = new AlertDialog.Builder(getContext()).setView(dateLayout).create();
             calendarView = (MaterialCalendarView) dateLayout.findViewById(R.id.calendar_view);
             calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
@@ -184,6 +183,7 @@ public class AssnActiPublishWindow extends BaseWindow implements NotifyManager.N
                     lastDate = DateUtil.long2Date(dates.get(dates.size() - 1).getDate().getTime(), "yyyy-MM-dd HH:mm");
                     widget.clearSelection();
                     dateDialog.dismiss();
+                    dateDialog = null;
                 }
             });
         }

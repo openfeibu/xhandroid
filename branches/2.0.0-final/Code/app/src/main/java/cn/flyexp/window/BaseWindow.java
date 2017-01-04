@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import butterknife.ButterKnife;
 import cn.flyexp.MainActivity;
 import cn.flyexp.R;
@@ -35,6 +38,8 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
         return notifyManager;
     }
 
+    private Set<SweetAlertDialog> dialogSet = new HashSet<>(3);
+
     public BaseWindow() {
         this(null);
     }
@@ -59,7 +64,7 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        hideKeybroad();
+        hideKeyboard();
     }
 
     @Override
@@ -70,7 +75,7 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
         }
     }
 
-    private void hideKeybroad() {
+    private void hideKeyboard() {
         InputMethodManager inputmanger = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputmanger.hideSoftInputFromWindow(getWindowToken(), 0);
     }
@@ -99,7 +104,8 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
 
     public void hideWindow(boolean animtion) {
         windowManager.popWindow(animtion);
-        hideKeybroad();
+        hideKeyboard();
+        clearAllDialog();
     }
 
     public void clearStack() {
@@ -123,10 +129,20 @@ public abstract class BaseWindow extends SwipeBackLayout implements BaseResponse
     }
 
     protected void dismissProgressDialog(SweetAlertDialog dialog) {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismissWithAnimation();
-            dialog.dismiss();
+        if (dialog != null) {
+            dialogSet.add(dialog);
+            if (dialog.isShowing()) {
+                dialog.dismissWithAnimation();
+                dialog.hide();
+            }
         }
+    }
+
+    private void clearAllDialog() {
+        for (SweetAlertDialog sad : dialogSet) {
+            sad.dismiss();
+        }
+        dialogSet.clear();
     }
 
     /**
