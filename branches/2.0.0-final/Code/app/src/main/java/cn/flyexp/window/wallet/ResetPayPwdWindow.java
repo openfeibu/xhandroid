@@ -104,6 +104,9 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
         if (downTimer != null) {
             downTimer.cancel();
         }
+        if (resetPayPwdDialog != null) {
+            resetPayPwdDialog.dismiss();
+        }
     }
 
     private void countDown() {
@@ -163,6 +166,8 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
         if (downTimer != null) {
             downTimer.cancel();
         }
+        showToast(R.string.reset_success);
+        hideWindow(true);
     }
 
     @Override
