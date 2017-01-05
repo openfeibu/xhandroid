@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.flyexp.R;
@@ -98,8 +97,9 @@ public class WithdrawalWindow extends BaseWindow implements TextWatcher, Withdra
 
             @Override
             public void afterTextChanged(Editable editable) {
-                paypwd = passwordView.getText().toString();
-                if (paypwd.length() == 6) {
+                String pwd = passwordView.getText().toString();
+                if (pwd.length() == 6) {
+                    paypwd = pwd;
                     inputPayPwdDialog.hide();
                     passwordView.setText("");
                     readyWithdrawal();
