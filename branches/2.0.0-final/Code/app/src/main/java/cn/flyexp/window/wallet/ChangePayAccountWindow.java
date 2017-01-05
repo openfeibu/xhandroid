@@ -44,6 +44,7 @@ public class ChangePayAccountWindow extends BaseWindow implements TextWatcher, C
     private String name;
     private String vercode;
     private CountDownTimer downTimer;
+    private boolean isGettingCode;
 
     @Override
     protected int getLayoutId() {
@@ -79,6 +80,7 @@ public class ChangePayAccountWindow extends BaseWindow implements TextWatcher, C
             renewLogin();
             return;
         }
+        isGettingCode = true;
         changePayAccountPresenter.requestVercode(new TokenRequest(token));
         countDown();
     }
@@ -89,6 +91,7 @@ public class ChangePayAccountWindow extends BaseWindow implements TextWatcher, C
             renewLogin();
             return;
         }
+        isGettingCode = false;
         ChangeAlipayRequest changeAlipayRequest = new ChangeAlipayRequest();
         changeAlipayRequest.setAlipay_name(name);
         changeAlipayRequest.setAlipay(account);
@@ -99,10 +102,17 @@ public class ChangePayAccountWindow extends BaseWindow implements TextWatcher, C
     }
 
     private void countDown() {
+        tvGetVercode.setEnabled(false);
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
         downTimer = new CountDownTimer(60000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
+                if (tvGetVercode == null) {
+                    return;
+                }
                 tvGetVercode.setText(String.format(getResources().getString(R.string.format_vercode_renew_get), millisUntilFinished / 1000));
                 tvGetVercode.setTextColor(getResources().getColor(R.color.light_red));
                 tvGetVercode.setEnabled(false);
@@ -110,6 +120,9 @@ public class ChangePayAccountWindow extends BaseWindow implements TextWatcher, C
 
             @Override
             public void onFinish() {
+                if (tvGetVercode == null) {
+                    return;
+                }
                 tvGetVercode.setText(getResources().getString(R.string.get_vercode));
                 tvGetVercode.setTextColor(getResources().getColor(R.color.light_blue));
                 tvGetVercode.setEnabled(true);
@@ -118,25 +131,45 @@ public class ChangePayAccountWindow extends BaseWindow implements TextWatcher, C
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
+        if (changePayAccountDialog != null) {
+            changePayAccountDialog.dismiss();
+        }
+    }
+
+    @Override
     public void requestFailure() {
         if(changePayAccountDialog.isShowing()){
             changePayAccountDialog.dismissWithAnimation();
         }
-        downTimer.onFinish();
+        if (downTimer != null) {
+            downTimer.onFinish();
+        }
     }
 
     @Override
     public void requestFinish() {
+        if (isGettingCode) {
+            return;
+        }
         if(changePayAccountDialog.isShowing()){
             changePayAccountDialog.dismissWithAnimation();
         }
-        downTimer.onFinish();
+        if (downTimer != null) {
+            downTimer.onFinish();
+        }
     }
 
     @Override
     public void responseChangeAlipay(BaseResponse response) {
         showToast(R.string.change_success);
-        downTimer.cancel();
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
         getNotifyManager().notify(NotifyIDDefine.NOTICE_WALLET);
         hideWindow(true);
     }
