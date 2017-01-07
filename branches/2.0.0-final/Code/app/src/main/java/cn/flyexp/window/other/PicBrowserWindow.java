@@ -32,6 +32,7 @@ import cn.flyexp.permission.PermissionTools;
 import cn.flyexp.util.BitmapUtil;
 import cn.flyexp.util.DialogHelper;
 import cn.flyexp.util.LogUtil;
+import cn.flyexp.view.FBViewPager;
 import cn.flyexp.window.BaseWindow;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import uk.co.senab.photoview.PhotoView;
@@ -42,7 +43,7 @@ import uk.co.senab.photoview.PhotoView;
 public class PicBrowserWindow extends BaseWindow {
 
     @InjectView(R.id.vp_pic)
-    ViewPager vpPic;
+    FBViewPager vpPic;
     @InjectView(R.id.tv_title)
     TextView tvTitle;
     @InjectView(R.id.tv_save)
