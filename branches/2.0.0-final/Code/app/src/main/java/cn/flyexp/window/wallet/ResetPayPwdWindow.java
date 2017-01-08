@@ -162,6 +162,16 @@ public class ResetPayPwdWindow extends BaseWindow implements TextWatcher, ResetP
     }
 
     @Override
+    public void responseVercodeSuccess() {
+        showToast(R.string.send_sms_code_success);
+    }
+
+    @Override
+    public void responseVercodeFailure() {
+        showToast(R.string.send_sms_code_failure);
+    }
+
+    @Override
     public void responseResetPayPwd(BaseResponse response) {
         if (downTimer != null) {
             downTimer.cancel();

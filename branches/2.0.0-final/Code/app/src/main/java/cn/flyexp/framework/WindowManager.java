@@ -116,6 +116,9 @@ public class WindowManager {
     }
 
     public void onBackPressed() {
+        if (windowStack.isEmpty()) {
+           return;
+        }
         if (windowStack.peek() != null && !windowStack.peek().onBackPressed()) {
             if (windowStack.size() == 1) {
                 if (System.currentTimeMillis() - lastTime > 1000) {

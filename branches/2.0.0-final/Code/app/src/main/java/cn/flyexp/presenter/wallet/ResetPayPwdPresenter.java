@@ -48,7 +48,16 @@ public class ResetPayPwdPresenter extends BasePresenter implements ResetPayPwdCa
         execute(ApiManager.getWalletService().resetPayPwdVerCodeRequest(data), BaseResponse.class, new ObservableCallback<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse response) {
-
+                switch (response.getCode()) {
+                    case ResponseCode.RESPONSE_200:
+                        callback.responseVercodeSuccess();
+                        break;
+                    case ResponseCode.RESPONSE_110:
+                        callback.showDetail(response.getDetail());
+                        break;
+                    default:
+                        callback.responseVercodeFailure();
+                }
             }
 
         });

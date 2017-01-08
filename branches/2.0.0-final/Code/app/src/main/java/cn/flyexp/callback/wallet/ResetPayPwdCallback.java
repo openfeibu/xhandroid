@@ -1,5 +1,6 @@
 package cn.flyexp.callback.wallet;
 
+import cn.flyexp.R;
 import cn.flyexp.callback.BaseRequestCallback;
 import cn.flyexp.callback.BaseResponseCallback;
 import cn.flyexp.entity.AlipayInfoResponse;
@@ -20,6 +21,8 @@ public interface ResetPayPwdCallback {
 
     interface ResponseCallback extends BaseResponseCallback {
         void responseResetPayPwd(BaseResponse response);
+        void responseVercodeSuccess();
+        void responseVercodeFailure();
     }
 
 }
