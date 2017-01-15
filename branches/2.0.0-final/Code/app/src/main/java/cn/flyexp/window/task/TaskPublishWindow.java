@@ -192,6 +192,10 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
             tvBalance.setText(String.format(getResources().getString(R.string.hint_paybalance_unable), balance));
             tvBalance.setTextColor(getResources().getColor(R.color.font_light));
             tvBalance.setEnabled(false);
+        } else {
+            tvBalance.setText(String.format(getResources().getString(R.string.hint_paybalance), balance));
+            tvBalance.setTextColor(getResources().getColor(R.color.font_dark));
+            tvBalance.setEnabled(true);
         }
         taskPublishRequest = new TaskPublishRequest();
         taskPublishRequest.setToken(token);
