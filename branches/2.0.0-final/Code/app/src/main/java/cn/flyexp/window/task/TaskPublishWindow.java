@@ -204,35 +204,42 @@ public class TaskPublishWindow extends BaseWindow implements TextWatcher, TaskPu
         changeWindowAlpha(0.7f);
     }
 
+    private TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (inputPayPwdDialog == null) {
+                return;
+            }
+            PasswordView passwordView = (PasswordView) inputPayPwdDialog.findViewById(R.id.edt_paypwd);
+            paypwd = passwordView.getText().toString();
+            if (paypwd.length() == 6) {
+                taskPublishRequest.setPay_password(EncodeUtil.md5Encode(paypwd));
+                taskPublishPresenter.requestTaskPublish(taskPublishRequest);
+                inputPayPwdDialog.dismiss();
+                loadingDialog.show();
+            }
+        }
+    };
+
     private void showInputPayPwd() {
         if (inputPayPwdDialog == null) {
             inputPayPwdDialog = new AlertDialog.Builder(getContext()).setView(inputPayPwdLayout).create();
         }
         inputPayPwdDialog.show();
-        final PasswordView passwordView = (PasswordView) inputPayPwdDialog.findViewById(R.id.edt_paypwd);
+        PasswordView passwordView = (PasswordView) inputPayPwdDialog.findViewById(R.id.edt_paypwd);
         passwordView.setText("");
-        passwordView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                paypwd = passwordView.getText().toString();
-                if (paypwd.length() == 6) {
-                    taskPublishRequest.setPay_password(EncodeUtil.md5Encode(paypwd));
-                    taskPublishPresenter.requestTaskPublish(taskPublishRequest);
-                    inputPayPwdDialog.dismiss();
-                    loadingDialog.show();
-                }
-            }
-        });
+        passwordView.removeTextChangedListener(watcher);
+        passwordView.addTextChangedListener(watcher);
     }
 
     @Override
